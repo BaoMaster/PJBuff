@@ -7,6 +7,8 @@ import { formatNumberWithCommas, getCurrencyPrice } from '@app/utils/utils';
 import { getBalance } from '@app/api/earnings.api';
 import * as S from './Balance.styles';
 
+import ScenarioService from './ScenarioService';
+
 export const Balance: React.FC = () => {
   const [balance, setBalance] = useState({
     usd_balance: 0,
@@ -59,7 +61,7 @@ export const Balance: React.FC = () => {
             </Col>
 
             <Col span={24}>
-              <S.TopUpButton type={theme === 'dark' ? 'ghost' : 'primary'} block>
+              <S.TopUpButton type={theme === 'dark' ? 'ghost' : 'primary'} block onClick={() => {ScenarioService.getScenarioGenerators()}}>
                 {t('nft.topUpBalance')}
               </S.TopUpButton>
             </Col>
