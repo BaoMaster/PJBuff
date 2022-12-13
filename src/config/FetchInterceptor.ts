@@ -3,7 +3,8 @@ import history from "./history";
 import { notification } from "antd";
 
 const service = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  // baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: "http://staging-cmssub.ap-southeast-1.elasticbeanstalk.com",
   timeout: 60000,
 });
 
@@ -25,13 +26,16 @@ service.interceptors.request.use(
     
     const jwtToken = localStorage.getItem(AUTH_TOKEN);
     if (jwtToken) {
-      config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
+      // config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
+      config.headers[TOKEN_PAYLOAD_KEY] = "C0iDGQOe23HC1rg2ra4CCCC";
     }
 
-    if (!jwtToken && !config.headers[PUBLIC_REQUEST_KEY]) {
-      history.push(ENTRY_ROUTE);
-      // window.location.reload();
-    }
+    // if (!jwtToken && !config.headers[PUBLIC_REQUEST_KEY]) {
+    //   console.log('vao');
+      
+    //   history.push(ENTRY_ROUTE);
+    //   // window.location.reload();
+    // }
 
     return config;
   },

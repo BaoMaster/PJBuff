@@ -9,6 +9,7 @@ import {
   TableOutlined,
   UserOutlined,
   BlockOutlined,
+  SettingFilled,
 } from '@ant-design/icons';
 import { ReactComponent as NftIcon } from '@app/assets/icons/nft-icon.svg';
 
@@ -21,6 +22,13 @@ export interface SidebarNavigationItem {
 }
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
+  {
+    title: 'Configuration',
+    key: 'configuration',
+    // TODO use path variable
+    url: '/configuration',
+    icon: <SettingFilled />,
+  },
   {
     title: 'common.nft-dashboard',
     key: 'nft-dashboard',
