@@ -17,6 +17,10 @@ class ScenarioService extends BaseService<any> {
     return this.fetch.get(`${this.baseUri}`);
   }
 
+  public updateSetting(data:any) {
+    return this.fetch.post(`admin/setting/update`,data);
+  }
+
   public createNotDuplicate(data: ICreateScenario) {
     return this.fetch.post(`${this.baseUri}/duplicate`, data);
   }

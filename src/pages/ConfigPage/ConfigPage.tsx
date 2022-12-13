@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Modal, Row } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Row } from 'antd';
 import { AutoComplete } from 'components/common/AutoComplete/AutoComplete';
 import { SearchInput as CommonSearchInput } from 'components/common/inputs/SearchInput/SearchInput';
 import { Option } from 'components/common/selects/Select/Select';
@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './ConfigService';
+import { notificationController } from '@app/controllers/notificationController';
 
 const ConfigPage: React.FC = () => {
   const { t } = useTranslation();
@@ -18,12 +19,32 @@ const ConfigPage: React.FC = () => {
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
 
   useEffect(() => {
+    getSettingData();
+  }, []);
+
+  const getSettingData = () => {
     ConfigSetting.getSetting().then((data: any) => {
       if (data.status === 'success') {
         setSettingData(data.setting);
       }
     });
-  }, []);
+  };
+
+  const onFinishUpdate = (value: any) => {
+    ConfigSetting.updateSetting(value).then((data: any) => {
+      if (data.status === 'success') {
+        notificationController.success({
+          message: 'Update Setting Success',
+        });
+        setIsOpenEdit(false);
+        getSettingData();
+      }else{
+        notificationController.error({
+          message: data.message,
+        });
+      }
+    });
+  };
 
   return (
     <>
@@ -97,14 +118,47 @@ const ConfigPage: React.FC = () => {
         </S.Card>
       </Col>
       <Modal
-        title={t('modals.basic')}
+        title="Update Setting"
         visible={isOpenEdit}
-        onOk={() => setIsOpenEdit(false)}
         onCancel={() => setIsOpenEdit(false)}
+        footer={[
+          <>
+            <Button onClick={() => setIsOpenEdit(false)}>Close</Button>
+            <Button type="primary" className="btn btn-primary" form="updateSetting" key="submit" htmlType="submit">
+              Save changes
+            </Button>
+          </>,
+        ]}
       >
-        <p>{t('modals.someContent')}</p>
-        <p>{t('modals.someContent')}</p>
-        <p>{t('modals.someContent')}</p>
+        <Form
+          name="updateSetting"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={settingData}
+          onFinish={onFinishUpdate}
+        >
+          <Form.Item label="Bonus Over 500" name="bonus_over_500">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label="Bonus Under 500" name="bonus_under_500">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label="User Thread" name="user_thread">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label="Max Thread" name="max_thread">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label="Max Minute" name="max_minute">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label="Channel Prior" name="channel_prior">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label="Price Rate" name="price_rate">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

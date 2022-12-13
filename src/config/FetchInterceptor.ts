@@ -24,11 +24,11 @@ service.interceptors.request.use(
     config.headers = config.headers || {};
     config.headers["Content-Type"] = config.headers["Content-Type"] || "application/json";
     
-    const jwtToken = localStorage.getItem(AUTH_TOKEN);
-    if (jwtToken) {
+    // const jwtToken = localStorage.getItem(AUTH_TOKEN);
+    // if (jwtToken) {
       // config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
       config.headers[TOKEN_PAYLOAD_KEY] = "C0iDGQOe23HC1rg2ra4CCCC";
-    }
+    // }
 
     // if (!jwtToken && !config.headers[PUBLIC_REQUEST_KEY]) {
     //   console.log('vao');
