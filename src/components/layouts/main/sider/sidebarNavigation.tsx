@@ -30,6 +30,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     icon: <SettingFilled />,
   },
   {
+    title: 'User Management',
+    key: 'userManagement',
+    url: '/user-management',
+    icon: <UserOutlined />,
+  },
+  {
     title: 'common.nft-dashboard',
     key: 'nft-dashboard',
     // TODO use path variable
