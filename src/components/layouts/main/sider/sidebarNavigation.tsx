@@ -37,6 +37,13 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     icon: <NftIcon />,
   },
   {
+    title: 'DashBoard BaoHuynh',
+    key: 'nft-dashboard',
+    // TODO use path variable
+    url: '/oderstatistics',
+    icon: <NftIcon />,
+  },
+  {
     title: 'common.medical-dashboard',
     key: 'medical-dashboard',
     url: '/medical-dashboard',
