@@ -8,7 +8,7 @@ export const UserManagement: React.FC = () => {
   return (
     <>
       <S.TablesWrapper>
-        <S.Card id="basic-table" title={t('tables.basicTable')} padding="1.25rem 1.25rem 0">
+        <S.Card id="basic-table" title={"User Management"} padding="1.25rem 1.25rem 0">
           <BasicTable />
         </S.Card>
       </S.TablesWrapper>

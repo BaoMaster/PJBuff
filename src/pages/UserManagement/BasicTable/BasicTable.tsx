@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { notificationController } from 'controllers/notificationController';
 import { useMounted } from '@app/hooks/useMounted';
 import UserManagementService from '../UserManagementService';
+import { PointHistory } from '../PointModal/PointHistory';
+import { AddPointForm } from '../PointModal/AddPoint';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -20,26 +22,29 @@ export const BasicTable: React.FC = () => {
     loading: false,
   });
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+  const [isOpenPointHistory, setIsOpenPointHistory] = useState<boolean>(false);
+  const [isOpenPointAddForm, setIsOpenPointAddForm] = useState<boolean>(false);
   const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
-  const [userSelectData, setUserSelectData] = useState<number>(0);
+  const [userSelected, setUserSelected] = useState<number>(0);
+  const [pointHistory, setPointHistory] = useState<any>();
   const { t } = useTranslation();
   const { isMounted } = useMounted();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    getUserData();
+    getUserListData();
   }, []);
 
   const onFinishUpdate = (value: any) => {
     let dataUpdate;
     if (value.newPassword == null) {
       dataUpdate = {
-        id: userSelectData,
+        id: userSelected,
         discount: value.discount,
       };
     } else {
       dataUpdate = {
-        id: userSelectData,
+        id: userSelected,
         discount: value.discount,
         password: value.newPassword,
       };
@@ -49,7 +54,7 @@ export const BasicTable: React.FC = () => {
         notificationController.success({
           message: 'Update Success',
         });
-        getUserData();
+        getUserListData();
         setIsOpenEdit(false);
       } else {
         notificationController.error({
@@ -60,7 +65,7 @@ export const BasicTable: React.FC = () => {
   };
 
   const handleEditUser = async (userId: number) => {
-    setUserSelectData(userId);
+    setUserSelected(userId);
     var findUser = await tableData.data.find((x: any) => x.id === userId);
     form.setFieldsValue({
       username: findUser.username,
@@ -69,14 +74,14 @@ export const BasicTable: React.FC = () => {
     setIsOpenEdit(true);
   };
 
-  const getUserData = () => {
+  const getUserListData = () => {
     UserManagementService.getUserList().then((dataRes: any) => {
       setTableData({ ...tableData, data: dataRes.accounts });
     });
   };
 
   const handleCancelEdit = async () => {
-    setUserSelectData(0);
+    setUserSelected(0);
     setIsOpenEdit(false);
   };
 
@@ -133,16 +138,57 @@ export const BasicTable: React.FC = () => {
             >
               Edit
             </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                openPointHistory(value.id);
+              }}
+            >
+              Point History
+            </Button>
+            <Button
+              type="dashed"
+              onClick={() => {
+                openPointAddForm(value.id);
+              }}
+            >
+              Add Point
+            </Button>
           </Space>
         );
       },
     },
   ];
 
+  const closePointHistory =()=>{
+    setIsOpenPointHistory(false);
+  }
+
+  const openPointHistory = (userId:number)=>{
+    UserManagementService.getPointHistory(userId).then((res:any)=>{
+      setPointHistory(res.points);
+      setIsOpenPointHistory(true);
+    })
+  }
+
+  const openPointAddForm = (userId:number)=>{
+    setUserSelected(userId);
+    setIsOpenPointAddForm(true);
+    // UserManagementService.getPointHistory(userId).then((res:any)=>{
+    //   setPointHistory(res.points);
+    //   setIsOpenPointHistory(true);
+    // })
+  }
+  const closePointAddForm =()=>{
+    getUserListData();
+    setIsOpenPointAddForm(false);
+  }
+
   return (
     <>
       <Table columns={columns} dataSource={tableData.data} loading={tableData.loading} scroll={{ x: 800 }} bordered />
-
+      <PointHistory PointData={pointHistory} closeModal={closePointHistory} isOpen={isOpenPointHistory}/>
+      <AddPointForm userId={userSelected} closeModal={closePointAddForm} isOpen={isOpenPointAddForm}/>
       <Modal
         title="Update Setting"
         visible={isOpenEdit}

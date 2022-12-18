@@ -19,6 +19,12 @@ class UserManagementService extends BaseService<any> {
   public updateUserInfo(data:any) {
     return this.fetch.post(`${this.baseUri}/update`, data);
   }
+  public getPointHistory(userId:number) {
+    return this.fetch.get(`user/list-point/${userId}`);
+  }
+  public addPoint(data:any) {
+    return this.fetch.post(`${this.baseUri}/add-point`, data);
+  }
 }
 
 const userManagementService = new UserManagementService();
