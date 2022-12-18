@@ -17,6 +17,7 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
 import ConfigPage from '@app/pages/ConfigPage/ConfigPage';
+import { UserManagement } from '@app/pages/UserManagement/Tables/Tables';
 import Dashboard from '@app/pages/DashBoard/DashBoard';
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/NewsFeedPage'));
@@ -143,7 +144,8 @@ export const AppRouter: React.FC = () => {
             <Route path="advanced-forms" element={<AdvancedForm />} />
           </Route>
           <Route path="data-tables" element={<DataTables />} />
-          <Route path="/configuration" element={<ConfigPage />} />
+          <Route path="user-management" element={<UserManagement />} />
+          <Route path="configuration" element={<ConfigPage />} />
           <Route path="/oderstatistics" element={<Dashboard />} />
 
           <Route path="charts" element={<Charts />} />
