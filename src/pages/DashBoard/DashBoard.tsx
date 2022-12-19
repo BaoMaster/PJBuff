@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, InputNumber, Modal, Row, Table, DatePicker, Space } from 'antd';
-import { AutoComplete } from 'components/common/AutoComplete/AutoComplete';
-import { SearchInput as CommonSearchInput } from 'components/common/inputs/SearchInput/SearchInput';
-import { Option } from 'components/common/selects/Select/Select';
-import { UserOutlined } from '@ant-design/icons';
+import { Button, Col, Row, DatePicker, Space } from 'antd';
+import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './DashBoardService';
-import { notificationController } from '@app/controllers/notificationController';
+
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import { Card } from 'components/common/Card/Card';
-import { PieChart } from '@app/components/common/charts/PieChart';
+
 import moment from 'moment';
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
-
-  const [settingData, setSettingData] = useState<any>(null);
   const [computerData, setComputerData] = useState<any>(null);
+  const [runningChannel, setRunningChannel] = useState(0);
+  const [completedChannel, setCompletedChannel] = useState(0);
+  const [cancelChannel, setCancelChannel] = useState(0);
   const [reportData, setReportData] = useState<any>(null);
   const [date, setDate] = useState<any>(null);
   const { RangePicker } = DatePicker;
@@ -44,6 +41,15 @@ const Dashboard: React.FC = () => {
   const getAllData = () => {
     ConfigSetting.getComputerRunning().then((data: any) => {
       setComputerData(data.computers);
+    });
+    ConfigSetting.getChannelRunning().then((data: any) => {
+      setRunningChannel(data?.total || 0);
+    });
+    ConfigSetting.getChannelCompleted().then((data: any) => {
+      setCompletedChannel(data?.total || 0);
+    });
+    ConfigSetting.getChannelCancel().then((data: any) => {
+      setCancelChannel(data?.total || 0);
     });
   };
   const GetSubscribe = () => {
@@ -89,37 +95,73 @@ const Dashboard: React.FC = () => {
       key: 'time',
     },
   ];
-  const dataChart = [
-    { value: 1048, name: 'Đang chạy' },
-    { value: 735, name: 'Đã xong' },
-    { value: 580, name: 'Chờ Huỷ' },
-  ];
-  const name = 'Thống kê đơn';
+
 
   return (
     <>
       <PageTitle>Trang thống kê</PageTitle>
       <Col>
-        <S.Card title="Page Configuration">
+        <S.Card title="Order Statitic">
           <Row style={{ width: '100%' }}>
-            <Col md={12}>
-              <label>Thống kê đơn: </label>
-              <PieChart data={dataChart} name={name} showLegend={true} />
+            <Col md={8}>
+              <Card
+                title="Running"
+                bordered={false}
+                headStyle={{ color: 'black' }}
+                bodyStyle={{
+                  color: 'black',
+                  fontSize: '500%',
+                  padding: '30px 30px',
+                  justifyContent: 'center',
+                }}
+                style={{ background: 'rgb(255, 246, 189)', width: '50%' }}
+              >
+                {runningChannel}
+              </Card>
+            </Col>
+            <Col md={8}>
+              <Card
+                title="Completed"
+                bordered={false}
+                headStyle={{ color: 'black' }}
+                bodyStyle={{
+                  color: 'black',
+                  fontSize: '500%',
+                  padding: '30px 30px',
+                  justifyContent: 'center',
+                }}
+                style={{ background: 'rgb(206, 237, 199)', width: '50%' }}
+              >
+                {completedChannel}
+              </Card>
+            </Col>
+            <Col md={8}>
+              <Card
+                title="Cancel"
+                bordered={false}
+                headStyle={{ color: 'black' }}
+                bodyStyle={{
+                  color: 'black',
+                  fontSize: '500%',
+                  padding: '30px 30px',
+                  justifyContent: 'center',
+                }}
+                style={{ background: 'rgb(220, 0, 0)', width: '50%' }}
+              >
+                {cancelChannel}
+              </Card>
             </Col>
           </Row>
+        </S.Card>
+        <S.Card title="Running Machine List">
           <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Danh sách máy đang chạy: </label>
-            </Col>
             <Col md={24}>
-              <Table dataSource={computerData} columns={computerColumns} />;
+              <Table dataSource={computerData} columns={computerColumns} />
             </Col>
           </Row>
-
+        </S.Card>
+        <S.Card title="Subscribe by date">
           <Row style={{ width: '100%' }}>
-            <Col md={15}>
-              <label>Get subscribe: </label>
-            </Col>
             <Col md={8}>
               <Space direction="vertical" size={12}>
                 <RangePicker format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
@@ -131,7 +173,7 @@ const Dashboard: React.FC = () => {
           </Row>
           <Row style={{ width: '100%' }}>
             <Col md={24}>
-              <Table dataSource={reportData} columns={columns} />;
+              <Table dataSource={reportData} columns={columns} />
             </Col>
           </Row>
         </S.Card>

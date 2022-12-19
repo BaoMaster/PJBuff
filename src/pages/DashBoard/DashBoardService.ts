@@ -20,6 +20,18 @@ class ScenarioService extends BaseService<any> {
   public getSubscribeByDays(startDay: any, endDay: any) {
     return this.fetch.get(`/data/report?from=${startDay}&to=${endDay}`);
   }
+
+  public getChannelRunning() {
+    return this.fetch.get(`/subscribe/getList?state=running`);
+  }
+
+  public getChannelCompleted() {
+    return this.fetch.get(`/subscribe/getList?state=completed`);
+  }
+
+  public getChannelCancel() {
+    return this.fetch.get(`/subscribe/getList?state=cancel`);
+  }
 }
 
 const scenarioService = new ScenarioService();
