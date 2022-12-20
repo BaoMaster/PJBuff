@@ -4,14 +4,14 @@ import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
-import ConfigSetting from './DashBoardService';
+import ConfigSetting from './OrderPageService';
 
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import { Card } from 'components/common/Card/Card';
 
 import moment from 'moment';
 
-const Dashboard: React.FC = () => {
+const OrderPage: React.FC = () => {
   const { t } = useTranslation();
   const [computerData, setComputerData] = useState<any>(null);
   const [runningChannel, setRunningChannel] = useState(0);
@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
       <Col>
         <S.Card title="Order Statitic">
           <Row style={{ width: '100%' }}>
-            <Col xs={24} md={8}>
+            <Col md={8}>
               <Card
                 title="Running"
                 bordered={false}
@@ -113,12 +113,12 @@ const Dashboard: React.FC = () => {
                   padding: '30px 30px',
                   justifyContent: 'center',
                 }}
-                style={{ background: 'rgb(255, 246, 189)', width: '50%', transform: 'translateX(50%)' }}
+                style={{ background: 'rgb(255, 246, 189)', width: '50%' }}
               >
                 {runningChannel}
               </Card>
             </Col>
-            <Col xs={24} md={8}>
+            <Col md={8}>
               <Card
                 title="Completed"
                 bordered={false}
@@ -129,12 +129,12 @@ const Dashboard: React.FC = () => {
                   padding: '30px 30px',
                   justifyContent: 'center',
                 }}
-                style={{ background: 'rgb(206, 237, 199)', width: '50%', transform: 'translateX(50%)' }}
+                style={{ background: 'rgb(206, 237, 199)', width: '50%' }}
               >
                 {completedChannel}
               </Card>
             </Col>
-            <Col xs={24} md={8}>
+            <Col md={8}>
               <Card
                 title="Cancel"
                 bordered={false}
@@ -145,7 +145,7 @@ const Dashboard: React.FC = () => {
                   padding: '30px 30px',
                   justifyContent: 'center',
                 }}
-                style={{ background: 'rgb(220, 0, 0)', width: '50%', transform: 'translateX(50%)' }}
+                style={{ background: 'rgb(220, 0, 0)', width: '50%' }}
               >
                 {cancelChannel}
               </Card>
@@ -181,4 +181,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default OrderPage;
