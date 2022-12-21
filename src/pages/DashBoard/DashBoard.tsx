@@ -10,8 +10,15 @@ import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import { Card } from 'components/common/Card/Card';
 
 import moment from 'moment';
+import { ColumnsType } from 'antd/es/table';
 
 const Dashboard: React.FC = () => {
+  interface ComputerDataType {
+    key: React.Key;
+    computer_name: string;
+    run: number;
+    time: string;
+  }
   const { t } = useTranslation();
   const [computerData, setComputerData] = useState<any>(null);
   const [runningChannel, setRunningChannel] = useState(0);
@@ -78,21 +85,26 @@ const Dashboard: React.FC = () => {
     },
   ];
 
-  const computerColumns = [
+  const computerColumns: ColumnsType<ComputerDataType> = [
     {
       title: 'Computer Name',
       dataIndex: 'computer_name',
       key: 'computer_name',
+      sorter: (a, b) => a.computer_name.localeCompare(b.computer_name),
+      showSorterTooltip: false,
     },
     {
       title: 'Run',
       dataIndex: 'run',
       key: 'run',
+      sorter: (a, b) => a.run - b.run,
+      showSorterTooltip: false,
     },
     {
       title: 'Time',
       dataIndex: 'time',
       key: 'time',
+      render: (time) => `${moment(time).format('DD-MM-YYYY, h:mm:ss a')}`,
     },
   ];
 

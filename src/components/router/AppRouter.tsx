@@ -19,6 +19,7 @@ import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage
 import ConfigPage from '@app/pages/ConfigPage/ConfigPage';
 import { UserManagement } from '@app/pages/UserManagement/Tables/Tables';
 import Dashboard from '@app/pages/DashBoard/DashBoard';
+import OrderPage from '@app/pages/OrderPage/OrderPage';
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/NewsFeedPage'));
 const KanbanPage = React.lazy(() => import('@app/pages/KanbanPage'));
@@ -146,7 +147,8 @@ export const AppRouter: React.FC = () => {
           <Route path="data-tables" element={<DataTables />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="configuration" element={<ConfigPage />} />
-          <Route path="/oderstatistics" element={<Dashboard />} />
+          <Route path="orderstatistics" element={<Dashboard />} />
+          <Route path="orderPage" element={<OrderPage />} />
 
           <Route path="charts" element={<Charts />} />
           <Route path="maps">
