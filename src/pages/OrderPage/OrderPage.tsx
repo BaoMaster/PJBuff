@@ -39,8 +39,8 @@ const OrderPage: React.FC = () => {
   }, []);
 
   const getAllData = () => {
-    ConfigSetting.getComputerRunning().then((data: any) => {
-      setComputerData(data.computers);
+    ConfigSetting.getChannelRunning().then((data: any) => {
+      setComputerData(data.channels);
     });
     ConfigSetting.getChannelRunning().then((data: any) => {
       setRunningChannel(data?.total || 0);
@@ -80,19 +80,80 @@ const OrderPage: React.FC = () => {
 
   const computerColumns = [
     {
-      title: 'Computer Name',
-      dataIndex: 'computer_name',
-      key: 'computer_name',
+      title: 'order_id',
+      dataIndex: 'order_id',
+      key: 'order_id',
     },
     {
-      title: 'Run',
-      dataIndex: 'run',
-      key: 'run',
+      title: 'insert_date',
+      dataIndex: 'insert_date',
+      key: 'insert_date',
     },
     {
-      title: 'Time',
-      dataIndex: 'time',
-      key: 'time',
+      title: 'last_update',
+      dataIndex: 'last_update',
+      key: 'last_update',
+    },
+    {
+      title: 'channel_id',
+      dataIndex: 'channel_id',
+      key: 'channel_id',
+    },
+    {
+      title: 'current_view',
+      dataIndex: 'current_view',
+      key: 'current_view',
+    },
+    {
+      title: 'current_subscribe',
+      dataIndex: 'current_subscribe',
+      key: 'current_subscribe',
+    },
+    {
+      title: 'inscrease_subscribe',
+      dataIndex: 'inscrease_subscribe',
+      key: 'inscrease_subscribe',
+    },
+    {
+      title: 'tab_run',
+      dataIndex: 'tab_run',
+      key: 'tab_run',
+    },
+    {
+      title: 'subscribe_need',
+      dataIndex: 'subscribe_need',
+      key: 'subscribe_need',
+    },
+    {
+      title: 'priority',
+      dataIndex: 'priority',
+      key: 'priority',
+    },
+    {
+      title: 'start_subscribe',
+      dataIndex: 'start_subscribe',
+      key: 'start_subscribe',
+    },
+    {
+      title: 'last_get',
+      dataIndex: 'last_get',
+      key: 'last_get',
+    },
+    {
+      title: 'verified',
+      dataIndex: 'verified',
+      key: 'verified',
+    },
+
+    {
+      title: 'note',
+      dataIndex: 'note',
+      key: 'note',
+    },
+    {
+      title: 'enabled',
+      dataIndex: 'enabled',
+      key: 'enabled',
     },
   ];
 
@@ -100,62 +161,10 @@ const OrderPage: React.FC = () => {
     <>
       <PageTitle>Trang thống kê</PageTitle>
       <Col>
-        <S.Card title="Order Statitic">
-          <Row style={{ width: '100%' }}>
-            <Col md={8}>
-              <Card
-                title="Running"
-                bordered={false}
-                headStyle={{ color: 'black' }}
-                bodyStyle={{
-                  color: 'black',
-                  fontSize: '500%',
-                  padding: '30px 30px',
-                  justifyContent: 'center',
-                }}
-                style={{ background: 'rgb(255, 246, 189)', width: '50%' }}
-              >
-                {runningChannel}
-              </Card>
-            </Col>
-            <Col md={8}>
-              <Card
-                title="Completed"
-                bordered={false}
-                headStyle={{ color: 'black' }}
-                bodyStyle={{
-                  color: 'black',
-                  fontSize: '500%',
-                  padding: '30px 30px',
-                  justifyContent: 'center',
-                }}
-                style={{ background: 'rgb(206, 237, 199)', width: '50%' }}
-              >
-                {completedChannel}
-              </Card>
-            </Col>
-            <Col md={8}>
-              <Card
-                title="Cancel"
-                bordered={false}
-                headStyle={{ color: 'black' }}
-                bodyStyle={{
-                  color: 'black',
-                  fontSize: '500%',
-                  padding: '30px 30px',
-                  justifyContent: 'center',
-                }}
-                style={{ background: 'rgb(220, 0, 0)', width: '50%' }}
-              >
-                {cancelChannel}
-              </Card>
-            </Col>
-          </Row>
-        </S.Card>
-        <S.Card title="Running Machine List">
+        <S.Card title="Order List">
           <Row style={{ width: '100%' }}>
             <Col md={24}>
-              <Table dataSource={computerData} columns={computerColumns} />
+              <Table dataSource={computerData} columns={computerColumns} scroll={{ x: 400 }} />
             </Col>
           </Row>
         </S.Card>
