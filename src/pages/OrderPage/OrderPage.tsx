@@ -6,33 +6,32 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './OrderPageService';
 
-import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
-import { Card } from 'components/common/Card/Card';
-
 import moment from 'moment';
+import { ColumnsType } from 'antd/es/table';
+import { CheckCircleOutlined, CloseCircleOutlined, FireOutlined } from '@ant-design/icons';
 
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
-  const [computerData, setComputerData] = useState<any>(null);
-  const [runningChannel, setRunningChannel] = useState(0);
-  const [completedChannel, setCompletedChannel] = useState(0);
-  const [cancelChannel, setCancelChannel] = useState(0);
-  const [reportData, setReportData] = useState<any>(null);
-  const [date, setDate] = useState<any>(null);
-  const { RangePicker } = DatePicker;
-
-  const onChange = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    let date = [];
-    date.push(value);
-    setDate({ date: date });
-  };
-
-  const onOk = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
-    console.log('onOk: ', value);
-  };
+  const [channelsData, setChannelsData] = useState<any>(null);
+  interface ChannelDataType {
+    key: React.Key;
+    order_id: number;
+    insert_date: number;
+    last_update: number;
+    run: number;
+    channel_id: string;
+    current_view: number;
+    current_subscribe: number;
+    inscrease_subscribe: number;
+    tab_run: number;
+    subscribe_need: number;
+    priority: number;
+    start_subscribe: number;
+    last_get: number;
+    verified: number;
+    note: string;
+    enabled: number;
+  }
 
   useEffect(() => {
     getAllData();
@@ -40,120 +39,117 @@ const OrderPage: React.FC = () => {
 
   const getAllData = () => {
     ConfigSetting.getChannelRunning().then((data: any) => {
-      setComputerData(data.channels);
+      setChannelsData(data.channels);
     });
-    ConfigSetting.getChannelRunning().then((data: any) => {
-      setRunningChannel(data?.total || 0);
-    });
-    ConfigSetting.getChannelCompleted().then((data: any) => {
-      setCompletedChannel(data?.total || 0);
-    });
-    ConfigSetting.getChannelCancel().then((data: any) => {
-      setCancelChannel(data?.total || 0);
-    });
-  };
-  const GetSubscribe = () => {
-    console.log(12, date.date[0][1]._d);
-    const start = date.date[0][0]._d;
-    const end = date.date[0][1]._d;
-    console.log(moment(end).format('DD-MM-YYYY'));
-
-    ConfigSetting.getSubscribeByDays(moment(start).format('DD-MM-YYYY'), moment(end).format('DD-MM-YYYY')).then(
-      (data: any) => {
-        setReportData(data.reports);
-      },
-    );
+    // ConfigSetting.getChannelRunning().then((data: any) => {
+    //   setRunningChannel(data?.total || 0);
+    // });
+    // ConfigSetting.getChannelCompleted().then((data: any) => {
+    //   setCompletedChannel(data?.total || 0);
+    // });
+    // ConfigSetting.getChannelCancel().then((data: any) => {
+    //   setCancelChannel(data?.total || 0);
+    // });
   };
 
-  const columns = [
+  const channelColumns: ColumnsType<ChannelDataType> = [
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: 'Total',
-      dataIndex: 'total',
-      key: 'total',
-    },
-  ];
-
-  const computerColumns = [
-    {
-      title: 'order_id',
+      title: 'Order Id',
       dataIndex: 'order_id',
       key: 'order_id',
+      sorter: (a, b) => a.order_id - b.order_id,
+      showSorterTooltip: false,
     },
     {
-      title: 'insert_date',
+      title: 'Insert Date',
       dataIndex: 'insert_date',
       key: 'insert_date',
+      render: (insert_date) => `${moment(insert_date).format('DD-MM-YYYY, h:mm:ss a')}`,
     },
     {
-      title: 'last_update',
+      title: 'Last Update',
       dataIndex: 'last_update',
       key: 'last_update',
+      render: (last_update) => `${moment(last_update).format('DD-MM-YYYY, h:mm:ss a')}`,
     },
     {
-      title: 'channel_id',
+      title: 'Channel Id',
       dataIndex: 'channel_id',
       key: 'channel_id',
+      sorter: (a, b) => a.channel_id.localeCompare(b.channel_id),
+      showSorterTooltip: false,
     },
     {
-      title: 'current_view',
+      title: 'Current Views',
       dataIndex: 'current_view',
       key: 'current_view',
+      sorter: (a, b) => a.current_view - b.current_view,
+      showSorterTooltip: false,
     },
     {
-      title: 'current_subscribe',
+      title: 'Current Subs',
       dataIndex: 'current_subscribe',
       key: 'current_subscribe',
+      sorter: (a, b) => a.current_subscribe - b.current_subscribe,
+      showSorterTooltip: false,
     },
     {
-      title: 'inscrease_subscribe',
+      title: 'Inscrease Subs',
       dataIndex: 'inscrease_subscribe',
       key: 'inscrease_subscribe',
+      sorter: (a, b) => a.inscrease_subscribe - b.inscrease_subscribe,
+      showSorterTooltip: false,
     },
     {
-      title: 'tab_run',
+      title: 'Tab Run',
       dataIndex: 'tab_run',
       key: 'tab_run',
+      sorter: (a, b) => a.tab_run - b.tab_run,
+      showSorterTooltip: false,
     },
     {
-      title: 'subscribe_need',
+      title: 'Subs Need',
       dataIndex: 'subscribe_need',
       key: 'subscribe_need',
+      sorter: (a, b) => a.subscribe_need - b.subscribe_need,
+      showSorterTooltip: false,
     },
     {
-      title: 'priority',
+      title: 'Priority',
       dataIndex: 'priority',
       key: 'priority',
+      render: (priority) => (priority ? <FireOutlined /> : priority),
     },
     {
-      title: 'start_subscribe',
+      title: 'Start Subs',
       dataIndex: 'start_subscribe',
       key: 'start_subscribe',
+      sorter: (a, b) => a.start_subscribe - b.start_subscribe,
+      showSorterTooltip: false,
     },
     {
-      title: 'last_get',
+      title: 'Last Get',
       dataIndex: 'last_get',
       key: 'last_get',
+      render: (last_get) => `${moment(last_get).format('DD-MM-YYYY, h:mm:ss a')}`,
     },
     {
-      title: 'verified',
+      title: 'Verified',
       dataIndex: 'verified',
       key: 'verified',
+      render: (verified) => (verified ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
     },
 
     {
-      title: 'note',
+      title: 'Note',
       dataIndex: 'note',
       key: 'note',
     },
     {
-      title: 'enabled',
+      title: 'Enabled',
       dataIndex: 'enabled',
       key: 'enabled',
+      render: (enabled) => (enabled ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
     },
   ];
 
@@ -164,24 +160,7 @@ const OrderPage: React.FC = () => {
         <S.Card title="Order List">
           <Row style={{ width: '100%' }}>
             <Col md={24}>
-              <Table dataSource={computerData} columns={computerColumns} scroll={{ x: 400 }} />
-            </Col>
-          </Row>
-        </S.Card>
-        <S.Card title="Subscribe by date">
-          <Row style={{ width: '100%' }}>
-            <Col md={8}>
-              <Space direction="vertical" size={12}>
-                <RangePicker format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
-              </Space>
-            </Col>
-            <Col md={1}>
-              <Button onClick={() => GetSubscribe()}>Fillter</Button>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={24}>
-              <Table dataSource={reportData} columns={columns} />
+              <Table dataSource={channelsData} columns={channelColumns} scroll={{ x: 400 }} />
             </Col>
           </Row>
         </S.Card>
