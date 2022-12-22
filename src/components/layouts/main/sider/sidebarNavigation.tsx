@@ -24,6 +24,12 @@ export interface SidebarNavigationItem {
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
   {
+    title: 'Dash Board',
+    key: 'dashboard',
+    url: '/',
+    icon: <LineChartOutlined />,
+  },
+  {
     title: 'Configuration',
     key: 'configuration',
     // TODO use path variable
@@ -36,12 +42,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     url: '/user-management',
     icon: <UserOutlined />,
   },
-  {
-    title: 'Dash Board',
-    key: 'dashboard',
-    url: '/orderstatistics',
-    icon: <LineChartOutlined />,
-  },
+
   {
     title: 'Order Page',
     key: 'orderpage',
@@ -52,7 +53,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'common.nft-dashboard',
     key: 'nft-dashboard',
     // TODO use path variable
-    url: '/',
+    url: '/nft',
     icon: <NftIcon />,
   },
 

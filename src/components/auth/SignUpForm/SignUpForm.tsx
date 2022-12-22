@@ -10,22 +10,12 @@ import { ReactComponent as GoogleIcon } from '@app/assets/icons/google.svg';
 import { ReactComponent as FacebookIcon } from '@app/assets/icons/facebook.svg';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import * as S from './SignUpForm.styles';
+import AuthService from '../AuthService';
 
 interface SignUpFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
+  username: string;
   password: string;
 }
-
-const initValues = {
-  firstName: 'Chris',
-  lastName: 'Johnson',
-  email: 'chris.johnson@altence.com',
-  password: 'test-pass',
-  confirmPassword: 'test-pass',
-  termOfUse: true,
-};
 
 export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -36,51 +26,34 @@ export const SignUpForm: React.FC = () => {
 
   const handleSubmit = (values: SignUpFormData) => {
     setLoading(true);
-    dispatch(doSignUp(values))
-      .unwrap()
-      .then(() => {
-        notificationController.success({
-          message: t('auth.signUpSuccessMessage'),
-          description: t('auth.signUpSuccessDescription'),
-        });
-        navigate('/auth/login');
+
+    AuthService.register(values)
+      .then((res: any) => {
+        if (res.status === 'success') {
+          localStorage.setItem('AccessToken', res.token);
+          AuthService.verifyToken().then((resp: any) => {
+            localStorage.setItem('UserData', JSON.stringify(resp.user));
+            navigate('/');
+          });
+        } else {
+          setLoading(false);
+        }
       })
-      .catch((err) => {
-        notificationController.error({ message: err.message });
+      .catch(() => {
         setLoading(false);
       });
   };
 
   return (
     <Auth.FormWrapper>
-      <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional" initialValues={initValues}>
+      <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional">
         <S.Title>{t('common.signUp')}</S.Title>
         <Auth.FormItem
-          name="firstName"
-          label={t('common.firstName')}
+          name="username"
+          label={t('common.userName')}
           rules={[{ required: true, message: t('common.requiredField') }]}
         >
-          <Auth.FormInput placeholder={t('common.firstName')} />
-        </Auth.FormItem>
-        <Auth.FormItem
-          name="lastName"
-          label={t('common.lastName')}
-          rules={[{ required: true, message: t('common.requiredField') }]}
-        >
-          <Auth.FormInput placeholder={t('common.lastName')} />
-        </Auth.FormItem>
-        <Auth.FormItem
-          name="email"
-          label={t('common.email')}
-          rules={[
-            { required: true, message: t('common.requiredField') },
-            {
-              type: 'email',
-              message: t('common.notValidEmail'),
-            },
-          ]}
-        >
-          <Auth.FormInput placeholder={t('common.email')} />
+          <Auth.FormInput placeholder={t('common.userName')} />
         </Auth.FormItem>
         <Auth.FormItem
           label={t('common.password')}
@@ -107,43 +80,13 @@ export const SignUpForm: React.FC = () => {
         >
           <Auth.FormInputPassword placeholder={t('common.confirmPassword')} />
         </Auth.FormItem>
-        <Auth.ActionsWrapper>
-          <BaseForm.Item name="termOfUse" valuePropName="checked" noStyle>
-            <Auth.FormCheckbox>
-              <Auth.Text>
-                {t('signup.agree')}{' '}
-                <Link to="/" target={'_blank'}>
-                  <Auth.LinkText>{t('signup.termOfUse')}</Auth.LinkText>
-                </Link>{' '}
-                and{' '}
-                <Link to="/" target={'_blank'}>
-                  <Auth.LinkText>{t('signup.privacyOPolicy')}</Auth.LinkText>
-                </Link>
-              </Auth.Text>
-            </Auth.FormCheckbox>
-          </BaseForm.Item>
-        </Auth.ActionsWrapper>
+
         <BaseForm.Item noStyle>
           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
             {t('common.signUp')}
           </Auth.SubmitButton>
         </BaseForm.Item>
-        <BaseForm.Item noStyle>
-          <Auth.SocialButton type="default" htmlType="submit">
-            <Auth.SocialIconWrapper>
-              <GoogleIcon />
-            </Auth.SocialIconWrapper>
-            {t('signup.googleLink')}
-          </Auth.SocialButton>
-        </BaseForm.Item>
-        <BaseForm.Item noStyle>
-          <Auth.SocialButton type="default" htmlType="submit">
-            <Auth.SocialIconWrapper>
-              <FacebookIcon />
-            </Auth.SocialIconWrapper>
-            {t('signup.facebookLink')}
-          </Auth.SocialButton>
-        </BaseForm.Item>
+
         <Auth.FooterWrapper>
           <Auth.Text>
             {t('signup.alreadyHaveAccount')}{' '}
