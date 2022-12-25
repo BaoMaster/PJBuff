@@ -94,12 +94,14 @@ const OrderPage: React.FC = () => {
       dataIndex: 'insert_date',
       key: 'insert_date',
       render: (insert_date) => `${moment(insert_date).format('DD-MM-YYYY, h:mm:ss a')}`,
+      sorter: (a, b) => a.insert_date - b.insert_date,
     },
     {
       title: 'Last Update',
       dataIndex: 'last_update',
       key: 'last_update',
       render: (last_update) => `${moment(last_update).format('DD-MM-YYYY, h:mm:ss a')}`,
+      sorter: (a, b) => a.last_update - b.last_update,
     },
     {
       title: 'Channel Id',
@@ -161,6 +163,7 @@ const OrderPage: React.FC = () => {
       dataIndex: 'last_get',
       key: 'last_get',
       render: (last_get) => `${moment(last_get).format('DD-MM-YYYY, h:mm:ss a')}`,
+      sorter: (a, b) => a.last_get - b.last_get,
     },
     {
       title: 'Verified',
