@@ -242,41 +242,43 @@ const OrderPage: React.FC = () => {
   const onFinishAdd = () => {
     const ListData = channelAddData;
     ListData.forEach((data: any, index: number) => {
-      delete data['state'];
-      OrderService.insertOrder(data).then((res: any) => {
-        if (res.status === 'success') {
-          notificationController.success({
-            message: 'Add Order Success',
-          });
-          ListData.splice(index, 1);
-          setChannelAddData((prevState: any) => {
-            const newState = prevState.map((obj: any) => {
-              if (data.channel_id === obj.channel_id) {
-                return { ...obj, state: 1 };
-              }
-
-              return obj;
+      if (data.state !== 1) {
+        delete data['state'];
+        OrderService.insertOrder(data).then((res: any) => {
+          if (res.status === 'success') {
+            notificationController.success({
+              message: 'Add Order Success',
             });
+            ListData.splice(index, 1);
+            setChannelAddData((prevState: any) => {
+              const newState = prevState.map((obj: any) => {
+                if (data.channel_id === obj.channel_id) {
+                  return { ...obj, state: 1 };
+                }
 
-            return newState;
-          });
-        } else {
-          notificationController.error({
-            message: res.message,
-          });
-          setChannelAddData((prevState: any) => {
-            const newState = prevState.map((obj: any) => {
-              if (data.channel_id === obj.channel_id) {
-                return { ...obj, state: 0 };
-              }
+                return obj;
+              });
 
-              return obj;
+              return newState;
             });
+          } else {
+            notificationController.error({
+              message: res.message,
+            });
+            setChannelAddData((prevState: any) => {
+              const newState = prevState.map((obj: any) => {
+                if (data.channel_id === obj.channel_id) {
+                  return { ...obj, state: 0 };
+                }
 
-            return newState;
-          });
-        }
-      });
+                return obj;
+              });
+
+              return newState;
+            });
+          }
+        });
+      }
     });
     setChannelAddData(ListData);
   };
