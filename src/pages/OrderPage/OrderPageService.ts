@@ -32,6 +32,14 @@ class ScenarioService extends BaseService<any> {
   public getChannelCancel() {
     return this.fetch.get(`/subscribe/getList?state=cancel`);
   }
+
+  public updateMultiOrder(data:any) {
+    return this.fetch.post(`/subscribe/updateMulti`,data);
+  }
+
+  public deleteMultiOrder(data:any) {
+    return this.fetch.post(`/subscribe/deleteMulti`,data);
+  }
 }
 
 const scenarioService = new ScenarioService();

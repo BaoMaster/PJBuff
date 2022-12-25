@@ -24,7 +24,7 @@ export const AddPointForm = (Props: any) => {
   return (
     <>
       <Modal
-        title="Update Setting"
+        title="Add Point"
         visible={Props.isOpen}
         onCancel={() => Props.closeModal()}
         footer={[
