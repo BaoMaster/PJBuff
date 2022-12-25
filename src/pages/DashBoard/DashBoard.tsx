@@ -17,8 +17,14 @@ const Dashboard: React.FC = () => {
     key: React.Key;
     computer_name: string;
     run: number;
-    time: string;
+    time: number;
   }
+  interface SubscribeDataType {
+    key: React.Key;
+    date: string;
+    total: number;
+  }
+
   const { t } = useTranslation();
   const [computerData, setComputerData] = useState<any>(null);
   const [runningChannel, setRunningChannel] = useState(0);
@@ -72,16 +78,20 @@ const Dashboard: React.FC = () => {
     );
   };
 
-  const columns = [
+  const columns: ColumnsType<SubscribeDataType> = [
     {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+      sorter: (a, b) => a.date.localeCompare(b.date),
+      showSorterTooltip: false,
     },
     {
       title: 'Total',
       dataIndex: 'total',
       key: 'total',
+      sorter: (a, b) => a.total - b.total,
+      showSorterTooltip: false,
     },
   ];
 
@@ -105,6 +115,8 @@ const Dashboard: React.FC = () => {
       dataIndex: 'time',
       key: 'time',
       render: (time) => `${moment(time).format('DD-MM-YYYY, h:mm:ss a')}`,
+      sorter: (a, b) => a.time - b.time,
+      showSorterTooltip: false,
     },
   ];
 

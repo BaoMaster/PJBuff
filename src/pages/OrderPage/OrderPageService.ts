@@ -33,12 +33,15 @@ class ScenarioService extends BaseService<any> {
     return this.fetch.get(`/subscribe/getList?state=cancel`);
   }
 
-  public updateMultiOrder(data:any) {
-    return this.fetch.post(`/subscribe/updateMulti`,data);
+  public updateMultiOrder(data: any) {
+    return this.fetch.post(`/subscribe/updateMulti`, data);
+  }
+  public insertOrder(data: any) {
+    return this.fetch.post(`/subscribe/insert`, data);
   }
 
-  public deleteMultiOrder(data:any) {
-    return this.fetch.post(`/subscribe/deleteMulti`,data);
+  public deleteMultiOrder(data: any) {
+    return this.fetch.post(`/subscribe/deleteMulti`, data);
   }
 }
 

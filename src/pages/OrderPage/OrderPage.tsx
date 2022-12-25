@@ -9,17 +9,26 @@ import { Button } from '@app/components/common/buttons/Button/Button';
 
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
-import { CheckCircleOutlined, CloseCircleOutlined, FireOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  ExclamationOutlined,
+  FireOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 import { notificationController } from '@app/controllers/notificationController';
+import { AnyIfEmpty } from 'react-redux';
 
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
   const [channelsData, setChannelsData] = useState<any>([]);
+  const [channelAddData, setChannelAddData] = useState<any>([]);
   const [channelsDataSelected, setChannelsDataSelected] = useState<any>([]);
+  const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
   const [form] = Form.useForm();
-
+  const [formAdd] = Form.useForm();
   interface ChannelDataType {
     key: React.Key;
     order_id: number;
@@ -38,6 +47,12 @@ const OrderPage: React.FC = () => {
     verified: number;
     note: string;
     enabled: number;
+  }
+  interface ChannelAddDataType {
+    key: React.Key;
+    channel_id: string;
+    note: string;
+    state: number;
   }
 
   useEffect(() => {
@@ -80,7 +95,34 @@ const OrderPage: React.FC = () => {
       name: record.name,
     }),
   };
-
+  const channelAddDColumns: ColumnsType<ChannelAddDataType> = [
+    {
+      title: 'Channel Id',
+      dataIndex: 'channel_id',
+      key: 'channel_id',
+    },
+    {
+      title: 'Priority',
+      dataIndex: 'priority',
+      key: 'priority',
+    },
+    {
+      title: 'Subscribe Need',
+      dataIndex: 'subscribe_need',
+      key: 'subscribe_need',
+    },
+    {
+      title: 'Note',
+      dataIndex: 'note',
+      key: 'note',
+    },
+    {
+      title: 'State',
+      dataIndex: 'state',
+      key: 'state',
+      render: (state) => (state === 0 ? <ExclamationOutlined /> : <CheckCircleOutlined />),
+    },
+  ];
   const channelColumns: ColumnsType<ChannelDataType> = [
     {
       title: 'Order Id',
@@ -95,6 +137,7 @@ const OrderPage: React.FC = () => {
       key: 'insert_date',
       render: (insert_date) => `${moment(insert_date).format('DD-MM-YYYY, h:mm:ss a')}`,
       sorter: (a, b) => a.insert_date - b.insert_date,
+      showSorterTooltip: false,
     },
     {
       title: 'Last Update',
@@ -102,6 +145,7 @@ const OrderPage: React.FC = () => {
       key: 'last_update',
       render: (last_update) => `${moment(last_update).format('DD-MM-YYYY, h:mm:ss a')}`,
       sorter: (a, b) => a.last_update - b.last_update,
+      showSorterTooltip: false,
     },
     {
       title: 'Channel Id',
@@ -182,19 +226,71 @@ const OrderPage: React.FC = () => {
       dataIndex: 'enabled',
       key: 'enabled',
       render: (enabled) => (enabled ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
-    }
+    },
   ];
 
+  const addToList = (value: any) => {
+    console.log(1212, value);
+    const dataAdd = {
+      channel_id: value.channel_id,
+      priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+      note: value.note,
+      state: 0,
+    };
+    setChannelAddData((prevState: any) => [...prevState, dataAdd]);
+  };
+  const onFinishAdd = () => {
+    const ListData = channelAddData;
+    ListData.forEach((data: any, index: number) => {
+      delete data['state'];
+      OrderService.insertOrder(data).then((res: any) => {
+        if (res.status === 'success') {
+          notificationController.success({
+            message: 'Add Order Success',
+          });
+          ListData.splice(index, 1);
+          setChannelAddData((prevState: any) => {
+            const newState = prevState.map((obj: any) => {
+              if (data.channel_id === obj.channel_id) {
+                return { ...obj, state: 1 };
+              }
+
+              return obj;
+            });
+
+            return newState;
+          });
+        } else {
+          notificationController.error({
+            message: res.message,
+          });
+          setChannelAddData((prevState: any) => {
+            const newState = prevState.map((obj: any) => {
+              if (data.channel_id === obj.channel_id) {
+                return { ...obj, state: 0 };
+              }
+
+              return obj;
+            });
+
+            return newState;
+          });
+        }
+      });
+    });
+    setChannelAddData(ListData);
+  };
   const onFinishUpdate = (value: any) => {
-    console.log(1212,value);
-    
+    console.log(1212, value);
+
     const updateList: any = [];
     channelsDataSelected.forEach((item: any) => {
       const dataUpdate = {
         channel_id: item.channel_id,
         tab_run: value.tab_run,
-        priority: (value.priority === null || typeof(value.priority) === 'undefined') ? 0 : value.priority,
-        note: item.note
+        priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+        note: value.note,
+        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
       };
       updateList.push(dataUpdate);
     });
@@ -218,6 +314,11 @@ const OrderPage: React.FC = () => {
     form.resetFields();
   };
 
+  const onCloseModelAdd = () => {
+    setIsOpenAdd(false);
+    setChannelAddData([]);
+    formAdd.resetFields();
+  };
   const onDeleteOrder = () => {
     const deleteDataList: any = [];
     channelsDataSelected.forEach((item: any) => {
@@ -247,7 +348,9 @@ const OrderPage: React.FC = () => {
           title="Order List"
           extra={
             <div style={{ display: 'flex' }}>
-              <Button severity="success">Add</Button>
+              <Button severity="success" onClick={() => setIsOpenAdd(true)}>
+                Add
+              </Button>
               <Button
                 disabled={channelsDataSelected.length > 0 ? false : true}
                 severity="info"
@@ -278,6 +381,59 @@ const OrderPage: React.FC = () => {
           </Row>
         </S.Card>
       </Col>
+      <Modal
+        title="Add Order"
+        visible={isOpenAdd}
+        onCancel={() => onCloseModelAdd()}
+        width={1000}
+        footer={[
+          <>
+            <Button style={{ display: 'inline' }} onClick={() => onCloseModelAdd()}>
+              Close
+            </Button>
+
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              form="addOrder"
+              key="submit"
+              htmlType="submit"
+            >
+              Add
+            </Button>
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              form="addOrder"
+              onClick={() => onFinishAdd()}
+              disabled={channelAddData.length < 1}
+            >
+              Add List
+            </Button>
+          </>,
+        ]}
+      >
+        <Form name="addOrder" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} onFinish={addToList} form={formAdd}>
+          <Form.Item label="Channel Id" name="channel_id" required>
+            <Input style={{ width: '100%' }} required />
+          </Form.Item>
+          <Form.Item label="Priority" name="priority">
+            <Select defaultValue={0}>
+              <Select.Option value={0}>Normal</Select.Option>
+              <Select.Option value={1}>High</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Subscribe Need" name="subscribe_need" required>
+            <InputNumber style={{ width: '100%' }} min={0} required />
+          </Form.Item>
+          <Form.Item label="Note" name="note" required>
+            <Input style={{ width: '100%' }} required />
+          </Form.Item>
+        </Form>
+        <Table dataSource={channelAddData} columns={channelAddDColumns} scroll={{ x: 100 }} pagination={false} />
+      </Modal>
       {/* /////////// */}
       <Modal
         title="Update Order"
@@ -303,7 +459,7 @@ const OrderPage: React.FC = () => {
       >
         <Form name="updateOrder" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} onFinish={onFinishUpdate} form={form}>
           <Form.Item label="Tab Run" name="tab_run" required>
-            <InputNumber style={{ width: '100%' }} min={0} required/>
+            <InputNumber style={{ width: '100%' }} min={0} required />
           </Form.Item>
           <Form.Item label="Priority" name="priority">
             <Select defaultValue={0}>
@@ -312,7 +468,13 @@ const OrderPage: React.FC = () => {
             </Select>
           </Form.Item>
           <Form.Item label="Note" name="note" required>
-            <Input style={{ width: '100%' }} required/>
+            <Input style={{ width: '100%' }} required />
+          </Form.Item>
+          <Form.Item label="enabled" name="enabled">
+            <Select defaultValue={0}>
+              <Select.Option value={0}>Stop</Select.Option>
+              <Select.Option value={1}>Run</Select.Option>
+            </Select>
           </Form.Item>
         </Form>
       </Modal>
