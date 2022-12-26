@@ -235,8 +235,10 @@ const OrderPage: React.FC = () => {
       channel_id: value.channel_id,
       priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
       note: value.note,
+      subscribe_need: value.subscribe_need,
       state: 0,
     };
+    formAdd.resetFields();
     setChannelAddData((prevState: any) => [...prevState, dataAdd]);
   };
   const onFinishAdd = () => {
@@ -399,16 +401,6 @@ const OrderPage: React.FC = () => {
               type="primary"
               className="btn btn-primary"
               form="addOrder"
-              key="submit"
-              htmlType="submit"
-            >
-              Add
-            </Button>
-            <Button
-              style={{ display: 'inline' }}
-              type="primary"
-              className="btn btn-primary"
-              form="addOrder"
               onClick={() => onFinishAdd()}
               disabled={channelAddData.length < 1}
             >
@@ -432,6 +424,18 @@ const OrderPage: React.FC = () => {
           </Form.Item>
           <Form.Item label="Note" name="note" required>
             <Input style={{ width: '100%' }} required />
+          </Form.Item>
+          <Form.Item name="btn" required style={{ float: 'right' }}>
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              form="addOrder"
+              key="submit"
+              htmlType="submit"
+            >
+              Add
+            </Button>
           </Form.Item>
         </Form>
         <Table dataSource={channelAddData} columns={channelAddDColumns} scroll={{ x: 100 }} pagination={false} />
