@@ -18,17 +18,24 @@ import {
 } from '@ant-design/icons';
 import { notificationController } from '@app/controllers/notificationController';
 import { AnyIfEmpty } from 'react-redux';
+import { getData } from 'country-list';
 
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
   const [channelsData, setChannelsData] = useState<any>([]);
   const [channelAddData, setChannelAddData] = useState<any>([]);
   const [channelsDataSelected, setChannelsDataSelected] = useState<any>([]);
+  const [userList, setUserList] = useState<UserListSelectType[]>([]);
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
   const [formAdd] = Form.useForm();
+  interface UserListSelectType {
+    lable:string,
+    value:string
+  }
   interface ChannelDataType {
     key: React.Key;
     order_id: number;
@@ -59,16 +66,60 @@ const OrderPage: React.FC = () => {
     getAllData();
   }, []);
 
-  const getAllData = () => {
-    OrderService.getChannelRunning().then((data: any) => {
-      var resData: any = [];
-      data.channels.forEach((item: any) => {
-        resData.push({ ...item, key: item.order_id });
+  const getAllData = async (value?: string) => {
+    setIsLoading(true);
+    var resData: any = [];
+    if (value === 'running') {
+      OrderService.getChannelRunning().then((data: any) => {
+        data.channels.forEach((item: any) => {
+          resData.push({ ...item, key: item.order_id, status: 'Running' });
+        });
+        setChannelsData(resData);
       });
+    } else if (value === 'cancel') {
+      OrderService.getChannelCancel().then((data: any) => {
+        data.channels.forEach((item: any) => {
+          resData.push({ ...item, key: item.order_id, status: 'Cancel' });
+        });
+        setChannelsData(resData);
+      });
+    } else if (value === 'complete') {
+      OrderService.getChannelCompleted().then((data: any) => {
+        data.channels.forEach((item: any) => {
+          resData.push({ ...item, key: item.order_id, status: 'Complete' });
+        });
+        setChannelsData(resData);
+      });
+    } else {
+      const running: any = await OrderService.getChannelRunning();
+      running.channels.forEach((item: any) => {
+        resData.push({ ...item, key: item.order_id, status: 'Running' });
+      });
+
+      const complete: any = await OrderService.getChannelCompleted();
+      complete.channels.forEach((item: any) => {
+        resData.push({ ...item, key: item.order_id, status: 'Complete' });
+      });
+
+      const cancel: any = await OrderService.getChannelCancel();
+      cancel.channels.forEach((item: any) => {
+        resData.push({ ...item, key: item.order_id, status: 'Cancel' });
+      });
+      const uniqueUserIds = Array.from(new Set(resData.map((x: any) => x.user_id)));
+      // const res =  uniqueUserIds.map((x: any) => {
+      //   const abc1: UserListSelectType = {
+      //     lable:x.user_id,
+      //     value:x.user_id
+      //   };
+      //   return abc1;
+      // }),
+      // setUserList(res);
       setChannelsData(resData);
-      setIsOpenDelete(false);
-      setIsOpenEdit(false);
-    });
+    }
+    setIsOpenDelete(false);
+    setIsOpenEdit(false);
+    setIsLoading(false);
+
     // OrderService.getChannelRunning().then((data: any) => {
     //   setRunningChannel(data?.total || 0);
     // });
@@ -193,7 +244,9 @@ const OrderPage: React.FC = () => {
       title: 'Priority',
       dataIndex: 'priority',
       key: 'priority',
-      render: (priority) => (priority ? <FireOutlined /> : priority),
+      sorter: (a, b) => a.priority - b.priority,
+      render: (priority) => (priority ? 'High' : 'Normal'),
+      showSorterTooltip: false,
     },
     {
       title: 'Start Subs',
@@ -208,29 +261,30 @@ const OrderPage: React.FC = () => {
       key: 'last_get',
       render: (last_get) => `${moment(last_get).format('DD-MM-YYYY, h:mm:ss a')}`,
       sorter: (a, b) => a.last_get - b.last_get,
+      showSorterTooltip: false,
     },
-    {
-      title: 'Verified',
-      dataIndex: 'verified',
-      key: 'verified',
-      render: (verified) => (verified ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
-    },
-
+    // {
+    //   title: 'Verified',
+    //   dataIndex: 'verified',
+    //   key: 'verified',
+    //   render: (verified) => (verified ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
+    //   showSorterTooltip: false,
+    // },
     {
       title: 'Note',
       dataIndex: 'note',
       key: 'note',
+      showSorterTooltip: false,
     },
     {
-      title: 'Enabled',
-      dataIndex: 'enabled',
-      key: 'enabled',
-      render: (enabled) => (enabled ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      showSorterTooltip: false,
     },
   ];
 
   const addToList = (value: any) => {
-    console.log(1212, value);
     const dataAdd = {
       channel_id: value.channel_id,
       priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
@@ -343,6 +397,9 @@ const OrderPage: React.FC = () => {
       }
     });
   };
+  const handleChangeSelectState = (value: string) => {
+    getAllData(value);
+  };
 
   return (
     <>
@@ -373,16 +430,73 @@ const OrderPage: React.FC = () => {
             </div>
           }
         >
-          <Row style={{ width: '100%' }}>
-            <Col md={24}>
-              <Table
-                dataSource={channelsData}
-                columns={channelColumns}
-                scroll={{ x: 2000 }}
-                rowSelection={{ ...rowSelection }}
-              />
-            </Col>
-          </Row>
+          <>
+            <Row style={{ width: '100%', justifyContent: 'end' }}>
+              <div>
+              <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>User: </span>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 200 }}
+                  onChange={handleChangeSelectState}
+                  options={[
+                    {
+                      value: 'all',
+                      label: 'All',
+                    },
+                    {
+                      value: 'running',
+                      label: 'Running',
+                    },
+                    {
+                      value: 'complete',
+                      label: 'Complete',
+                    },
+                    {
+                      value: 'cancel',
+                      label: 'Cancel',
+                    },
+                  ]}
+                />
+              </div>
+              <div>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>Status: </span>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 200 }}
+                  onChange={handleChangeSelectState}
+                  options={[
+                    {
+                      value: 'all',
+                      label: 'All',
+                    },
+                    {
+                      value: 'running',
+                      label: 'Running',
+                    },
+                    {
+                      value: 'complete',
+                      label: 'Complete',
+                    },
+                    {
+                      value: 'cancel',
+                      label: 'Cancel',
+                    },
+                  ]}
+                />
+              </div>
+            </Row>
+            <Row style={{ width: '100%' }}>
+              <Col md={24}>
+                <Table
+                  dataSource={channelsData}
+                  columns={channelColumns}
+                  scroll={{ x: 2000 }}
+                  rowSelection={{ ...rowSelection }}
+                  loading={isLoading}
+                />
+              </Col>
+            </Row>
+          </>
         </S.Card>
       </Col>
       <Modal
