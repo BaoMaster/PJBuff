@@ -43,6 +43,14 @@ class ScenarioService extends BaseService<any> {
   public deleteMultiOrder(data: any) {
     return this.fetch.post(`/subscribe/deleteMulti`, data);
   }
+
+  public CancelOrder(id: any) {
+    return this.fetch.get(`/subscribe/cancelChannel?channel_id=${id}`);
+  }
+
+  public ConfirmCancelOrder(id: any, refund:number) {
+    return this.fetch.get(`/subscribe/confirmCancel?channel_id=${id}&refund${refund}`);
+  }
 }
 
 const scenarioService = new ScenarioService();

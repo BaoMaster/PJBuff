@@ -46,7 +46,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
   {
     title: 'Order Page',
     key: 'orderpage',
-    url: '/orderPage',
+    url: '/order-page',
     icon: <CarryOutOutlined />,
   },
   // {

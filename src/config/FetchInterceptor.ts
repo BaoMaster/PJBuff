@@ -61,6 +61,8 @@ service.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    console.log(333);
+    
     // Remove token and redirect
     if (error.response) {
       if (error.response.status === 400 || error.response.status === 403) {
@@ -75,6 +77,7 @@ service.interceptors.response.use(
           //window.location.reload();
         }
       }
+console.log(11222);
 
       if (error.response.status === 401) {
         history.push(ENTRY_ROUTE);

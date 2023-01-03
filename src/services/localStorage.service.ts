@@ -48,5 +48,6 @@ export const readUser = (): UserModel | null => {
   return userStr ? JSON.parse(userStr) : testUser;
 };
 
-export const deleteToken = (): void => localStorage.removeItem('accessToken');
+export const deleteToken = (): void => localStorage.removeItem('AccessToken');
 export const deleteUser = (): void => localStorage.removeItem('user');
+export const deleteUserData = (): void => localStorage.removeItem('UserData');

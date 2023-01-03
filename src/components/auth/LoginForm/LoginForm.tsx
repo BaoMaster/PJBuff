@@ -37,7 +37,10 @@ export const LoginForm: React.FC = () => {
           localStorage.setItem('AccessToken', res.token);
           AuthService.verifyToken().then((resp: any) => {
           localStorage.setItem('UserData', JSON.stringify(resp.user));
+          
+          console.log(1);
           navigate('/');
+          console.log(2);
           });
         } else {
           setLoading(false);

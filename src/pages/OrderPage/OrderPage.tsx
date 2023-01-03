@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, DatePicker, Space, Modal, Form, InputNumber, Select, notification, Input } from 'antd';
+import { Col, Row, DatePicker, Space, Modal, Form, InputNumber, Select, notification, Input, Radio } from 'antd';
 import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
@@ -29,12 +29,15 @@ const OrderPage: React.FC = () => {
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
+  const [isOpenCancel, setIsOpenCancel] = useState<boolean>(false);
+  const [isOpenConfirmCancel, setIsOpenConfirmCancel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>('all');
   const [form] = Form.useForm();
   const [formAdd] = Form.useForm();
   interface UserListSelectType {
-    lable:string,
-    value:string
+    lable: string;
+    value: string;
   }
   interface ChannelDataType {
     key: React.Key;
@@ -118,7 +121,10 @@ const OrderPage: React.FC = () => {
     }
     setIsOpenDelete(false);
     setIsOpenEdit(false);
+    setIsOpenCancel(false);
     setIsLoading(false);
+    setIsOpenConfirmCancel(false);
+    setChannelsDataSelected([]);
 
     // OrderService.getChannelRunning().then((data: any) => {
     //   setRunningChannel(data?.total || 0);
@@ -338,9 +344,22 @@ const OrderPage: React.FC = () => {
     });
     setChannelAddData(ListData);
   };
-  const onFinishUpdate = (value: any) => {
-    console.log(1212, value);
 
+  const onFinishConfirmCancel = (value: any) => {
+    channelsDataSelected.forEach((item: any) => {
+      OrderService.ConfirmCancelOrder(
+        item.channel_id,
+        value.refund === null || typeof value.refund === 'undefined' ? 1 : value.refund,
+      ).then((res: any) => {
+        notificationController.success({
+          message: 'Update Order Success',
+        });
+        getAllData();
+      });
+    });
+  };
+
+  const onFinishUpdate = (value: any) => {
     const updateList: any = [];
     channelsDataSelected.forEach((item: any) => {
       const dataUpdate = {
@@ -397,7 +416,21 @@ const OrderPage: React.FC = () => {
       }
     });
   };
+
+  const onCancelOrder = () => {
+    channelsDataSelected.forEach((item: any) => {
+      OrderService.CancelOrder(item.channel_id).then((res: any) => {
+          notificationController.success({
+            message: 'Cancel Order Success',
+          });
+          getAllData();
+          setChannelsDataSelected([]);
+      });
+    });
+  };
+
   const handleChangeSelectState = (value: string) => {
+    setStatus(value);
     getAllData(value);
   };
 
@@ -415,7 +448,7 @@ const OrderPage: React.FC = () => {
               <Button
                 disabled={channelsDataSelected.length > 0 ? false : true}
                 severity="info"
-                style={{ marginLeft: '15px', marginRight: '15px' }}
+                style={{ marginLeft: '15px' }}
                 onClick={() => setIsOpenEdit(true)}
               >
                 Edit
@@ -423,17 +456,38 @@ const OrderPage: React.FC = () => {
               <Button
                 disabled={channelsDataSelected.length > 0 ? false : true}
                 severity="error"
+                style={{ marginLeft: '15px' }}
                 onClick={() => setIsOpenDelete(true)}
               >
                 Delete
               </Button>
+              {status === 'running' && (
+                <Button
+                  disabled={channelsDataSelected.length > 0 ? false : true}
+                  severity="error"
+                  style={{ marginLeft: '15px' }}
+                  onClick={() => setIsOpenCancel(true)}
+                >
+                  Cancel
+                </Button>
+              )}
+              {status === 'cancel' && (
+                <Button
+                  disabled={channelsDataSelected.length > 0 ? false : true}
+                  severity="error"
+                  style={{ marginLeft: '15px' }}
+                  onClick={() => setIsOpenConfirmCancel(true)}
+                >
+                  Confirm Cancel
+                </Button>
+              )}
             </div>
           }
         >
           <>
             <Row style={{ width: '100%', justifyContent: 'end' }}>
-              <div>
-              <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>User: </span>
+              <div style={{marginRight:'10px'}}>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>User: </span>
                 <Select
                   defaultValue="all"
                   style={{ width: 200 }}
@@ -464,6 +518,7 @@ const OrderPage: React.FC = () => {
                   defaultValue="all"
                   style={{ width: 200 }}
                   onChange={handleChangeSelectState}
+                  value={status}
                   options={[
                     {
                       value: 'all',
@@ -621,6 +676,65 @@ const OrderPage: React.FC = () => {
         ]}
       >
         <div>Are you sure to delete Order ?</div>
+      </Modal>
+      {/* /////////// */}
+      <Modal
+        title="Cancel Order"
+        visible={isOpenCancel}
+        onCancel={() => setIsOpenCancel(false)}
+        footer={[
+          <>
+            <Button style={{ display: 'inline' }} onClick={() => setIsOpenCancel(false)}>
+              Close
+            </Button>
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              onClick={() => onCancelOrder()}
+              danger
+            >
+              Cancel
+            </Button>
+          </>,
+        ]}
+      >
+        <div>Are you sure to cancel Order ?</div>
+      </Modal>
+      {/* /////////// */}
+      <Modal
+        title="Confirm Cancel Order"
+        visible={isOpenConfirmCancel}
+        onCancel={() => setIsOpenConfirmCancel(false)}
+        footer={[
+          <>
+            <Button style={{ display: 'inline' }} onClick={() => setIsOpenConfirmCancel(false)}>
+              Close
+            </Button>
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              form="confirmCancelOrder"
+              key="submit"
+              htmlType="submit"
+            >
+              Confirm
+            </Button>
+          </>,
+        ]}
+      >
+        <>
+          <div>Do you want to refund this order?</div>
+          <Form name="confirmCancelOrder" wrapperCol={{ span: 16 }} onFinish={onFinishConfirmCancel} form={form}>
+            <Form.Item label="Refund ?" name="refund" style={{ marginTop: '10px' }}>
+              <Radio.Group defaultValue={1}>
+                <Radio value={1}>Yes</Radio>
+                <Radio value={0}>No</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Form>
+        </>
       </Modal>
     </>
   );

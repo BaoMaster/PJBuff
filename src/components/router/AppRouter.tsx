@@ -148,7 +148,7 @@ export const AppRouter: React.FC = () => {
           <Route path="user-management" element={<UserManagement />} />
           <Route path="configuration" element={<ConfigPage />} />
           <Route path="nft" element={<NftDashboard />} />
-          <Route path="orderPage" element={<OrderPage />} />
+          <Route path="order-page" element={<OrderPage />} />
 
           <Route path="charts" element={<Charts />} />
           <Route path="maps">
