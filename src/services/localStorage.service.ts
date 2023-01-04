@@ -31,11 +31,11 @@ const testUser = {
 };
 
 export const persistToken = (token: string): void => {
-  localStorage.setItem('accessToken', token);
+  localStorage.setItem('AccessToken', token);
 };
 
 export const readToken = (): string => {
-  return localStorage.getItem('accessToken') || 'bearerToken';
+  return localStorage.getItem("AccessToken") || 'bearerToken';
 };
 
 export const persistUser = (user: UserModel): void => {
