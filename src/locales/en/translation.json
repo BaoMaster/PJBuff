@@ -233,7 +233,8 @@
       "verifyEmailPage": "Verify email page",
       "warning": "Warning",
       "zipcode": "Zipcode",
-      "delete":"Delete"
+      "delete":"Delete",
+      "userName":"User Name"
   },
   "medical-dashboard": {
       "activity": {
@@ -528,7 +529,7 @@
   "login": {
       "facebookLink": "Continue with Facebook",
       "googleLink": "Continue with Google",
-      "loginInfo": "Enter your email address and password to access admin panel",
+      "loginInfo": "Enter your user name and password to access admin panel",
       "noAccount": "Don’t have an account? Create one",
       "rememberMe": "Remember me",
       "signupLink": "here"
