@@ -23,6 +23,7 @@ import { getData } from 'country-list';
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
   const [channelsData, setChannelsData] = useState<any>([]);
+  const [channelsDataOnLoad, setChannelsDataOnLoad] = useState<any>([]);
   const [channelAddData, setChannelAddData] = useState<any>([]);
   const [channelsDataSelected, setChannelsDataSelected] = useState<any>([]);
   const [userList, setUserList] = useState<UserListSelectType[]>([]);
@@ -33,6 +34,7 @@ const OrderPage: React.FC = () => {
   const [isOpenConfirmCancel, setIsOpenConfirmCancel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<string>('all');
+  const [searchValue, setSearchValue] = useState<any>();
   const [form] = Form.useForm();
   const [formAdd] = Form.useForm();
   interface UserListSelectType {
@@ -53,6 +55,7 @@ const OrderPage: React.FC = () => {
     subscribe_need: number;
     priority: number;
     start_subscribe: number;
+    user_id: number;
     last_get: number;
     verified: number;
     note: string;
@@ -78,6 +81,7 @@ const OrderPage: React.FC = () => {
           resData.push({ ...item, key: item.order_id, status: 'Running' });
         });
         setChannelsData(resData);
+        setChannelsDataOnLoad(resData);
       });
     } else if (value === 'cancel') {
       OrderService.getChannelCancel().then((data: any) => {
@@ -85,6 +89,7 @@ const OrderPage: React.FC = () => {
           resData.push({ ...item, key: item.order_id, status: 'Cancel' });
         });
         setChannelsData(resData);
+        setChannelsDataOnLoad(resData);
       });
     } else if (value === 'complete') {
       OrderService.getChannelCompleted().then((data: any) => {
@@ -92,6 +97,7 @@ const OrderPage: React.FC = () => {
           resData.push({ ...item, key: item.order_id, status: 'Complete' });
         });
         setChannelsData(resData);
+        setChannelsDataOnLoad(resData);
       });
     } else {
       const running: any = await OrderService.getChannelRunning();
@@ -118,6 +124,7 @@ const OrderPage: React.FC = () => {
       // }),
       // setUserList(res);
       setChannelsData(resData);
+      setChannelsDataOnLoad(resData);
     }
     setIsOpenDelete(false);
     setIsOpenEdit(false);
@@ -258,6 +265,13 @@ const OrderPage: React.FC = () => {
       title: 'Start Subs',
       dataIndex: 'start_subscribe',
       key: 'start_subscribe',
+      sorter: (a, b) => a.start_subscribe - b.start_subscribe,
+      showSorterTooltip: false,
+    },
+    {
+      title: 'User Id',
+      dataIndex: 'user_id',
+      key: 'user_id',
       sorter: (a, b) => a.start_subscribe - b.start_subscribe,
       showSorterTooltip: false,
     },
@@ -420,11 +434,11 @@ const OrderPage: React.FC = () => {
   const onCancelOrder = () => {
     channelsDataSelected.forEach((item: any) => {
       OrderService.CancelOrder(item.channel_id).then((res: any) => {
-          notificationController.success({
-            message: 'Cancel Order Success',
-          });
-          getAllData();
-          setChannelsDataSelected([]);
+        notificationController.success({
+          message: 'Cancel Order Success',
+        });
+        getAllData();
+        setChannelsDataSelected([]);
       });
     });
   };
@@ -432,6 +446,13 @@ const OrderPage: React.FC = () => {
   const handleChangeSelectState = (value: string) => {
     setStatus(value);
     getAllData(value);
+  };
+
+  const onChangeInputUser = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const currValue = e.target.value;
+    setSearchValue(currValue);
+    const filteredData = channelsDataOnLoad.filter((item: any) => item.user_id.toString().includes(currValue));
+    setChannelsData(filteredData);
   };
 
   return (
@@ -486,31 +507,9 @@ const OrderPage: React.FC = () => {
         >
           <>
             <Row style={{ width: '100%', justifyContent: 'end' }}>
-              <div style={{marginRight:'10px'}}>
+              <div style={{ marginRight: '10px', display: 'flex' }}>
                 <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>User: </span>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 200 }}
-                  onChange={handleChangeSelectState}
-                  options={[
-                    {
-                      value: 'all',
-                      label: 'All',
-                    },
-                    {
-                      value: 'running',
-                      label: 'Running',
-                    },
-                    {
-                      value: 'complete',
-                      label: 'Complete',
-                    },
-                    {
-                      value: 'cancel',
-                      label: 'Cancel',
-                    },
-                  ]}
-                />
+                <Input value={searchValue} onChange={onChangeInputUser} />
               </div>
               <div>
                 <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>Status: </span>
