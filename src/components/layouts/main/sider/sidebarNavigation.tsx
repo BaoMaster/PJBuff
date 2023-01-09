@@ -11,6 +11,7 @@ import {
   BlockOutlined,
   SettingFilled,
   CarryOutOutlined,
+  FundOutlined,
 } from '@ant-design/icons';
 import { ReactComponent as NftIcon } from '@app/assets/icons/nft-icon.svg';
 
@@ -49,13 +50,13 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     url: '/order-page',
     icon: <CarryOutOutlined />,
   },
-  // {
-  //   title: 'common.nft-dashboard',
-  //   key: 'nft-dashboard',
-  //   // TODO use path variable
-  //   url: '/nft',
-  //   icon: <NftIcon />,
-  // },
+  {
+    title: 'History Page',
+    key: 'historypage',
+
+    url: '/history-page',
+    icon: <FundOutlined />,
+  },
 
   // {
   //   title: 'common.medical-dashboard',

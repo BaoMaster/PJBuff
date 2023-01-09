@@ -4,7 +4,7 @@ import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
-import OrderService from './OrderPageService';
+import OrderService from './HistoryPageService';
 import { Button } from '@app/components/common/buttons/Button/Button';
 
 import moment from 'moment';
@@ -20,7 +20,7 @@ import { notificationController } from '@app/controllers/notificationController'
 import { AnyIfEmpty } from 'react-redux';
 import { getData } from 'country-list';
 
-const OrderPage: React.FC = () => {
+const HistoryPage: React.FC = () => {
   const { t } = useTranslation();
   const [channelsData, setChannelsData] = useState<any>([]);
   const [channelsDataOnLoad, setChannelsDataOnLoad] = useState<any>([]);
@@ -739,4 +739,4 @@ const OrderPage: React.FC = () => {
   );
 };
 
-export default OrderPage;
+export default HistoryPage;
