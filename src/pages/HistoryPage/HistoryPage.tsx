@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './HistoryPageService';
+import * as s from './Tables.styles';
 
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 
@@ -209,7 +210,6 @@ const Dashboard: React.FC = () => {
     <>
       <PageTitle>{t('common.history_page')}</PageTitle>
 
-      <Col>
         {/* <S.Card title={t('common.history_order')}>
           <Row style={{ width: '100%' }}>
             <Col>
@@ -217,7 +217,9 @@ const Dashboard: React.FC = () => {
             </Col>
           </Row>
         </S.Card> */}
-        <S.Card title={t('common.list_history')}>
+      <s.TablesWrapper>
+
+        <s.Card title={t('common.list_history')}>
           <Row style={{ width: '100%' }}>
             <Col md={6}>
               <Space direction="vertical" size={12}>
@@ -229,17 +231,18 @@ const Dashboard: React.FC = () => {
                 />
               </Space>
             </Col>
-            <Col md={1}>
+            <Col >
               <Button onClick={() => GetListHistory()}>Fillter</Button>
             </Col>
           </Row>
-          <Row style={{ width: '100%' }}>
+          <Row style={{ width: '100%', marginTop:"10px" }}>
             <Col md={24}>
               <Table dataSource={reportData} columns={columns} />
             </Col>
           </Row>
-        </S.Card>
-      </Col>
+        </s.Card>
+      </s.TablesWrapper>
+
     </>
   );
 };

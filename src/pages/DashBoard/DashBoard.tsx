@@ -9,7 +9,7 @@ import ConfigSetting from './DashBoardService';
 
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import { Card } from 'components/common/Card/Card';
-
+import * as s from './Tables.styles';
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
 
@@ -175,7 +175,7 @@ const Dashboard: React.FC = () => {
       <PageTitle>Trang thống kê</PageTitle>
 
       <Col>
-        <S.Card title={t('common.history_order')}>
+        <s.Card title={t('common.history_order')}>
           <Row style={{ width: '100%' }}>
             <Col md={6}>
               <Space direction="vertical" size={12}>
@@ -192,14 +192,14 @@ const Dashboard: React.FC = () => {
             </Col>
           </Row>
           <Row style={{ width: '100%' }} />
-          <Row style={{ width: '100%' }}>
+          <Row style={{ width: '100%', marginTop: '20px'}}>
             <Col>
               <Line {...config} />
             </Col>
           </Row>
-        </S.Card>
+        </s.Card>
 
-        <S.Card title="Order Statitic">
+        <s.Card title="Order Statitic">
           <Row style={{ width: '100%' }}>
             <Col xs={24} md={8}>
               <Card
@@ -250,15 +250,15 @@ const Dashboard: React.FC = () => {
               </Card>
             </Col>
           </Row>
-        </S.Card>
-        <S.Card title="Running Machine List">
+        </s.Card>
+        <s.Card title="Running Machine List">
           <Row style={{ width: '100%' }}>
             <Col md={24}>
               <Table dataSource={computerData} columns={computerColumns} />
             </Col>
           </Row>
-        </S.Card>
-        <S.Card title="Subscribe by date">
+        </s.Card>
+        <s.Card title="Subscribe by date">
           <Row style={{ width: '100%' }}>
             <Col md={6}>
               <Space direction="vertical" size={12}>
@@ -274,7 +274,7 @@ const Dashboard: React.FC = () => {
               <Table dataSource={reportData} columns={columns} />
             </Col>
           </Row>
-        </S.Card>
+        </s.Card>
       </Col>
     </>
   );
