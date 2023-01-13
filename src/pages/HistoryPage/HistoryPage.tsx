@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row, DatePicker, Space, Form } from 'antd';
+import { Button, Col, Row, DatePicker, Space } from 'antd';
 import { Table } from 'components/common/Table/Table';
 import { Line } from '@ant-design/plots';
 import { useTranslation } from 'react-i18next';
@@ -54,9 +54,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     asyncFetch();
-    setDate({
-      Picker: [moment().subtract(6, 'days').format('DD-MM-YYYY'), moment().format('DD-MM-YYYY')],
-    });
+    setDate([moment().subtract(6, 'days').format('DD-MM-YYYY'), moment().format('DD-MM-YYYY')]);
   }, []);
 
   const asyncFetch = () => {
@@ -204,9 +202,6 @@ const Dashboard: React.FC = () => {
     yField: 'total',
   };
 
-  form.setFieldsValue({
-    Picker: date.Picker,
-  });
   return (
     <>
       <PageTitle>Trang Lịch Sử</PageTitle>
@@ -215,11 +210,7 @@ const Dashboard: React.FC = () => {
         <Row style={{ width: '100%' }}>
           <Col md={6}>
             <Space direction="vertical" size={12}>
-              <Form.Item name="Picker" label="date">
-                {' '}
-                // the name here is `Picker` from your code
-                <RangePicker format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
-              </Form.Item>
+              <RangePicker defaultValue={date} format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
             </Space>
           </Col>
           <Col md={1}>
