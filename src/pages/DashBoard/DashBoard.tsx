@@ -4,6 +4,7 @@ import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
+import { Line } from '@ant-design/plots';
 import ConfigSetting from './DashBoardService';
 
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
@@ -24,6 +25,10 @@ const Dashboard: React.FC = () => {
     date: string;
     total: number;
   }
+  interface ChartData {
+    date: string;
+    total: number;
+  }
 
   const { t } = useTranslation();
   const [computerData, setComputerData] = useState<any>(null);
@@ -32,6 +37,8 @@ const Dashboard: React.FC = () => {
   const [cancelChannel, setCancelChannel] = useState(0);
   const [reportData, setReportData] = useState<any>(null);
   const [date, setDate] = useState<any>(null);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [dates, setDates] = useState<any>(null);
   const { RangePicker } = DatePicker;
 
   const onChange = (
@@ -49,7 +56,34 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     getAllData();
+    asyncFetch();
   }, []);
+
+  const asyncFetch = () => {
+    setDates([moment().subtract(6, 'days'), moment()]);
+    const start = moment().subtract(6, 'days').format('DD-MM-YYYY');
+    const end = moment().format('DD-MM-YYYY');
+    // console.log(end);
+
+    ConfigSetting.getListHistory(start, end).then((data: any) => {
+      setChartData(data.report);
+      setReportData(data.channels);
+    });
+  };
+
+  const GetListHistory = () => {
+    console.log(dates);
+
+    // const start = date.date[0][0]._d;
+    // const end = date.date[0][1]._d;
+
+    ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
+      (data: any) => {
+        setChartData(data.report);
+        setReportData(data.channels);
+      },
+    );
+  };
 
   const getAllData = () => {
     ConfigSetting.getComputerRunning().then((data: any) => {
@@ -119,11 +153,52 @@ const Dashboard: React.FC = () => {
       showSorterTooltip: false,
     },
   ];
+  const config = {
+    data: chartData,
+    // padding: 'auto',
+    width: 1500,
+    xField: 'date',
+    yField: 'total',
+  };
+  function disabledDate(current: any) {
+    // Can not select days before today and today
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 30;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 30;
 
+    return !!tooEarly || !!tooLate;
+  }
   return (
     <>
       <PageTitle>Trang thống kê</PageTitle>
+
       <Col>
+        <S.Card title={t('common.history_order')}>
+          <Row style={{ width: '100%' }}>
+            <Col md={6}>
+              <Space direction="vertical" size={12}>
+                <RangePicker
+                  format="DD-MM-YYYY"
+                  disabledDate={disabledDate}
+                  onCalendarChange={(val) => setDates(val)}
+                  value={dates}
+                />
+              </Space>
+            </Col>
+            <Col md={1}>
+              <Button onClick={() => GetListHistory()}>Fillter</Button>
+            </Col>
+          </Row>
+          <Row style={{ width: '100%' }} />
+          <Row style={{ width: '100%' }}>
+            <Col>
+              <Line {...config} />
+            </Col>
+          </Row>
+        </S.Card>
+
         <S.Card title="Order Statitic">
           <Row style={{ width: '100%' }}>
             <Col xs={24} md={8}>
@@ -185,7 +260,7 @@ const Dashboard: React.FC = () => {
         </S.Card>
         <S.Card title="Subscribe by date">
           <Row style={{ width: '100%' }}>
-            <Col md={8}>
+            <Col md={6}>
               <Space direction="vertical" size={12}>
                 <RangePicker format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
               </Space>

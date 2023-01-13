@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
-import deDe from 'antd/lib/locale/de_DE';
+import viVN from 'antd/lib/locale/vi_VN';
 import enUS from 'antd/lib/locale/en_US';
 import GlobalStyle from './styles/GlobalStyle';
 import 'typeface-montserrat';
@@ -27,7 +27,7 @@ const App: React.FC = () => {
     <>
       <meta name="theme-color" content={themeObject[theme].primary} />
       <GlobalStyle />
-      <ConfigProvider locale={language === 'en' ? enUS : deDe}>
+      <ConfigProvider locale={language === 'en' ? enUS : viVN}>
         <AppRouter />
       </ConfigProvider>
     </>

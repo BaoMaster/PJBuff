@@ -16,7 +16,9 @@ class ScenarioService extends BaseService<any> {
   public getComputerRunning() {
     return this.fetch.get(`data/computer/running`);
   }
-
+  public getListHistory(startDay: any, endDay: any) {
+    return this.fetch.get(`/subscribe/listHistory?from=${startDay}&to=${endDay}`);
+  }
   public getSubscribeByDays(startDay: any, endDay: any) {
     return this.fetch.get(`/data/report?from=${startDay}&to=${endDay}`);
   }

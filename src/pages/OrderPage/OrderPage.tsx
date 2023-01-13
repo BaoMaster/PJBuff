@@ -33,7 +33,7 @@ const OrderPage: React.FC = () => {
   const [isOpenCancel, setIsOpenCancel] = useState<boolean>(false);
   const [isOpenConfirmCancel, setIsOpenConfirmCancel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [status, setStatus] = useState<string>('all');
+  const [status, setStatus] = useState<string>('running');
   const [searchValue, setSearchValue] = useState<any>();
   const [form] = Form.useForm();
   const [formAdd] = Form.useForm();
@@ -217,19 +217,19 @@ const OrderPage: React.FC = () => {
       sorter: (a, b) => a.insert_date - b.insert_date,
       showSorterTooltip: false,
     },
-    {
-      title: t('common.last_update'),
-      dataIndex: 'last_update',
-      key: 'last_update',
-      render: (last_update) => `${moment(last_update).format('DD-MM-YYYY, h:mm:ss a')}`,
-      sorter: (a, b) => a.last_update - b.last_update,
-      showSorterTooltip: false,
-    },
+
     {
       title: t('common.subscribe_need'),
       dataIndex: 'subscribe_need',
       key: 'subscribe_need',
       sorter: (a, b) => a.subscribe_need - b.subscribe_need,
+      showSorterTooltip: false,
+    },
+    {
+      title: t('common.inscrease_subscribe'),
+      dataIndex: 'inscrease_subscribe',
+      key: 'inscrease_subscribe',
+      sorter: (a, b) => a.inscrease_subscribe - b.inscrease_subscribe,
       showSorterTooltip: false,
     },
     {
@@ -246,13 +246,7 @@ const OrderPage: React.FC = () => {
       sorter: (a, b) => a.current_subscribe - b.current_subscribe,
       showSorterTooltip: false,
     },
-    {
-      title: t('common.inscrease_subscribe'),
-      dataIndex: 'inscrease_subscribe',
-      key: 'inscrease_subscribe',
-      sorter: (a, b) => a.inscrease_subscribe - b.inscrease_subscribe,
-      showSorterTooltip: false,
-    },
+
     {
       title: t('common.tab_run'),
       dataIndex: 'tab_run',
@@ -269,7 +263,14 @@ const OrderPage: React.FC = () => {
       render: (priority) => (priority ? 'High' : 'Normal'),
       showSorterTooltip: false,
     },
-
+    {
+      title: t('common.last_update'),
+      dataIndex: 'last_update',
+      key: 'last_update',
+      render: (last_update) => `${moment(last_update).format('DD-MM-YYYY, h:mm:ss a')}`,
+      sorter: (a, b) => a.last_update - b.last_update,
+      showSorterTooltip: false,
+    },
     {
       title: t('common.last_get'),
       dataIndex: 'last_get',
@@ -502,15 +503,11 @@ const OrderPage: React.FC = () => {
               <div>
                 <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.status')} </span>
                 <Select
-                  defaultValue="all"
+                  defaultValue="running"
                   style={{ width: 200 }}
                   onChange={handleChangeSelectState}
                   value={status}
                   options={[
-                    {
-                      value: 'all',
-                      label: 'All',
-                    },
                     {
                       value: 'running',
                       label: 'Running',
@@ -522,6 +519,10 @@ const OrderPage: React.FC = () => {
                     {
                       value: 'cancel',
                       label: 'Cancel',
+                    },
+                    {
+                      value: 'all',
+                      label: 'All',
                     },
                   ]}
                 />

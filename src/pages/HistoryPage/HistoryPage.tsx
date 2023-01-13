@@ -210,29 +210,29 @@ const Dashboard: React.FC = () => {
       <PageTitle>{t('common.history_page')}</PageTitle>
 
       <Col>
-        <Row style={{ width: '100%' }}>
-          <Col md={6}>
-            <Space direction="vertical" size={12}>
-              <RangePicker
-                format="DD-MM-YYYY"
-                disabledDate={disabledDate}
-                onCalendarChange={(val) => setDates(val)}
-                value={dates}
-              />
-            </Space>
-          </Col>
-          <Col md={1}>
-            <Button onClick={() => GetListHistory()}>Fillter</Button>
-          </Col>
-        </Row>
-        <S.Card title={t('common.history_order')}>
+        {/* <S.Card title={t('common.history_order')}>
           <Row style={{ width: '100%' }}>
             <Col>
               <Line {...config} />
             </Col>
           </Row>
-        </S.Card>
+        </S.Card> */}
         <S.Card title={t('common.list_history')}>
+          <Row style={{ width: '100%' }}>
+            <Col md={6}>
+              <Space direction="vertical" size={12}>
+                <RangePicker
+                  format="DD-MM-YYYY"
+                  disabledDate={disabledDate}
+                  onCalendarChange={(val) => setDates(val)}
+                  value={dates}
+                />
+              </Space>
+            </Col>
+            <Col md={1}>
+              <Button onClick={() => GetListHistory()}>Fillter</Button>
+            </Col>
+          </Row>
           <Row style={{ width: '100%' }}>
             <Col md={24}>
               <Table dataSource={reportData} columns={columns} />
