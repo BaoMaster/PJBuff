@@ -11,7 +11,6 @@ import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './ConfigService';
 import { notificationController } from '@app/controllers/notificationController';
 import { ColumnsType } from 'antd/lib/table';
-import { BasicTableRow } from '@app/api/table.api';
 
 const ConfigPage: React.FC = () => {
   const { t } = useTranslation();
