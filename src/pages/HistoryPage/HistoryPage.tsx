@@ -11,6 +11,7 @@ import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
+import { Dayjs } from 'dayjs';
 
 const Dashboard: React.FC = () => {
   interface HistoryDataType {
@@ -37,30 +38,21 @@ const Dashboard: React.FC = () => {
   const [reportData, setReportData] = useState<any>(null);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [date, setDate] = useState<any>(null);
+  type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
+  const [dates, setDates] = useState<any>(null);
+  const [value, setValue] = useState<any>(null);
   const { RangePicker } = DatePicker;
-  const onChange = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    let date = [];
-    date.push(value);
-    setDate({ date: date });
-  };
-
-  const onOk = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
-    console.log('onOk: ', value);
-  };
 
   useEffect(() => {
     asyncFetch();
-    setDate([moment().subtract(6, 'days').format('DD-MM-YYYY'), moment().format('DD-MM-YYYY')]);
   }, []);
 
   const asyncFetch = () => {
-    const start = moment().subtract(6, 'days').format('DD-MM-YYYY');
+    setDates([moment().subtract(13, 'days'), moment()]);
+    const start = moment().subtract(13, 'days').format('DD-MM-YYYY');
     const end = moment().format('DD-MM-YYYY');
-    console.log(end);
+    // console.log(end);
 
     ConfigSetting.getListHistory(start, end).then((data: any) => {
       setChartData(data.report);
@@ -69,10 +61,12 @@ const Dashboard: React.FC = () => {
   };
 
   const GetListHistory = () => {
-    const start = date.date[0][0]._d;
-    const end = date.date[0][1]._d;
+    console.log(dates);
+    
+    // const start = date.date[0][0]._d;
+    // const end = date.date[0][1]._d;
 
-    ConfigSetting.getListHistory(moment(start).format('DD-MM-YYYY'), moment(end).format('DD-MM-YYYY')).then(
+    ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
       (data: any) => {
         setChartData(data.report);
         setReportData(data.channels);
@@ -196,12 +190,21 @@ const Dashboard: React.FC = () => {
 
   const config = {
     data: chartData,
-    padding: 'auto',
+    // padding: 'auto',
     width: 1500,
     xField: 'date',
     yField: 'total',
   };
-
+  function disabledDate(current:any) {
+    // Can not select days before today and today
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 30;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 30;
+    
+    return !!tooEarly || !!tooLate;
+  }
   return (
     <>
       <PageTitle>Trang Lịch Sử</PageTitle>
@@ -210,7 +213,7 @@ const Dashboard: React.FC = () => {
         <Row style={{ width: '100%' }}>
           <Col md={6}>
             <Space direction="vertical" size={12}>
-              <RangePicker defaultValue={date} format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
+              <RangePicker format="DD-MM-YYYY" disabledDate={disabledDate} onCalendarChange={(val) => setDates(val)} value={dates} />
             </Space>
           </Col>
           <Col md={1}>
