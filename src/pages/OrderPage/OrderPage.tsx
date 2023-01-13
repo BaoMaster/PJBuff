@@ -161,7 +161,7 @@ const OrderPage: React.FC = () => {
   };
   const channelAddDColumns: ColumnsType<ChannelAddDataType> = [
     {
-      title: 'Channel Id',
+      title: t('common.channel_id'),
       dataIndex: 'channel_id',
       key: 'channel_id',
     },
@@ -189,14 +189,28 @@ const OrderPage: React.FC = () => {
   ];
   const channelColumns: ColumnsType<ChannelDataType> = [
     {
-      title: 'Order Id',
+      title: t('common.orderId'),
       dataIndex: 'order_id',
       key: 'order_id',
       sorter: (a, b) => a.order_id - b.order_id,
       showSorterTooltip: false,
     },
     {
-      title: 'Insert Date',
+      title: t('common.user_id'),
+      dataIndex: 'user_id',
+      key: 'user_id',
+      sorter: (a, b) => a.start_subscribe - b.start_subscribe,
+      showSorterTooltip: false,
+    },
+    {
+      title: t('common.channel_id'),
+      dataIndex: 'channel_id',
+      key: 'channel_id',
+      sorter: (a, b) => a.channel_id.localeCompare(b.channel_id),
+      showSorterTooltip: false,
+    },
+    {
+      title: t('common.insert_date'),
       dataIndex: 'insert_date',
       key: 'insert_date',
       render: (insert_date) => `${moment(insert_date).format('DD-MM-YYYY, h:mm:ss a')}`,
@@ -204,7 +218,7 @@ const OrderPage: React.FC = () => {
       showSorterTooltip: false,
     },
     {
-      title: 'Last Update',
+      title: t('common.last_update'),
       dataIndex: 'last_update',
       key: 'last_update',
       render: (last_update) => `${moment(last_update).format('DD-MM-YYYY, h:mm:ss a')}`,
@@ -212,94 +226,68 @@ const OrderPage: React.FC = () => {
       showSorterTooltip: false,
     },
     {
-      title: 'Channel Id',
-      dataIndex: 'channel_id',
-      key: 'channel_id',
-      sorter: (a, b) => a.channel_id.localeCompare(b.channel_id),
-      showSorterTooltip: false,
-    },
-    {
-      title: 'Current Views',
-      dataIndex: 'current_view',
-      key: 'current_view',
-      sorter: (a, b) => a.current_view - b.current_view,
-      showSorterTooltip: false,
-    },
-    {
-      title: 'Current Subs',
-      dataIndex: 'current_subscribe',
-      key: 'current_subscribe',
-      sorter: (a, b) => a.current_subscribe - b.current_subscribe,
-      showSorterTooltip: false,
-    },
-    {
-      title: 'Inscrease Subs',
-      dataIndex: 'inscrease_subscribe',
-      key: 'inscrease_subscribe',
-      sorter: (a, b) => a.inscrease_subscribe - b.inscrease_subscribe,
-      showSorterTooltip: false,
-    },
-    {
-      title: 'Tab Run',
-      dataIndex: 'tab_run',
-      key: 'tab_run',
-      sorter: (a, b) => a.tab_run - b.tab_run,
-      showSorterTooltip: false,
-    },
-    {
-      title: 'Subs Need',
+      title: t('common.subscribe_need'),
       dataIndex: 'subscribe_need',
       key: 'subscribe_need',
       sorter: (a, b) => a.subscribe_need - b.subscribe_need,
       showSorterTooltip: false,
     },
     {
-      title: 'Priority',
-      dataIndex: 'priority',
-      key: 'priority',
-      sorter: (a, b) => a.priority - b.priority,
-      render: (priority) => (priority ? 'High' : 'Normal'),
-      showSorterTooltip: false,
-    },
-    {
-      title: 'Start Subs',
+      title: t('common.start_subscribe'),
       dataIndex: 'start_subscribe',
       key: 'start_subscribe',
       sorter: (a, b) => a.start_subscribe - b.start_subscribe,
       showSorterTooltip: false,
     },
     {
-      title: 'User Id',
-      dataIndex: 'user_id',
-      key: 'user_id',
-      sorter: (a, b) => a.start_subscribe - b.start_subscribe,
+      title: t('common.current_subscribe'),
+      dataIndex: 'current_subscribe',
+      key: 'current_subscribe',
+      sorter: (a, b) => a.current_subscribe - b.current_subscribe,
       showSorterTooltip: false,
     },
     {
-      title: 'Last Get',
+      title: t('common.inscrease_subscribe'),
+      dataIndex: 'inscrease_subscribe',
+      key: 'inscrease_subscribe',
+      sorter: (a, b) => a.inscrease_subscribe - b.inscrease_subscribe,
+      showSorterTooltip: false,
+    },
+    {
+      title: t('common.tab_run'),
+      dataIndex: 'tab_run',
+      key: 'tab_run',
+      sorter: (a, b) => a.tab_run - b.tab_run,
+      showSorterTooltip: false,
+    },
+
+    {
+      title: t('common.priority'),
+      dataIndex: 'priority',
+      key: 'priority',
+      sorter: (a, b) => a.priority - b.priority,
+      render: (priority) => (priority ? 'High' : 'Normal'),
+      showSorterTooltip: false,
+    },
+
+    {
+      title: t('common.last_get'),
       dataIndex: 'last_get',
       key: 'last_get',
       render: (last_get) => `${moment(last_get).format('DD-MM-YYYY, h:mm:ss a')}`,
       sorter: (a, b) => a.last_get - b.last_get,
       showSorterTooltip: false,
     },
-    // {
-    //   title: 'Verified',
-    //   dataIndex: 'verified',
-    //   key: 'verified',
-    //   render: (verified) => (verified ? <CheckCircleOutlined /> : <CloseCircleOutlined />),
-    //   showSorterTooltip: false,
-    // },
     {
-      title: 'Note',
-      dataIndex: 'note',
-      key: 'note',
+      title: t('common.status'),
+      dataIndex: 'status',
+      key: 'status',
       showSorterTooltip: false,
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: t('common.note'),
+      dataIndex: 'note',
+      key: 'note',
       showSorterTooltip: false,
     },
   ];
@@ -460,11 +448,11 @@ const OrderPage: React.FC = () => {
       <PageTitle>Trang thống kê</PageTitle>
       <Col>
         <S.Card
-          title="Order List"
+          title={t('common.order_list')}
           extra={
             <div style={{ display: 'flex' }}>
               <Button severity="success" onClick={() => setIsOpenAdd(true)}>
-                Add
+                {t('common.add')}
               </Button>
               <Button
                 disabled={channelsDataSelected.length > 0 ? false : true}
@@ -472,7 +460,7 @@ const OrderPage: React.FC = () => {
                 style={{ marginLeft: '15px' }}
                 onClick={() => setIsOpenEdit(true)}
               >
-                Edit
+                {t('common.edit')}
               </Button>
               <Button
                 disabled={channelsDataSelected.length > 0 ? false : true}
@@ -480,7 +468,7 @@ const OrderPage: React.FC = () => {
                 style={{ marginLeft: '15px' }}
                 onClick={() => setIsOpenDelete(true)}
               >
-                Delete
+                {t('common.delete')}
               </Button>
               {status === 'running' && (
                 <Button
@@ -489,7 +477,7 @@ const OrderPage: React.FC = () => {
                   style={{ marginLeft: '15px' }}
                   onClick={() => setIsOpenCancel(true)}
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
               )}
               {status === 'cancel' && (
@@ -499,7 +487,7 @@ const OrderPage: React.FC = () => {
                   style={{ marginLeft: '15px' }}
                   onClick={() => setIsOpenConfirmCancel(true)}
                 >
-                  Confirm Cancel
+                  {t('common.cofirmCancel')}
                 </Button>
               )}
             </div>
@@ -512,7 +500,7 @@ const OrderPage: React.FC = () => {
                 <Input value={searchValue} onChange={onChangeInputUser} />
               </div>
               <div>
-                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>Status: </span>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.status')} </span>
                 <Select
                   defaultValue="all"
                   style={{ width: 200 }}
@@ -561,7 +549,7 @@ const OrderPage: React.FC = () => {
         footer={[
           <>
             <Button style={{ display: 'inline' }} onClick={() => onCloseModelAdd()}>
-              Close
+              {t('common.close')}
             </Button>
 
             <Button
@@ -602,7 +590,7 @@ const OrderPage: React.FC = () => {
               key="submit"
               htmlType="submit"
             >
-              Add
+              {t('common.add')}
             </Button>
           </Form.Item>
         </Form>
@@ -616,7 +604,7 @@ const OrderPage: React.FC = () => {
         footer={[
           <>
             <Button style={{ display: 'inline' }} onClick={() => onCloseModelUpdate()}>
-              Close
+              {t('common.close')}
             </Button>
             <Button
               style={{ display: 'inline' }}
@@ -626,7 +614,7 @@ const OrderPage: React.FC = () => {
               key="submit"
               htmlType="submit"
             >
-              Save changes
+              {t('common.edit')}
             </Button>
           </>,
         ]}
@@ -660,7 +648,7 @@ const OrderPage: React.FC = () => {
         footer={[
           <>
             <Button style={{ display: 'inline' }} onClick={() => setIsOpenDelete(false)}>
-              Close
+              {t('common.close')}
             </Button>
             <Button
               style={{ display: 'inline' }}
@@ -669,12 +657,12 @@ const OrderPage: React.FC = () => {
               onClick={() => onDeleteOrder()}
               danger
             >
-              Delete
+              {t('common.delete')}
             </Button>
           </>,
         ]}
       >
-        <div>Are you sure to delete Order ?</div>
+        <div>{t('common.delOrder')}</div>
       </Modal>
       {/* /////////// */}
       <Modal
@@ -684,7 +672,7 @@ const OrderPage: React.FC = () => {
         footer={[
           <>
             <Button style={{ display: 'inline' }} onClick={() => setIsOpenCancel(false)}>
-              Close
+              {t('common.close')}
             </Button>
             <Button
               style={{ display: 'inline' }}
@@ -693,12 +681,12 @@ const OrderPage: React.FC = () => {
               onClick={() => onCancelOrder()}
               danger
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
           </>,
         ]}
       >
-        <div>Are you sure to cancel Order ?</div>
+        <div>{t('common.cancelOrder')}</div>
       </Modal>
       {/* /////////// */}
       <Modal
@@ -708,7 +696,7 @@ const OrderPage: React.FC = () => {
         footer={[
           <>
             <Button style={{ display: 'inline' }} onClick={() => setIsOpenConfirmCancel(false)}>
-              Close
+              {t('common.close')}
             </Button>
             <Button
               style={{ display: 'inline' }}
@@ -718,18 +706,19 @@ const OrderPage: React.FC = () => {
               key="submit"
               htmlType="submit"
             >
-              Confirm
+              {t('common.cofirmCancel')}
             </Button>
           </>,
         ]}
       >
         <>
-          <div>Do you want to refund this order?</div>
+          <div>{t('common.confirmOrder')}</div>
+
           <Form name="confirmCancelOrder" wrapperCol={{ span: 16 }} onFinish={onFinishConfirmCancel} form={form}>
             <Form.Item label="Refund ?" name="refund" style={{ marginTop: '10px' }}>
               <Radio.Group defaultValue={1}>
-                <Radio value={1}>Yes</Radio>
-                <Radio value={0}>No</Radio>
+                <Radio value={1}>{t('common.confirm')}</Radio>
+                <Radio value={0}>{t('common.cancel')}</Radio>
               </Radio.Group>
             </Form.Item>
           </Form>

@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
 
   const GetListHistory = () => {
     console.log(dates);
-    
+
     // const start = date.date[0][0]._d;
     // const end = date.date[0][1]._d;
 
@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
   };
   const columns: ColumnsType<HistoryDataType> = [
     {
-      title: t('tables.actions'),
+      title: t('common.actions'),
       dataIndex: 'actions',
       width: '15%',
       align: 'center',
@@ -93,63 +93,63 @@ const Dashboard: React.FC = () => {
                 RestoreOrder(value.order_id);
               }}
             >
-              Restore Order
+              {t('common.restore_order')}
             </Button>
           </Space>
         );
       },
     },
     {
-      title: 'Order Id',
+      title: t('common.orderId'),
       dataIndex: 'order_id',
       key: 'order_id',
       sorter: (a, b) => a.order_id - b.order_id,
       showSorterTooltip: false,
     },
     {
-      title: 'Channel Id',
+      title: t('common.channel_id'),
       dataIndex: 'channel_id',
       key: 'channel_id',
       sorter: (a, b) => a.channel_id.localeCompare(b.channel_id),
       showSorterTooltip: false,
     },
     {
-      title: 'User Id',
+      title: t('common.user_id'),
       dataIndex: 'user_id',
       key: 'user_id',
       sorter: (a, b) => a.user_id - b.user_id,
       showSorterTooltip: false,
     },
     {
-      title: 'Sub Start',
+      title: t('common.sub_start'),
       dataIndex: 'sub_start',
       key: 'sub_start',
       sorter: (a, b) => a.sub_start - b.sub_start,
       showSorterTooltip: false,
     },
     {
-      title: 'Sub End',
+      title: t('common.sub_end'),
       dataIndex: 'sub_end',
       key: 'sub_end',
       sorter: (a, b) => a.sub_end - b.sub_end,
       showSorterTooltip: false,
     },
     {
-      title: 'Sub Need',
+      title: t('common.sub_need'),
       dataIndex: 'sub_need',
       key: 'sub_need',
       sorter: (a, b) => a.sub_need - b.sub_need,
       showSorterTooltip: false,
     },
     {
-      title: 'Num Bh',
+      title: t('common.num_bh'),
       dataIndex: 'num_bh',
       key: 'num_bh',
       sorter: (a, b) => a.num_bh - b.num_bh,
       showSorterTooltip: false,
     },
     {
-      title: 'Start Sate',
+      title: t('common.start_date'),
       dataIndex: 'start_date',
       key: 'start_date',
       render: (start_date) => `${moment(start_date).format('DD-MM-YYYY, h:mm:ss a')}`,
@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
       showSorterTooltip: false,
     },
     {
-      title: 'End Date',
+      title: t('common.end_date'),
       dataIndex: 'end_date',
       key: 'end_date',
       render: (end_date) => `${moment(end_date).format('DD-MM-YYYY, h:mm:ss a')}`,
@@ -165,21 +165,21 @@ const Dashboard: React.FC = () => {
       showSorterTooltip: false,
     },
     {
-      title: 'Note',
+      title: t('common.note'),
       dataIndex: 'note',
       key: 'note',
       sorter: (a, b) => a.note.localeCompare(b.note),
       showSorterTooltip: false,
     },
     {
-      title: 'Rate',
+      title: t('common.rate'),
       dataIndex: 'rate',
       key: 'rate',
       sorter: (a, b) => a.rate - b.rate,
       showSorterTooltip: false,
     },
     {
-      title: 'Time Check',
+      title: t('common.time_check'),
       dataIndex: 'time_check',
       key: 'time_check',
       render: (time_check) => `${moment(time_check).format('DD-MM-YYYY, h:mm:ss a')}`,
@@ -195,39 +195,44 @@ const Dashboard: React.FC = () => {
     xField: 'date',
     yField: 'total',
   };
-  function disabledDate(current:any) {
+  function disabledDate(current: any) {
     // Can not select days before today and today
     if (!dates) {
       return false;
     }
     const tooLate = dates[0] && current.diff(dates[0], 'days') > 30;
     const tooEarly = dates[1] && dates[1].diff(current, 'days') > 30;
-    
+
     return !!tooEarly || !!tooLate;
   }
   return (
     <>
-      <PageTitle>Trang Lịch Sử</PageTitle>
+      <PageTitle>{t('common.history_page')}</PageTitle>
 
       <Col>
         <Row style={{ width: '100%' }}>
           <Col md={6}>
             <Space direction="vertical" size={12}>
-              <RangePicker format="DD-MM-YYYY" disabledDate={disabledDate} onCalendarChange={(val) => setDates(val)} value={dates} />
+              <RangePicker
+                format="DD-MM-YYYY"
+                disabledDate={disabledDate}
+                onCalendarChange={(val) => setDates(val)}
+                value={dates}
+              />
             </Space>
           </Col>
           <Col md={1}>
             <Button onClick={() => GetListHistory()}>Fillter</Button>
           </Col>
         </Row>
-        <S.Card title="History Order">
+        <S.Card title={t('common.history_order')}>
           <Row style={{ width: '100%' }}>
             <Col>
               <Line {...config} />
             </Col>
           </Row>
         </S.Card>
-        <S.Card title="List History">
+        <S.Card title={t('common.list_history')}>
           <Row style={{ width: '100%' }}>
             <Col md={24}>
               <Table dataSource={reportData} columns={columns} />
