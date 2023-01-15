@@ -231,6 +231,7 @@
     "warning": "Warning",
     "zipcode": "Zipcode",
     "userName": "User Name",
+    "userID": "UID:",
     "orderId": "Mã Đơn Hàng",
     "channel_id": "Mã Kênh",
     "user_id": "Mã Người Dùng",
@@ -268,7 +269,10 @@
     "delOrder": "Bạn có muốn xóa đơn này không ?",
     "cancelOrder": "Bạn có muốn hủy đơn này không ?",
     "confirmOrder": "Bạn có muốn hoàn tiền đơn này không",
-    "confirm": "Xác nhận"
+    "confirm": "Xác nhận",
+    "search": "Tìm kiếm",
+    "fillter": "Lọc",
+    "AddList": "Thêm vào danh sách"
   },
   "medical-dashboard": {
     "activity": {

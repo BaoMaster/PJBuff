@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row, DatePicker, Space } from 'antd';
+import { Button, Col, Row, DatePicker, Space, Input } from 'antd';
 import { Table } from 'components/common/Table/Table';
 import { Line } from '@ant-design/plots';
 import { useTranslation } from 'react-i18next';
@@ -36,12 +36,15 @@ const Dashboard: React.FC = () => {
   }
   const { t } = useTranslation();
   const [reportData, setReportData] = useState<any>(null);
+  const [reportDataOnLoad, setReportDataOnLoad] = useState<any>(null);
+
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [date, setDate] = useState<any>(null);
   type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
   const [dates, setDates] = useState<any>(null);
   const [value, setValue] = useState<any>(null);
+  const [searchValue, setSearchValue] = useState<any>();
   const { RangePicker } = DatePicker;
 
   useEffect(() => {
@@ -57,6 +60,7 @@ const Dashboard: React.FC = () => {
     ConfigSetting.getListHistory(start, end).then((data: any) => {
       setChartData(data.report);
       setReportData(data.channels);
+      setReportDataOnLoad(data.channels);
     });
   };
 
@@ -70,6 +74,7 @@ const Dashboard: React.FC = () => {
       (data: any) => {
         setChartData(data.report);
         setReportData(data.channels);
+        setReportDataOnLoad(data.channels);
       },
     );
   };
@@ -205,6 +210,18 @@ const Dashboard: React.FC = () => {
 
     return !!tooEarly || !!tooLate;
   }
+
+  const onChangeInputUser = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const currValue = e.target.value;
+    setSearchValue(currValue);
+    const filteredData = reportDataOnLoad.filter((item: any) => {
+      if (item.order_id.toString().includes(currValue) || item.channel_id.toString().includes(currValue)) return true;
+
+      return false;
+    });
+    filteredData;
+    setReportData(filteredData);
+  };
   return (
     <>
       <PageTitle>{t('common.history_page')}</PageTitle>
@@ -229,8 +246,14 @@ const Dashboard: React.FC = () => {
                 />
               </Space>
             </Col>
-            <Col md={1}>
+            <Col md={12}>
               <Button onClick={() => GetListHistory()}>Fillter</Button>
+            </Col>
+            <Col md={6}>
+              <div style={{ marginRight: '10px', display: 'flex' }}>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.search')}</span>
+                <Input value={searchValue} onChange={onChangeInputUser} />
+              </div>
             </Col>
           </Row>
           <Row style={{ width: '100%' }}>

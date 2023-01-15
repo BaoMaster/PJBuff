@@ -235,6 +235,7 @@
     "zipcode": "Zipcode",
     "delete": "Delete",
     "userName": "User Name",
+    "userID": "UID:",
     "orderId": "Order Id",
     "channel_id": "Channel Id",
     "user_id": "User Id",
@@ -268,7 +269,10 @@
     "delOrder": "Are you sure to delete Order ?",
     "cancelOrder": "Are you sure to cancel Order ?",
     "confirmOrder": "Do you want to refund this order?",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "search": "Search",
+    "fillter": "Fillter",
+    "AddList": "Add List"
   },
   "medical-dashboard": {
     "activity": {

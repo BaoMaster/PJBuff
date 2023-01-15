@@ -497,11 +497,11 @@ const OrderPage: React.FC = () => {
           <>
             <Row style={{ width: '100%', justifyContent: 'end' }}>
               <div style={{ marginRight: '10px', display: 'flex' }}>
-                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>User: </span>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.userID')}</span>
                 <Input value={searchValue} onChange={onChangeInputUser} />
               </div>
               <div>
-                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.status')} </span>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.status')}</span>
                 <Select
                   defaultValue="running"
                   style={{ width: 200 }}
@@ -561,7 +561,7 @@ const OrderPage: React.FC = () => {
               onClick={() => onFinishAdd()}
               disabled={channelAddData.length < 1}
             >
-              Add List
+              {t('common.AddList')}
             </Button>
           </>,
         ]}
