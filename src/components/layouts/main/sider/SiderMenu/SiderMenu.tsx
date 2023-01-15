@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import * as S from './SiderMenu.styles';
@@ -7,6 +7,7 @@ import { Button, Menu } from 'antd';
 
 interface SiderContentProps {
   setCollapsed: (isCollapsed: boolean) => void;
+  admin: boolean;
 }
 
 const sidebarNavFlat = sidebarNavigation.reduce(
@@ -15,10 +16,34 @@ const sidebarNavFlat = sidebarNavigation.reduce(
   [],
 );
 
-const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
+const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed, admin }) => {
   const { t } = useTranslation();
   const location = useLocation();
+  const [newNav, setNewNav] = useState<any>([]);
+  useEffect(() => {
+    {
+      const getData: any = localStorage.getItem('UserData');
+      const objDate = JSON.parse(getData);
+      let ThatAdmin = true;
+      if (getData != null) {
+        const isAdmin = objDate.role === 'ROLE_ADMIN' ? true : false;
+        ThatAdmin = isAdmin;
+        console.log(objDate, isAdmin);
+      }
+      const navTemp: any = [];
+      sidebarNavigation.forEach((nav) => {
+        console.log(123, admin, nav.adminCheck);
+        if (nav.adminCheck) {
+          if (objDate.role === 'ROLE_ADMIN' ? true : false) {
+            navTemp.push(nav);
+          }
+        } else navTemp.push(nav);
+      });
+      console.log(navTemp);
 
+      setNewNav(navTemp);
+    }
+  }, []);
   const currentMenuItem = sidebarNavFlat.find(({ url }) => url === location.pathname);
   const defaultSelectedKeys = currentMenuItem ? [currentMenuItem.key] : [];
 
@@ -34,7 +59,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       defaultOpenKeys={defaultOpenKeys}
       // onClick={() => setCollapsed(true)}
     >
-      {sidebarNavigation.map((nav) =>
+      {newNav.map((nav: any) =>
         nav.children && nav.children.length > 0 ? (
           <Menu.SubMenu
             key={nav.key}
@@ -43,7 +68,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
             onTitleClick={() => setCollapsed(false)}
             popupClassName="d-none"
           >
-            {nav.children.map((childNav) => (
+            {nav.children.map((childNav: any) => (
               <Menu.Item key={childNav.key} title="">
                 <Link to={childNav.url || ''}>{t(childNav.title)}</Link>
               </Menu.Item>

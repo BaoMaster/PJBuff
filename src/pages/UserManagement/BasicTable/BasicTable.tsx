@@ -92,32 +92,33 @@ export const BasicTable: React.FC = () => {
       key: 'id',
     },
     {
-      title: 'Username',
+      title: t('common.username'),
       dataIndex: 'username',
       key: 'username',
     },
     {
-      title: 'Discount',
+      title: t('common.discount'),
       dataIndex: 'discount',
       key: 'discount',
     },
+
     {
-      title: 'Balance',
+      title: t('common.balance'),
       dataIndex: 'balance',
       key: 'balance',
     },
     {
-      title: 'Last Order',
+      title: t('common.last_order'),
       dataIndex: 'last_order',
       key: 'last_order',
     },
     {
-      title: 'Processing',
+      ttle: t('common.processing'),
       dataIndex: 'processing',
       key: 'processing',
     },
     {
-      title: 'Max Thread',
+      title: t('common.max_thread'),
       dataIndex: 'max_thread',
       key: 'max_thread',
     },
@@ -136,7 +137,7 @@ export const BasicTable: React.FC = () => {
                 handleEditUser(value.id);
               }}
             >
-              Edit
+              {t('common.edit')}
             </Button>
             <Button
               type="primary"
@@ -144,7 +145,7 @@ export const BasicTable: React.FC = () => {
                 openPointHistory(value.id);
               }}
             >
-              Point History
+              {t('common.PointHistory')}
             </Button>
             <Button
               type="dashed"
@@ -152,7 +153,7 @@ export const BasicTable: React.FC = () => {
                 openPointAddForm(value.id);
               }}
             >
-              Add Point
+              {t('common.add') + ' ' + t('common.Point')}
             </Button>
           </Space>
         );
@@ -160,43 +161,43 @@ export const BasicTable: React.FC = () => {
     },
   ];
 
-  const closePointHistory =()=>{
+  const closePointHistory = () => {
     setIsOpenPointHistory(false);
-  }
+  };
 
-  const openPointHistory = (userId:number)=>{
-    UserManagementService.getPointHistory(userId).then((res:any)=>{
+  const openPointHistory = (userId: number) => {
+    UserManagementService.getPointHistory(userId).then((res: any) => {
       setPointHistory(res.points);
       setIsOpenPointHistory(true);
-    })
-  }
+    });
+  };
 
-  const openPointAddForm = (userId:number)=>{
+  const openPointAddForm = (userId: number) => {
     setUserSelected(userId);
     setIsOpenPointAddForm(true);
     // UserManagementService.getPointHistory(userId).then((res:any)=>{
     //   setPointHistory(res.points);
     //   setIsOpenPointHistory(true);
     // })
-  }
-  const closePointAddForm =()=>{
+  };
+  const closePointAddForm = () => {
     getUserListData();
     setIsOpenPointAddForm(false);
-  }
+  };
 
   return (
     <>
       <Table columns={columns} dataSource={tableData.data} loading={tableData.loading} scroll={{ x: 800 }} bordered />
-      <PointHistory PointData={pointHistory} closeModal={closePointHistory} isOpen={isOpenPointHistory}/>
-      <AddPointForm userId={userSelected} closeModal={closePointAddForm} isOpen={isOpenPointAddForm}/>
+      <PointHistory PointData={pointHistory} closeModal={closePointHistory} isOpen={isOpenPointHistory} />
+      <AddPointForm userId={userSelected} closeModal={closePointAddForm} isOpen={isOpenPointAddForm} />
       <Modal
-        title="Update User"
+        title={t('common.userEdit')}
         visible={isOpenEdit}
         onCancel={() => handleCancelEdit()}
         footer={[
           <>
             <Button style={{ display: 'inline' }} onClick={() => handleCancelEdit()}>
-              Close
+              {t('common.close')}
             </Button>
             <Button
               style={{ display: 'inline' }}
@@ -206,7 +207,7 @@ export const BasicTable: React.FC = () => {
               key="submit"
               htmlType="submit"
             >
-              Save changes
+              {t('common.edit')}
             </Button>
           </>,
         ]}
@@ -218,20 +219,20 @@ export const BasicTable: React.FC = () => {
           onFinish={onFinishUpdate}
           form={form}
         >
-          <Form.Item label="User name" name="username" key="username">
+          <Form.Item label={t('common.username')} name="username" key="username">
             <Input disabled style={{ width: 300, marginLeft: '10px' }} />
           </Form.Item>
-          <Form.Item label="Discount" name="discount" key="discount">
+          <Form.Item label={t('common.discount')} name="discount" key="discount">
             <InputNumber style={{ width: 300, marginLeft: '10px' }} min={0} />
           </Form.Item>
           <Divider style={{ fontSize: '14px' }} plain key="divi">
-            Leave it blank if you don't want to update your password
+            {t('common.blank')}
           </Divider>
-          <Form.Item label="New Password" name="newPassword" key="newPassword">
-            <Input.Password placeholder="New Password" style={{ width: 300, marginLeft: '10px' }} />
+          <Form.Item label={t('common.newPassword')} name="newPassword" key="newPassword">
+            <Input.Password placeholder={t('common.newPassword')} style={{ width: 300, marginLeft: '10px' }} />
           </Form.Item>
           <Form.Item
-            label="Confirm New Password"
+            label={t('common.confirmNewPassword')}
             name="confirmNewPassword"
             key="confirmNewPassword"
             dependencies={['newPassword']}
@@ -246,12 +247,12 @@ export const BasicTable: React.FC = () => {
                   if (!value || getFieldValue('newPassword') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                  return Promise.reject(new Error(t('common.notmatch')));
                 },
               }),
             ]}
           >
-            <Input.Password placeholder="Confirm New Password" style={{ width: 300, marginLeft: '10px' }} />
+            <Input.Password placeholder={t('common.confirmNewPassword')} style={{ width: 300, marginLeft: '10px' }} />
           </Form.Item>
         </Form>
       </Modal>

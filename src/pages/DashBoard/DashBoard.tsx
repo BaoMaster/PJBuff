@@ -63,7 +63,6 @@ const Dashboard: React.FC = () => {
     setDates([moment().subtract(6, 'days'), moment()]);
     const start = moment().subtract(6, 'days').format('DD-MM-YYYY');
     const end = moment().format('DD-MM-YYYY');
-    // console.log(end);
 
     ConfigSetting.getListHistory(start, end).then((data: any) => {
       setChartData(data.report);
@@ -73,9 +72,6 @@ const Dashboard: React.FC = () => {
 
   const GetListHistory = () => {
     console.log(dates);
-
-    // const start = date.date[0][0]._d;
-    // const end = date.date[0][1]._d;
 
     ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
       (data: any) => {
@@ -114,14 +110,14 @@ const Dashboard: React.FC = () => {
 
   const columns: ColumnsType<SubscribeDataType> = [
     {
-      title: 'Date',
+      title: t('common.Date'),
       dataIndex: 'date',
       key: 'date',
       sorter: (a, b) => a.date.localeCompare(b.date),
       showSorterTooltip: false,
     },
     {
-      title: 'Total',
+      title: t('common.Total'),
       dataIndex: 'total',
       key: 'total',
       sorter: (a, b) => a.total - b.total,
@@ -131,21 +127,21 @@ const Dashboard: React.FC = () => {
 
   const computerColumns: ColumnsType<ComputerDataType> = [
     {
-      title: 'Computer Name',
+      title: t('common.ComputerName'),
       dataIndex: 'computer_name',
       key: 'computer_name',
       sorter: (a, b) => a.computer_name.localeCompare(b.computer_name),
       showSorterTooltip: false,
     },
     {
-      title: 'Run',
+      title: t('common.Run'),
       dataIndex: 'run',
       key: 'run',
       sorter: (a, b) => a.run - b.run,
       showSorterTooltip: false,
     },
     {
-      title: 'Time',
+      title: t('common.Time'),
       dataIndex: 'time',
       key: 'time',
       render: (time) => `${moment(time).format('DD-MM-YYYY, h:mm:ss a')}`,
@@ -170,6 +166,7 @@ const Dashboard: React.FC = () => {
 
     return !!tooEarly || !!tooLate;
   }
+
   return (
     <>
       <PageTitle>Trang thống kê</PageTitle>
@@ -188,22 +185,22 @@ const Dashboard: React.FC = () => {
               </Space>
             </Col>
             <Col md={1}>
-              <Button onClick={() => GetListHistory()}>Fillter</Button>
+              <Button onClick={() => GetListHistory()}>{t('common.fillter')}</Button>
             </Col>
           </Row>
           <Row style={{ width: '100%' }} />
-          <Row style={{ width: '100%', marginTop: '20px'}}>
+          <Row style={{ width: '100%', marginTop: '20px' }}>
             <Col>
               <Line {...config} />
             </Col>
           </Row>
         </s.Card>
 
-        <s.Card title="Order Statitic">
+        <s.Card title={t('common.Orderstatitic')}>
           <Row style={{ width: '100%' }}>
             <Col xs={24} md={8}>
               <Card
-                title="Running"
+                title={t('common.Running')}
                 bordered={false}
                 headStyle={{ color: 'black' }}
                 bodyStyle={{
@@ -219,7 +216,7 @@ const Dashboard: React.FC = () => {
             </Col>
             <Col xs={24} md={8}>
               <Card
-                title="Completed"
+                title={t('common.Completed')}
                 bordered={false}
                 headStyle={{ color: 'black' }}
                 bodyStyle={{
@@ -235,7 +232,7 @@ const Dashboard: React.FC = () => {
             </Col>
             <Col xs={24} md={8}>
               <Card
-                title="Cancel"
+                title={t('common.Cancel')}
                 bordered={false}
                 headStyle={{ color: 'black' }}
                 bodyStyle={{
@@ -251,14 +248,14 @@ const Dashboard: React.FC = () => {
             </Col>
           </Row>
         </s.Card>
-        <s.Card title="Running Machine List">
+        <s.Card title={t('common.Subscribebydate')}>
           <Row style={{ width: '100%' }}>
             <Col md={24}>
               <Table dataSource={computerData} columns={computerColumns} />
             </Col>
           </Row>
         </s.Card>
-        <s.Card title="Subscribe by date">
+        <s.Card title={t('common.Subscribebydate')}>
           <Row style={{ width: '100%' }}>
             <Col md={6}>
               <Space direction="vertical" size={12}>
@@ -266,7 +263,7 @@ const Dashboard: React.FC = () => {
               </Space>
             </Col>
             <Col md={1}>
-              <Button onClick={() => GetSubscribe()}>Fillter</Button>
+              <Button onClick={() => GetSubscribe()}>{t('common.fillter')}</Button>
             </Col>
           </Row>
           <Row style={{ width: '100%' }}>

@@ -75,7 +75,7 @@ const ConfigPage: React.FC = () => {
     {
       title: 'Value',
       dataIndex: 'value',
-      width:'200px'
+      width: '200px',
     },
   ];
 
@@ -83,11 +83,16 @@ const ConfigPage: React.FC = () => {
     <>
       <PageTitle>Page Configuration</PageTitle>
       <s.TablesWrapper>
-
-      <s.Card title={"Page Configuration"} padding="1.25rem 1.25rem 0">
-        <Button severity="info" style={{float: "right", marginBottom:"10px", width:"100px"}} onClick={() => setIsOpenEdit(true)}>Edit</Button>
-        <Table columns={columns} dataSource={settingData} pagination={false} bordered />
-      </s.Card>
+        <s.Card title={t('common.PageConfiguration')} padding="1.25rem 1.25rem 0">
+          <Button
+            severity="info"
+            style={{ float: 'right', marginBottom: '10px', width: '100px' }}
+            onClick={() => setIsOpenEdit(true)}
+          >
+            {t('common.edit')}
+          </Button>
+          <Table columns={columns} dataSource={settingData} pagination={false} bordered />
+        </s.Card>
       </s.TablesWrapper>
       {/* <Table columns={columns} dataSource={settingData} pagination={false} bordered /> */}
       <Modal
@@ -96,9 +101,18 @@ const ConfigPage: React.FC = () => {
         onCancel={() => setIsOpenEdit(false)}
         footer={[
           <>
-            <Button style={{ display: 'inline' }} onClick={() => setIsOpenEdit(false)}>Close</Button>
-            <Button style={{ display: 'inline' }} type="primary" className="btn btn-primary" form="updateSetting" key="submit" htmlType="submit">
-              Save changes
+            <Button style={{ display: 'inline' }} onClick={() => setIsOpenEdit(false)}>
+              {t('common.close')}
+            </Button>
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              form="updateSetting"
+              key="submit"
+              htmlType="submit"
+            >
+              {t('common.edit')}
             </Button>
           </>,
         ]}

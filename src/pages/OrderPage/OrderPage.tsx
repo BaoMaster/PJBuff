@@ -34,10 +34,13 @@ const OrderPage: React.FC = () => {
   const [isOpenCancel, setIsOpenCancel] = useState<boolean>(false);
   const [isOpenConfirmCancel, setIsOpenConfirmCancel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [status, setStatus] = useState<string>('running');
   const [searchValue, setSearchValue] = useState<any>();
   const [form] = Form.useForm();
   const [formAdd] = Form.useForm();
+  const [admin, setAdmin] = useState<boolean>(false);
+
   interface UserListSelectType {
     lable: string;
     value: string;
@@ -71,6 +74,14 @@ const OrderPage: React.FC = () => {
 
   useEffect(() => {
     getAllData();
+    const getData: any = localStorage.getItem('UserData');
+    const objDate = JSON.parse(getData);
+
+    if (getData != null) {
+      const isAdmin = objDate.role === 'ROLE_ADMIN' ? true : false;
+      setAdmin(isAdmin);
+      console.log(objDate, isAdmin);
+    }
   }, []);
 
   const getAllData = async (value?: string) => {
@@ -78,61 +89,73 @@ const OrderPage: React.FC = () => {
     var resData: any = [];
     if (value === 'running') {
       OrderService.getChannelRunning().then((data: any) => {
-        data.channels.forEach((item: any) => {
-          resData.push({ ...item, key: item.order_id, status: 'Running' });
-        });
-        setChannelsData(resData);
-        setChannelsDataOnLoad(resData);
+        if (data.status !== 'fail') {
+          data.channels.forEach((item: any) => {
+            resData.push({ ...item, key: item.order_id, status: 'Running' });
+          });
+          setChannelsData(resData);
+          setChannelsDataOnLoad(resData);
+          setIsLoading(false);
+        }
       });
     } else if (value === 'cancel') {
       OrderService.getChannelCancel().then((data: any) => {
-        data.channels.forEach((item: any) => {
-          resData.push({ ...item, key: item.order_id, status: 'Cancel' });
-        });
-        setChannelsData(resData);
-        setChannelsDataOnLoad(resData);
+        if (data.status !== 'fail') {
+          data.channels.forEach((item: any) => {
+            resData.push({ ...item, key: item.order_id, status: 'Cancel' });
+          });
+          setChannelsData(resData);
+          setChannelsDataOnLoad(resData);
+          setIsLoading(false);
+        }
       });
     } else if (value === 'complete') {
       OrderService.getChannelCompleted().then((data: any) => {
-        data.channels.forEach((item: any) => {
-          resData.push({ ...item, key: item.order_id, status: 'Complete' });
-        });
-        setChannelsData(resData);
-        setChannelsDataOnLoad(resData);
+        if (data.status !== 'fail') {
+          data.channels.forEach((item: any) => {
+            resData.push({ ...item, key: item.order_id, status: 'Complete' });
+          });
+          setChannelsData(resData);
+          setChannelsDataOnLoad(resData);
+          setIsLoading(false);
+        }
       });
     } else {
       const running: any = await OrderService.getChannelRunning();
-      running.channels.forEach((item: any) => {
-        resData.push({ ...item, key: item.order_id, status: 'Running' });
-      });
 
-      const complete: any = await OrderService.getChannelCompleted();
-      complete.channels.forEach((item: any) => {
-        resData.push({ ...item, key: item.order_id, status: 'Complete' });
-      });
+      if (running.status !== 'fail') {
+        running.channels.forEach((item: any) => {
+          resData.push({ ...item, key: item.order_id, status: 'Running' });
+        });
 
-      const cancel: any = await OrderService.getChannelCancel();
-      cancel.channels.forEach((item: any) => {
-        resData.push({ ...item, key: item.order_id, status: 'Cancel' });
-      });
-      const uniqueUserIds = Array.from(new Set(resData.map((x: any) => x.user_id)));
-      // const res =  uniqueUserIds.map((x: any) => {
-      //   const abc1: UserListSelectType = {
-      //     lable:x.user_id,
-      //     value:x.user_id
-      //   };
-      //   return abc1;
-      // }),
-      // setUserList(res);
-      setChannelsData(resData);
-      setChannelsDataOnLoad(resData);
+        const complete: any = await OrderService.getChannelCompleted();
+        complete.channels.forEach((item: any) => {
+          resData.push({ ...item, key: item.order_id, status: 'Complete' });
+        });
+
+        const cancel: any = await OrderService.getChannelCancel();
+        cancel.channels.forEach((item: any) => {
+          resData.push({ ...item, key: item.order_id, status: 'Cancel' });
+        });
+        const uniqueUserIds = Array.from(new Set(resData.map((x: any) => x.user_id)));
+        // const res =  uniqueUserIds.map((x: any) => {
+        //   const abc1: UserListSelectType = {
+        //     lable:x.user_id,
+        //     value:x.user_id
+        //   };
+        //   return abc1;
+        // }),
+        // setUserList(res);
+        setChannelsData(resData);
+        setChannelsDataOnLoad(resData);
+      }
+      setIsOpenDelete(false);
+      setIsOpenEdit(false);
+      setIsOpenCancel(false);
+      setIsLoading(false);
+      setIsOpenConfirmCancel(false);
+      setChannelsDataSelected([]);
     }
-    setIsOpenDelete(false);
-    setIsOpenEdit(false);
-    setIsOpenCancel(false);
-    setIsLoading(false);
-    setIsOpenConfirmCancel(false);
-    setChannelsDataSelected([]);
 
     // OrderService.getChannelRunning().then((data: any) => {
     //   setRunningChannel(data?.total || 0);
@@ -282,6 +305,7 @@ const OrderPage: React.FC = () => {
     },
     {
       title: t('common.status'),
+
       dataIndex: 'status',
       key: 'status',
       showSorterTooltip: false,
@@ -453,25 +477,37 @@ const OrderPage: React.FC = () => {
           title={t('common.order_list')}
           extra={
             <div style={{ display: 'flex' }}>
-              <Button severity="success" onClick={() => setIsOpenAdd(true)}>
-                {t('common.add')}
-              </Button>
-              <Button
-                disabled={channelsDataSelected.length > 0 ? false : true}
-                severity="info"
-                style={{ marginLeft: '15px' }}
-                onClick={() => setIsOpenEdit(true)}
-              >
-                {t('common.edit')}
-              </Button>
-              <Button
-                disabled={channelsDataSelected.length > 0 ? false : true}
-                severity="error"
-                style={{ marginLeft: '15px' }}
-                onClick={() => setIsOpenDelete(true)}
-              >
-                {t('common.delete')}
-              </Button>
+              {admin ? (
+                <Button severity="success" onClick={() => setIsOpenAdd(true)}>
+                  {t('common.add')}
+                </Button>
+              ) : (
+                <div />
+              )}
+              {admin ? (
+                <Button
+                  disabled={channelsDataSelected.length > 0 ? false : true}
+                  severity="info"
+                  style={{ marginLeft: '15px' }}
+                  onClick={() => setIsOpenEdit(true)}
+                >
+                  {t('common.edit')}
+                </Button>
+              ) : (
+                <div />
+              )}
+              {admin ? (
+                <Button
+                  disabled={channelsDataSelected.length > 0 ? false : true}
+                  severity="error"
+                  style={{ marginLeft: '15px' }}
+                  onClick={() => setIsOpenDelete(true)}
+                >
+                  {t('common.delete')}
+                </Button>
+              ) : (
+                <div />
+              )}
               {status === 'running' && (
                 <Button
                   disabled={channelsDataSelected.length > 0 ? false : true}
@@ -501,35 +537,42 @@ const OrderPage: React.FC = () => {
                 <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.userID')}</span>
                 <Input value={searchValue} onChange={onChangeInputUser} />
               </div>
-              <div>
-                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.status')}</span>
-                <Select
-                  defaultValue="running"
-                  style={{ width: 200 }}
-                  onChange={handleChangeSelectState}
-                  value={status}
-                  options={[
-                    {
-                      value: 'running',
-                      label: 'Running',
-                    },
-                    {
-                      value: 'complete',
-                      label: 'Complete',
-                    },
-                    {
-                      value: 'cancel',
-                      label: 'Cancel',
-                    },
-                    {
-                      value: 'all',
-                      label: 'All',
-                    },
-                  ]}
-                />
-              </div>
+
+              {admin ? (
+                <div>
+                  <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>
+                    {t('common.status')}
+                  </span>
+                  <Select
+                    defaultValue="running"
+                    style={{ width: 200 }}
+                    onChange={handleChangeSelectState}
+                    value={status}
+                    options={[
+                      {
+                        value: 'running',
+                        label: t('common.Running'),
+                      },
+                      {
+                        value: 'complete',
+                        label: t('common.Complete'),
+                      },
+                      {
+                        value: 'cancel',
+                        label: t('common.Cancel'),
+                      },
+                      {
+                        value: 'all',
+                        label: t('common.All'),
+                      },
+                    ]}
+                  />
+                </div>
+              ) : (
+                <div />
+              )}
             </Row>
-            <Row style={{ width: '100%', marginTop:"10px" }}>
+            <Row style={{ width: '100%', marginTop: '10px' }}>
               <Col md={24}>
                 <Table
                   dataSource={channelsData}
@@ -545,7 +588,7 @@ const OrderPage: React.FC = () => {
       </s.TablesWrapper>
 
       <Modal
-        title="Add Order"
+        title={t('common.add') + ' ' + t('common.order')}
         visible={isOpenAdd}
         onCancel={() => onCloseModelAdd()}
         width={1000}
@@ -569,19 +612,19 @@ const OrderPage: React.FC = () => {
         ]}
       >
         <Form name="addOrder" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} onFinish={addToList} form={formAdd}>
-          <Form.Item label="Channel Id" name="channel_id" required>
+          <Form.Item label={t('common.channel_id')} name="channel_id" required>
             <Input style={{ width: '100%' }} required />
           </Form.Item>
-          <Form.Item label="Priority" name="priority">
+          <Form.Item label={t('common.priority')} name="priority">
             <Select defaultValue={0}>
-              <Select.Option value={0}>Normal</Select.Option>
-              <Select.Option value={1}>High</Select.Option>
+              <Select.Option value={0}>{t('common.Normal')}</Select.Option>
+              <Select.Option value={1}>{t('common.High')}</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Subscribe Need" name="subscribe_need" required>
+          <Form.Item label={t('common.subscribe_need')} name="subscribe_need" required>
             <InputNumber style={{ width: '100%' }} min={0} required />
           </Form.Item>
-          <Form.Item label="Note" name="note" required>
+          <Form.Item label={t('common.note')} name="note" required>
             <Input style={{ width: '100%' }} required />
           </Form.Item>
           <Form.Item name="btn" required style={{ float: 'right' }}>
@@ -601,7 +644,7 @@ const OrderPage: React.FC = () => {
       </Modal>
       {/* /////////// */}
       <Modal
-        title="Update Order"
+        title={t('common.edit') + ' ' + t('common.order')}
         visible={isOpenEdit}
         onCancel={() => onCloseModelUpdate()}
         footer={[
@@ -623,19 +666,19 @@ const OrderPage: React.FC = () => {
         ]}
       >
         <Form name="updateOrder" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} onFinish={onFinishUpdate} form={form}>
-          <Form.Item label="Tab Run" name="tab_run" required>
+          <Form.Item label={t('common.tab_run')} name="tab_run" required>
             <InputNumber style={{ width: '100%' }} min={0} required />
           </Form.Item>
-          <Form.Item label="Priority" name="priority">
+          <Form.Item label={t('common.priority')} name="priority">
             <Select defaultValue={0}>
-              <Select.Option value={0}>Normal</Select.Option>
-              <Select.Option value={1}>High</Select.Option>
+              <Select.Option value={0}>{t('common.Normal')}</Select.Option>
+              <Select.Option value={1}>{t('common.High')}</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Note" name="note" required>
+          <Form.Item label={t('common.note')} name="note" required>
             <Input style={{ width: '100%' }} required />
           </Form.Item>
-          <Form.Item label="State" name="enabled">
+          <Form.Item label={t('common.state')} name="enabled">
             <Select defaultValue={0}>
               <Select.Option value={0}>Stop</Select.Option>
               <Select.Option value={1}>Run</Select.Option>
@@ -645,7 +688,7 @@ const OrderPage: React.FC = () => {
       </Modal>
       {/* /////////// */}
       <Modal
-        title="Delete Order"
+        title={t('common.delete') + ' ' + t('common.order')}
         visible={isOpenDelete}
         onCancel={() => setIsOpenDelete(false)}
         footer={[
@@ -669,7 +712,7 @@ const OrderPage: React.FC = () => {
       </Modal>
       {/* /////////// */}
       <Modal
-        title="Cancel Order"
+        title={t('common.cancel') + ' ' + t('common.order')}
         visible={isOpenCancel}
         onCancel={() => setIsOpenCancel(false)}
         footer={[

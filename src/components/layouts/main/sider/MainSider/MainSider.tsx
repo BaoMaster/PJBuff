@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Overlay from '../../../../common/Overlay';
 import { useResponsive } from 'hooks/useResponsive';
 import * as S from './MainSider.styles';
@@ -14,14 +14,15 @@ interface MainSiderProps {
 
 const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...props }) => {
   const { isDesktop, mobileOnly, tabletOnly } = useResponsive();
+  const [admin, setAdmin] = useState<boolean>(true);
 
   const isCollapsible = useMemo(() => mobileOnly && tabletOnly, [mobileOnly, tabletOnly]);
 
   const toggleSider = () => setCollapsed(!isCollapsed);
 
-useEffect(()=>{
-  setCollapsed(false);
-},[])
+  useEffect(() => {
+    setCollapsed(false);
+  }, []);
 
   return (
     <>
@@ -35,12 +36,14 @@ useEffect(()=>{
       >
         <SiderLogo isSiderCollapsed={isCollapsed} toggleSider={toggleSider} />
         <S.SiderContent>
-          <SiderMenu setCollapsed={setCollapsed} />
+          <SiderMenu setCollapsed={setCollapsed} admin={admin} />
         </S.SiderContent>
       </S.Sider>
       {/* <Overlay onClick={toggleSider} show={!isCollapsed}
        /> */}
-       <Button type="text" onClick={toggleSider}><MenuUnfoldOutlined /></Button>
+      <Button type="text" onClick={toggleSider}>
+        <MenuUnfoldOutlined />
+      </Button>
     </>
   );
 };
