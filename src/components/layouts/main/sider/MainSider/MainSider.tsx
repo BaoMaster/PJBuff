@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Overlay from '../../../../common/Overlay';
 import { useResponsive } from 'hooks/useResponsive';
 import * as S from './MainSider.styles';
 import { SiderLogo } from '../SiderLogo';
 import SiderMenu from '../SiderMenu/SiderMenu';
+import { Button } from 'antd';
+import { MenuUnfoldOutlined } from '@ant-design/icons';
 
 interface MainSiderProps {
   isCollapsed: boolean;
@@ -17,12 +19,16 @@ const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...pro
 
   const toggleSider = () => setCollapsed(!isCollapsed);
 
+useEffect(()=>{
+  setCollapsed(false);
+},[])
+
   return (
     <>
       <S.Sider
         trigger={null}
-        collapsed={!isDesktop && isCollapsed}
-        collapsedWidth={tabletOnly ? 80 : 0}
+        collapsed={isCollapsed}
+        collapsedWidth={tabletOnly ? 80 : 80}
         collapsible={isCollapsible}
         width={260}
         {...props}
@@ -32,7 +38,9 @@ const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...pro
           <SiderMenu setCollapsed={setCollapsed} />
         </S.SiderContent>
       </S.Sider>
-      {mobileOnly && <Overlay onClick={toggleSider} show={!isCollapsed} />}
+      {/* <Overlay onClick={toggleSider} show={!isCollapsed}
+       /> */}
+       <Button type="text" onClick={toggleSider}><MenuUnfoldOutlined /></Button>
     </>
   );
 };

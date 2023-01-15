@@ -6,6 +6,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import OrderService from './OrderPageService';
 import { Button } from '@app/components/common/buttons/Button/Button';
+import * as s from './Tables.styles';
 
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
@@ -447,8 +448,8 @@ const OrderPage: React.FC = () => {
   return (
     <>
       <PageTitle>Trang thống kê</PageTitle>
-      <Col>
-        <S.Card
+      <s.TablesWrapper>
+        <s.Card
           title={t('common.order_list')}
           extra={
             <div style={{ display: 'flex' }}>
@@ -528,7 +529,7 @@ const OrderPage: React.FC = () => {
                 />
               </div>
             </Row>
-            <Row style={{ width: '100%' }}>
+            <Row style={{ width: '100%', marginTop:"10px" }}>
               <Col md={24}>
                 <Table
                   dataSource={channelsData}
@@ -540,8 +541,9 @@ const OrderPage: React.FC = () => {
               </Col>
             </Row>
           </>
-        </S.Card>
-      </Col>
+        </s.Card>
+      </s.TablesWrapper>
+
       <Modal
         title="Add Order"
         visible={isOpenAdd}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, InputNumber, Modal, Row, Table } from 'antd';
+import { Col, Form, InputNumber, Modal, Row, Table } from 'antd';
 import { AutoComplete } from 'components/common/AutoComplete/AutoComplete';
 import { SearchInput as CommonSearchInput } from 'components/common/inputs/SearchInput/SearchInput';
 import { Option } from 'components/common/selects/Select/Select';
@@ -11,6 +11,8 @@ import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './ConfigService';
 import { notificationController } from '@app/controllers/notificationController';
 import { ColumnsType } from 'antd/lib/table';
+import * as s from './Tables.styles';
+import { Button } from '@app/components/common/buttons/Button/Button';
 
 const ConfigPage: React.FC = () => {
   const { t } = useTranslation();
@@ -69,7 +71,6 @@ const ConfigPage: React.FC = () => {
     {
       title: 'Setting',
       dataIndex: 'setting',
-      width:'500px'
     },
     {
       title: 'Value',
@@ -81,9 +82,13 @@ const ConfigPage: React.FC = () => {
   return (
     <>
       <PageTitle>Page Configuration</PageTitle>
-      <S.Card title={<h1>Page Configuration</h1>} extra={<Button onClick={() => setIsOpenEdit(true)}>Edit</Button>}>
+      <s.TablesWrapper>
+
+      <s.Card title={"Page Configuration"} padding="1.25rem 1.25rem 0">
+        <Button severity="info" style={{float: "right", marginBottom:"10px", width:"100px"}} onClick={() => setIsOpenEdit(true)}>Edit</Button>
         <Table columns={columns} dataSource={settingData} pagination={false} bordered />
-      </S.Card>
+      </s.Card>
+      </s.TablesWrapper>
       {/* <Table columns={columns} dataSource={settingData} pagination={false} bordered /> */}
       <Modal
         title="Update Setting"
@@ -91,8 +96,8 @@ const ConfigPage: React.FC = () => {
         onCancel={() => setIsOpenEdit(false)}
         footer={[
           <>
-            <Button onClick={() => setIsOpenEdit(false)}>Close</Button>
-            <Button type="primary" className="btn btn-primary" form="updateSetting" key="submit" htmlType="submit">
+            <Button style={{ display: 'inline' }} onClick={() => setIsOpenEdit(false)}>Close</Button>
+            <Button style={{ display: 'inline' }} type="primary" className="btn btn-primary" form="updateSetting" key="submit" htmlType="submit">
               Save changes
             </Button>
           </>,

@@ -190,7 +190,7 @@ export const BasicTable: React.FC = () => {
       <PointHistory PointData={pointHistory} closeModal={closePointHistory} isOpen={isOpenPointHistory}/>
       <AddPointForm userId={userSelected} closeModal={closePointAddForm} isOpen={isOpenPointAddForm}/>
       <Modal
-        title="Update Setting"
+        title="Update User"
         visible={isOpenEdit}
         onCancel={() => handleCancelEdit()}
         footer={[

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import * as S from './SiderMenu.styles';
 import { sidebarNavigation, SidebarNavigationItem } from '../sidebarNavigation';
-import { Menu } from 'antd';
+import { Button, Menu } from 'antd';
 
 interface SiderContentProps {
   setCollapsed: (isCollapsed: boolean) => void;
@@ -32,7 +32,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       mode="inline"
       defaultSelectedKeys={defaultSelectedKeys}
       defaultOpenKeys={defaultOpenKeys}
-      onClick={() => setCollapsed(true)}
+      // onClick={() => setCollapsed(true)}
     >
       {sidebarNavigation.map((nav) =>
         nav.children && nav.children.length > 0 ? (
