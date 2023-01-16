@@ -20,6 +20,7 @@ import {
 import { notificationController } from '@app/controllers/notificationController';
 import { AnyIfEmpty } from 'react-redux';
 import { getData } from 'country-list';
+import { number } from 'echarts';
 
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
@@ -64,6 +65,7 @@ const OrderPage: React.FC = () => {
     verified: number;
     note: string;
     enabled: number;
+    rate: number;
   }
   interface ChannelAddDataType {
     key: React.Key;
@@ -91,8 +93,15 @@ const OrderPage: React.FC = () => {
       OrderService.getChannelRunning().then((data: any) => {
         if (data.status !== 'fail') {
           data.channels.forEach((item: any) => {
-            resData.push({ ...item, key: item.order_id, status: 'Running' });
+            resData.push({
+              ...item,
+              key: item.order_id,
+              status: 'Running',
+              rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+            });
           });
+          console.log(resData);
+
           setChannelsData(resData);
           setChannelsDataOnLoad(resData);
           setIsLoading(false);
@@ -102,7 +111,12 @@ const OrderPage: React.FC = () => {
       OrderService.getChannelCancel().then((data: any) => {
         if (data.status !== 'fail') {
           data.channels.forEach((item: any) => {
-            resData.push({ ...item, key: item.order_id, status: 'Cancel' });
+            resData.push({
+              ...item,
+              key: item.order_id,
+              status: 'Cancel',
+              rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+            });
           });
           setChannelsData(resData);
           setChannelsDataOnLoad(resData);
@@ -113,7 +127,12 @@ const OrderPage: React.FC = () => {
       OrderService.getChannelCompleted().then((data: any) => {
         if (data.status !== 'fail') {
           data.channels.forEach((item: any) => {
-            resData.push({ ...item, key: item.order_id, status: 'Complete' });
+            resData.push({
+              ...item,
+              key: item.order_id,
+              status: 'Complete',
+              rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+            });
           });
           setChannelsData(resData);
           setChannelsDataOnLoad(resData);
@@ -125,17 +144,32 @@ const OrderPage: React.FC = () => {
 
       if (running.status !== 'fail') {
         running.channels.forEach((item: any) => {
-          resData.push({ ...item, key: item.order_id, status: 'Running' });
+          resData.push({
+            ...item,
+            key: item.order_id,
+            status: 'Running',
+            rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+          });
         });
 
         const complete: any = await OrderService.getChannelCompleted();
         complete.channels.forEach((item: any) => {
-          resData.push({ ...item, key: item.order_id, status: 'Complete' });
+          resData.push({
+            ...item,
+            key: item.order_id,
+            status: 'Complete',
+            rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+          });
         });
 
         const cancel: any = await OrderService.getChannelCancel();
         cancel.channels.forEach((item: any) => {
-          resData.push({ ...item, key: item.order_id, status: 'Cancel' });
+          resData.push({
+            ...item,
+            key: item.order_id,
+            status: 'Cancel',
+            rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+          });
         });
         const uniqueUserIds = Array.from(new Set(resData.map((x: any) => x.user_id)));
         // const res =  uniqueUserIds.map((x: any) => {
@@ -270,7 +304,14 @@ const OrderPage: React.FC = () => {
       sorter: (a, b) => a.current_subscribe - b.current_subscribe,
       showSorterTooltip: false,
     },
-
+    {
+      title: t('common.rate'),
+      dataIndex: 'rate',
+      key: 'rate',
+      sorter: (a, b) => a.rate - b.rate,
+      render: (rate) => ` ${rate.toFixed(2)}%`,
+      showSorterTooltip: false,
+    },
     {
       title: t('common.tab_run'),
       dataIndex: 'tab_run',
@@ -555,7 +596,7 @@ const OrderPage: React.FC = () => {
                       },
                       {
                         value: 'complete',
-                        label: t('common.Complete'),
+                        label: t('common.Completed'),
                       },
                       {
                         value: 'cancel',
