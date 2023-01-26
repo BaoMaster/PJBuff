@@ -1,4 +1,4 @@
-import BaseService from "../../config/_BaseService";
+import BaseService from '../../config/_BaseService';
 
 export interface IScenario {
   id: number;
@@ -11,18 +11,18 @@ export interface ICreateScenario {
 }
 
 class UserManagementService extends BaseService<any> {
-  protected baseUri = "admin/user";
+  protected baseUri = 'api/v2/user';
 
   public getUserList() {
     return this.fetch.get(`${this.baseUri}/list`);
   }
-  public updateUserInfo(data:any) {
+  public updateUserInfo(data: any) {
     return this.fetch.post(`${this.baseUri}/update`, data);
   }
-  public getPointHistory(userId:number) {
-    return this.fetch.get(`user/list-point/${userId}`);
+  public getPointHistory(userId: number) {
+    return this.fetch.get(`api/v2/point/list/${userId}`);
   }
-  public addPoint(data:any) {
+  public addPoint(data: any) {
     return this.fetch.post(`${this.baseUri}/add-point`, data);
   }
 }

@@ -80,7 +80,7 @@ const OrderPage: React.FC = () => {
     const objDate = JSON.parse(getData);
 
     if (getData != null) {
-      const isAdmin = objDate.role === 'ROLE_ADMIN' ? true : false;
+      const isAdmin = objDate.role === 'admin' ? true : false;
       setAdmin(isAdmin);
       console.log(objDate, isAdmin);
     }

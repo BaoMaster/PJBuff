@@ -22,15 +22,15 @@ class ScenarioService extends BaseService<any> {
   }
 
   public getChannelRunning() {
-    return this.fetch.get(`/subscribe/getList?state=running`);
+    return this.fetch.get(`/api/v2/order/list?state=running`);
   }
 
   public getChannelCompleted() {
-    return this.fetch.get(`/subscribe/getList?state=completed`);
+    return this.fetch.get(`/api/v2/order/list?state=completed`);
   }
 
   public getChannelCancel() {
-    return this.fetch.get(`/subscribe/getList?state=cancel`);
+    return this.fetch.get(`/api/v2/order/list?state=cancel`);
   }
 
   public updateMultiOrder(data: any) {
@@ -48,7 +48,7 @@ class ScenarioService extends BaseService<any> {
     return this.fetch.get(`/subscribe/cancelChannel?channel_id=${id}`);
   }
 
-  public ConfirmCancelOrder(id: any, refund:number) {
+  public ConfirmCancelOrder(id: any, refund: number) {
     return this.fetch.get(`/subscribe/confirmCancel?channel_id=${id}&refund${refund}`);
   }
 }

@@ -5,12 +5,12 @@ import { notificationController } from '@app/controllers/notificationController'
 
 const service = axios.create({
   // baseURL: process.env.REACT_APP_BASE_URL,
-  baseURL: 'http://staging-cmssub.ap-southeast-1.elasticbeanstalk.com',
+  baseURL: 'https://leakaffer.xyz',
   timeout: 60000,
 });
 
 // Config
-const ENTRY_ROUTE = '/auth/login';
+const ENTRY_ROUTE = '/api/v2/login';
 const TOKEN_PAYLOAD_KEY = 'Authorization';
 const PUBLIC_REQUEST_KEY = 'public-request';
 const AUTH_TOKEN = 'AccessToken';
@@ -28,7 +28,7 @@ service.interceptors.request.use(
     const jwtToken = localStorage.getItem(AUTH_TOKEN);
     if (jwtToken) {
       // config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
-      config.headers[TOKEN_PAYLOAD_KEY] = jwtToken;
+      config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
       // config.headers[TOKEN_PAYLOAD_KEY] = "C0iDGQOe23HC1rg2ra4CCCC";
     }
 
@@ -55,18 +55,18 @@ service.interceptors.request.use(
 // API respone interceptor
 service.interceptors.response.use(
   (response) => {
-    if (response.data?.message) notificationParam.message = response.data?.message;
+    if (response.data?.success) notificationParam.message = response.data?.success;
 
     // notification.success(notificationParam);
     return response.data;
   },
   (error) => {
     console.log(333);
-    
+
     // Remove token and redirect
     if (error.response) {
       if (error.response.status === 400 || error.response.status === 403) {
-        if (error.response.data?.message) notificationParam.message = error.response.data?.message;
+        if (error.response.data?.success) notificationParam.message = error.response.data?.success;
 
         const originalConfig = error.config;
         if (originalConfig.url === '/accounts/sign-in') {
@@ -77,7 +77,7 @@ service.interceptors.response.use(
           //window.location.reload();
         }
       }
-console.log(11222);
+      console.log(11222);
 
       if (error.response.status === 401) {
         history.push(ENTRY_ROUTE);
@@ -102,7 +102,7 @@ console.log(11222);
     } else {
       notificationParam.message = 'Error';
     }
-    
+
     notificationController.error({ message: notificationParam.message });
 
     return Promise.reject(error);

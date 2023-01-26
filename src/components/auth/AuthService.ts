@@ -1,7 +1,7 @@
-import BaseService from "../../config/_BaseService";
+import BaseService from '../../config/_BaseService';
 
 class AuthService extends BaseService<any> {
-  protected baseUri = "auth";
+  protected baseUri = 'api/v2';
 
   public login(data: any) {
     return this.fetch.post(`${this.baseUri}/login`, data);

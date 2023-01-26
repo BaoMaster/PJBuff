@@ -17,8 +17,8 @@ interface LoginFormData {
 }
 
 export const initValues: LoginFormData = {
-  username: 'admin@gmail.com',
-  password: 'admin@7979',
+  username: 'admin',
+  password: 'admin',
 };
 
 export const LoginForm: React.FC = () => {
@@ -33,10 +33,10 @@ export const LoginForm: React.FC = () => {
 
     AuthService.login(values)
       .then(async (res: any) => {
-        if (res.status === 'success') {
-          localStorage.setItem('AccessToken', res.token);
+        if (res.success) {
+          localStorage.setItem('AccessToken', res.data.token);
           await AuthService.verifyToken().then((resp: any) => {
-            localStorage.setItem('UserData', JSON.stringify(resp.user));
+            localStorage.setItem('UserData', JSON.stringify(resp.data));
             navigate('/');
             notificationController.success({
               message: 'Login Success',

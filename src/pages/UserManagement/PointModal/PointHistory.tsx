@@ -12,7 +12,7 @@ export const PointHistory = (Prop: any) => {
     {
       title: 'ID',
       dataIndex: 'id',
-      key: 'id',
+      key: 'user_id',
     },
     {
       title: t('common.point'),
@@ -61,7 +61,7 @@ export const PointHistoryTable = (Prop: any) => {
     {
       title: 'ID',
       dataIndex: 'id',
-      key: 'id',
+      key: 'user_id',
     },
     {
       title: 'Point',
@@ -90,7 +90,7 @@ export const PointHistoryTable = (Prop: any) => {
     if (getData != null) {
       const idUser = objDate.id;
       UserManagementService.getPointHistory(idUser).then((res: any) => {
-        setPointHistoryData(res.points);
+        setPointHistoryData(res.data);
       });
     }
   }, []);

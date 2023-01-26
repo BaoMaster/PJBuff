@@ -76,7 +76,7 @@ export const BasicTable: React.FC = () => {
 
   const getUserListData = () => {
     UserManagementService.getUserList().then((dataRes: any) => {
-      setTableData({ ...tableData, data: dataRes.accounts });
+      setTableData({ ...tableData, data: dataRes.data });
     });
   };
 
@@ -167,7 +167,7 @@ export const BasicTable: React.FC = () => {
 
   const openPointHistory = (userId: number) => {
     UserManagementService.getPointHistory(userId).then((res: any) => {
-      setPointHistory(res.points);
+      setPointHistory(res.data);
       setIsOpenPointHistory(true);
     });
   };

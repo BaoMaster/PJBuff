@@ -26,7 +26,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed, admin }) => {
       const objDate = JSON.parse(getData);
       let ThatAdmin = true;
       if (getData != null) {
-        const isAdmin = objDate.role === 'ROLE_ADMIN' ? true : false;
+        const isAdmin = objDate.role === 'admin' ? true : false;
         ThatAdmin = isAdmin;
         console.log(objDate, isAdmin);
       }
@@ -34,7 +34,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed, admin }) => {
       sidebarNavigation.forEach((nav) => {
         console.log(123, admin, nav.adminCheck);
         if (nav.adminCheck) {
-          if (objDate.role === 'ROLE_ADMIN' ? true : false) {
+          if (objDate.role === 'admin' ? true : false) {
             navTemp.push(nav);
           }
         } else navTemp.push(nav);
