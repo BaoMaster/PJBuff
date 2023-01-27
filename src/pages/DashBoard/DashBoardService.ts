@@ -24,15 +24,19 @@ class ScenarioService extends BaseService<any> {
   }
 
   public getChannelRunning() {
-    return this.fetch.get(`/subscribe/getList?state=running`);
+    return this.fetch.get(`/api/v2/order/list?state=running`);
   }
 
   public getChannelCompleted() {
-    return this.fetch.get(`/subscribe/getList?state=completed`);
+    return this.fetch.get(`/api/v2/order/list?state=completed`);
   }
 
   public getChannelCancel() {
-    return this.fetch.get(`/subscribe/getList?state=cancel`);
+    return this.fetch.get(`/api/v2/order/list?state=cancel`); 
+  }
+  
+  public getChannelPending() {
+    return this.fetch.get(` /api/v2/order/list?state=pending`);
   }
 }
 

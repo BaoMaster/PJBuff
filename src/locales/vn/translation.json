@@ -305,7 +305,8 @@
     "balance": "Tổng số tiền",
     "last_order": "Đơn cuối",
     "processing": "Tiến trình",
-    "max_thread": "Luồng tối đa"
+    "max_thread": "Luồng tối đa",
+    "pending": "Đang Chờ"
   },
   "medical-dashboard": {
     "activity": {

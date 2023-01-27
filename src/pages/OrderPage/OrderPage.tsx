@@ -41,6 +41,7 @@ const OrderPage: React.FC = () => {
   const [form] = Form.useForm();
   const [formAdd] = Form.useForm();
   const [admin, setAdmin] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   interface UserListSelectType {
     lable: string;
@@ -91,6 +92,7 @@ const OrderPage: React.FC = () => {
     setIsLoading(true);
     var resData: any = [];
     if (value === 'running') {
+      setIsPending(false);
       OrderService.getChannelRunning().then((data: any) => {
         if (data.success) {
           data.data.forEach((item: any) => {
@@ -110,9 +112,10 @@ const OrderPage: React.FC = () => {
         }
       });
     } else if (value === 'cancel') {
+      setIsPending(false);
       OrderService.getChannelCancel().then((data: any) => {
-        if (data.status !== 'fail') {
-          data.channels.forEach((item: any) => {
+        if (data.success) {
+          data.data.forEach((item: any) => {
             resData.push({
               ...item,
               key: item.order_id,
@@ -127,14 +130,33 @@ const OrderPage: React.FC = () => {
         }
       });
     } else if (value === 'complete') {
+      setIsPending(false);
       OrderService.getChannelCompleted().then((data: any) => {
-        if (data.status !== 'fail') {
-          data.channels.forEach((item: any) => {
+        if (data.success) {
+          data.data.forEach((item: any) => {
             resData.push({
               ...item,
               key: item.order_id,
               inscrease_subscribe: item.current_sub - item.start_sub,
               status: 'Complete',
+              rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
+            });
+          });
+          setChannelsData(resData);
+          setChannelsDataOnLoad(resData);
+          setIsLoading(false);
+        }
+      });
+    } else if (value === 'pending') {
+      setIsPending(true);
+      OrderService.getChannelPending().then((data: any) => {
+        if (data.success) {
+          data.data.forEach((item: any) => {
+            resData.push({
+              ...item,
+              key: item.order_id,
+              inscrease_subscribe: item.current_sub - item.start_sub,
+              status: 'Pending',
               rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
             });
           });
@@ -178,6 +200,17 @@ const OrderPage: React.FC = () => {
             rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
           });
         });
+        const pending: any = await OrderService.getChannelPending();
+        pending.data.forEach((item: any) => {
+          resData.push({
+            ...item,
+            key: item.order_id,
+            status: 'Pending',
+            inscrease_subscribe: item.current_sub - item.start_sub,
+            rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
+          });
+        });
+
         const uniqueUserIds = Array.from(new Set(resData.map((x: any) => x.user_id)));
         // const res =  uniqueUserIds.map((x: any) => {
         //   const abc1: UserListSelectType = {
@@ -194,6 +227,7 @@ const OrderPage: React.FC = () => {
       setIsOpenEdit(false);
       setIsOpenCancel(false);
       setIsLoading(false);
+      setIsPending(false);
       setIsOpenConfirmCancel(false);
       setChannelsDataSelected([]);
     }
@@ -446,33 +480,33 @@ const OrderPage: React.FC = () => {
     //   };
     //   updateList.push(dataUpdate);
     // });
-    if(channelsDataSelected.length > 0 && channelsDataSelected.length == 1){
-        const dataUpdate = {
-          sub_need: channelsDataSelected[0].sub_need,
-          max_thread: value.max_thread,
-          priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
-          note: value.note,
-          enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
-        };
-        OrderService.updateOrder(dataUpdate,channelsDataSelected[0].order_id).then((res: any) => {
-          if (res.status === 'success') {
-            notificationController.success({
-              message: 'Update Order Success',
-            });
-            getAllData();
-            setChannelsDataSelected([]);
-          } else {
-            notificationController.error({
-              message: res.message,
-            });
-          }
-        });
+    if (channelsDataSelected.length > 0 && channelsDataSelected.length == 1) {
+      const dataUpdate = {
+        sub_need: channelsDataSelected[0].sub_need,
+        max_thread: value.max_thread,
+        priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+        note: value.note,
+        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+      };
+      OrderService.updateOrder(dataUpdate, channelsDataSelected[0].order_id).then((res: any) => {
+        if (res.status === 'success') {
+          notificationController.success({
+            message: 'Update Order Success',
+          });
+          getAllData();
+          setChannelsDataSelected([]);
+        } else {
+          notificationController.error({
+            message: res.message,
+          });
+        }
+      });
     }
-    if(channelsDataSelected.length > 0 && channelsDataSelected.length > 1){
+    if (channelsDataSelected.length > 0 && channelsDataSelected.length > 1) {
       const dataUpdate = {
         max_thread: value.max_thread,
         priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
-        orders:channelsDataSelected.select((x:any)=>x.order_id),
+        orders: channelsDataSelected.select((x: any) => x.order_id),
         enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
       };
       OrderService.updateMultiOrder(dataUpdate).then((res: any) => {
@@ -507,8 +541,8 @@ const OrderPage: React.FC = () => {
     //   const dataDelete = { channel_id: item.channel_id };
     //   deleteDataList.push(dataDelete);
     // });
-    const dataUpdate:any={
-      orders:channelsDataSelected.select((x:any)=>x.order_id)
+    const dataUpdate: any = {
+      orders: channelsDataSelected.select((x: any) => x.order_id),
     };
     OrderService.deleteMultiOrder(dataUpdate).then((res: any) => {
       if (res.success) {
@@ -556,59 +590,63 @@ const OrderPage: React.FC = () => {
         <s.Card
           title={t('common.order_list')}
           extra={
-            <div style={{ display: 'flex' }}>
-              {admin ? (
-                <Button severity="success" onClick={() => setIsOpenAdd(true)}>
-                  {t('common.add')}
-                </Button>
-              ) : (
-                <div />
-              )}
-              {admin ? (
-                <Button
-                  disabled={channelsDataSelected.length > 0 ? false : true}
-                  severity="info"
-                  style={{ marginLeft: '15px' }}
-                  onClick={() => setIsOpenEdit(true)}
-                >
-                  {t('common.edit')}
-                </Button>
-              ) : (
-                <div />
-              )}
-              {admin ? (
-                <Button
-                  disabled={channelsDataSelected.length > 0 ? false : true}
-                  severity="error"
-                  style={{ marginLeft: '15px' }}
-                  onClick={() => setIsOpenDelete(true)}
-                >
-                  {t('common.delete')}
-                </Button>
-              ) : (
-                <div />
-              )}
-              {status === 'running' && (
-                <Button
-                  disabled={channelsDataSelected.length > 0 ? false : true}
-                  severity="error"
-                  style={{ marginLeft: '15px' }}
-                  onClick={() => setIsOpenCancel(true)}
-                >
-                  {t('common.cancel')}
-                </Button>
-              )}
-              {status === 'cancel' && (
-                <Button
-                  disabled={channelsDataSelected.length > 0 ? false : true}
-                  severity="error"
-                  style={{ marginLeft: '15px' }}
-                  onClick={() => setIsOpenConfirmCancel(true)}
-                >
-                  {t('common.cofirmCancel')}
-                </Button>
-              )}
-            </div>
+            !isPending ? (
+              <div style={{ display: 'flex' }}>
+                {admin ? (
+                  <Button severity="success" onClick={() => setIsOpenAdd(true)}>
+                    {t('common.add')}
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {admin ? (
+                  <Button
+                    disabled={channelsDataSelected.length > 0 ? false : true}
+                    severity="info"
+                    style={{ marginLeft: '15px' }}
+                    onClick={() => setIsOpenEdit(true)}
+                  >
+                    {t('common.edit')}
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {admin ? (
+                  <Button
+                    disabled={channelsDataSelected.length > 0 ? false : true}
+                    severity="error"
+                    style={{ marginLeft: '15px' }}
+                    onClick={() => setIsOpenDelete(true)}
+                  >
+                    {t('common.delete')}
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                {status === 'running' && (
+                  <Button
+                    disabled={channelsDataSelected.length > 0 ? false : true}
+                    severity="error"
+                    style={{ marginLeft: '15px' }}
+                    onClick={() => setIsOpenCancel(true)}
+                  >
+                    {t('common.cancel')}
+                  </Button>
+                )}
+                {status === 'cancel' && (
+                  <Button
+                    disabled={channelsDataSelected.length > 0 ? false : true}
+                    severity="error"
+                    style={{ marginLeft: '15px' }}
+                    onClick={() => setIsOpenConfirmCancel(true)}
+                  >
+                    {t('common.cofirmCancel')}
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div style={{ display: 'flex' }}></div>
+            )
           }
         >
           <>
@@ -640,6 +678,10 @@ const OrderPage: React.FC = () => {
                       {
                         value: 'cancel',
                         label: t('common.Cancel'),
+                      },
+                      {
+                        value: 'pending',
+                        label: t('common.pending'),
                       },
                       {
                         value: 'all',

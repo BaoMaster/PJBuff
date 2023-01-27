@@ -76,23 +76,23 @@ const Dashboard: React.FC = () => {
     ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
       (data: any) => {
         setChartData(data.report);
-        setReportData(data.channels);
+        setReportData(data.data);
       },
     );
   };
 
   const getAllData = () => {
     ConfigSetting.getComputerRunning().then((data: any) => {
-      setComputerData(data.computers);
+      setComputerData(data.data);
     });
     ConfigSetting.getChannelRunning().then((data: any) => {
-      setRunningChannel(data?.total || 0);
+      setRunningChannel(data?.data.length || 0);
     });
     ConfigSetting.getChannelCompleted().then((data: any) => {
-      setCompletedChannel(data?.total || 0);
+      setCompletedChannel(data?.data.length || 0);
     });
     ConfigSetting.getChannelCancel().then((data: any) => {
-      setCancelChannel(data?.total || 0);
+      setCancelChannel(data?.data.length || 0);
     });
   };
   const GetSubscribe = () => {
