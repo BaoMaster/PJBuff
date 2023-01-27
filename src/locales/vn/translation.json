@@ -242,6 +242,7 @@
     "start_date": "Ngày Bắt đầu",
     "end_date": "Ngày Kết Thúc",
     "note": "Ghi Chú",
+    "state": "Trạng thái",
     "rate": "Hiệu Suất",
     "time_check": "Ngày kiểm tra",
     "actions": "Thao tác",

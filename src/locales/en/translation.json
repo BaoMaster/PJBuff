@@ -246,6 +246,7 @@
     "start_date": "Start Date",
     "end_date": "End Date",
     "note": "Note",
+    "state": "Status",
     "time_check": "Time Check",
     "actions": "Actions",
     "restore_order": "Restore Order",
@@ -259,6 +260,7 @@
     "current_subscribe": "Current Subscribe",
     "inscrease_subscribe": "Inscrease Subscribe",
     "tab_run": "Tab Run",
+    "max_thread": "Max Thread",
     "priority": "Priority",
     "last_get": "Last Get",
     "status": "Status",
@@ -302,8 +304,7 @@
     "description": "Description",
     "balance": "Balance",
     "last_order": "Last Order",
-    "processing": "Processing",
-    "max_thread": "Max Thread"
+    "processing": "Processing"
   },
   "medical-dashboard": {
     "activity": {

@@ -36,6 +36,9 @@ class ScenarioService extends BaseService<any> {
   public updateMultiOrder(data: any) {
     return this.fetch.post(`/api/v2/order/updateMulti`, data);
   }
+  public updateOrder(data: any, id:number) {
+    return this.fetch.post(`/api/v2/order/update/${id}`, data);
+  }
   public insertOrder(data: any) {
     return this.fetch.post(`/api/v2/order/add`, data);
   }

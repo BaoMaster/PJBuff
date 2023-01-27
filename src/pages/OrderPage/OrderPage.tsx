@@ -54,12 +54,13 @@ const OrderPage: React.FC = () => {
     run: number;
     channel_id: string;
     current_view: number;
-    current_subscribe: number;
+    current_sub: number;
     inscrease_subscribe: number;
-    tab_run: number;
-    subscribe_need: number;
+    // tab_run: number;
+    max_thread: number;
+    sub_need: number;
     priority: number;
-    start_subscribe: number;
+    start_sub: number;
     user_id: number;
     last_get: number;
     verified: number;
@@ -91,13 +92,14 @@ const OrderPage: React.FC = () => {
     var resData: any = [];
     if (value === 'running') {
       OrderService.getChannelRunning().then((data: any) => {
-        if (data.status !== 'fail') {
-          data.channels.forEach((item: any) => {
+        if (data.success) {
+          data.data.forEach((item: any) => {
             resData.push({
               ...item,
               key: item.order_id,
+              inscrease_subscribe: item.current_sub - item.start_sub,
               status: 'Running',
-              rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+              rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
             });
           });
           console.log(resData);
@@ -114,8 +116,9 @@ const OrderPage: React.FC = () => {
             resData.push({
               ...item,
               key: item.order_id,
+              inscrease_subscribe: item.current_sub - item.start_sub,
               status: 'Cancel',
-              rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+              rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
             });
           });
           setChannelsData(resData);
@@ -130,8 +133,9 @@ const OrderPage: React.FC = () => {
             resData.push({
               ...item,
               key: item.order_id,
+              inscrease_subscribe: item.current_sub - item.start_sub,
               status: 'Complete',
-              rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+              rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
             });
           });
           setChannelsData(resData);
@@ -142,33 +146,36 @@ const OrderPage: React.FC = () => {
     } else {
       const running: any = await OrderService.getChannelRunning();
 
-      if (running.status !== 'fail') {
-        running.channels.forEach((item: any) => {
+      if (running.success) {
+        running.data.forEach((item: any) => {
           resData.push({
             ...item,
             key: item.order_id,
+            inscrease_subscribe: item.current_sub - item.start_sub,
             status: 'Running',
-            rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+            rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
           });
         });
 
         const complete: any = await OrderService.getChannelCompleted();
-        complete.channels.forEach((item: any) => {
+        complete.data.forEach((item: any) => {
           resData.push({
             ...item,
             key: item.order_id,
+            inscrease_subscribe: item.current_sub - item.start_sub,
             status: 'Complete',
-            rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+            rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
           });
         });
 
         const cancel: any = await OrderService.getChannelCancel();
-        cancel.channels.forEach((item: any) => {
+        cancel.data.forEach((item: any) => {
           resData.push({
             ...item,
             key: item.order_id,
             status: 'Cancel',
-            rate: (item.current_subscribe / (item.runed === 0 ? 1 : item.runed)) * 100,
+            inscrease_subscribe: item.current_sub - item.start_sub,
+            rate: (item.current_sub / (item.runed === 0 ? 1 : item.runed)) * 100,
           });
         });
         const uniqueUserIds = Array.from(new Set(resData.map((x: any) => x.user_id)));
@@ -230,8 +237,8 @@ const OrderPage: React.FC = () => {
     },
     {
       title: 'Subscribe Need',
-      dataIndex: 'subscribe_need',
-      key: 'subscribe_need',
+      dataIndex: 'sub_need',
+      key: 'sub_need',
     },
     {
       title: 'Note',
@@ -257,7 +264,7 @@ const OrderPage: React.FC = () => {
       title: t('common.user_id'),
       dataIndex: 'user_id',
       key: 'user_id',
-      sorter: (a, b) => a.start_subscribe - b.start_subscribe,
+      sorter: (a, b) => a.start_sub - b.start_sub,
       showSorterTooltip: false,
     },
     {
@@ -278,9 +285,9 @@ const OrderPage: React.FC = () => {
 
     {
       title: t('common.subscribe_need'),
-      dataIndex: 'subscribe_need',
-      key: 'subscribe_need',
-      sorter: (a, b) => a.subscribe_need - b.subscribe_need,
+      dataIndex: 'sub_need',
+      key: 'sub_need',
+      sorter: (a, b) => a.sub_need - b.sub_need,
       showSorterTooltip: false,
     },
     {
@@ -292,16 +299,16 @@ const OrderPage: React.FC = () => {
     },
     {
       title: t('common.start_subscribe'),
-      dataIndex: 'start_subscribe',
-      key: 'start_subscribe',
-      sorter: (a, b) => a.start_subscribe - b.start_subscribe,
+      dataIndex: 'start_sub',
+      key: 'start_sub',
+      sorter: (a, b) => a.start_sub - b.start_sub,
       showSorterTooltip: false,
     },
     {
       title: t('common.current_subscribe'),
-      dataIndex: 'current_subscribe',
-      key: 'current_subscribe',
-      sorter: (a, b) => a.current_subscribe - b.current_subscribe,
+      dataIndex: 'current_sub',
+      key: 'current_sub',
+      sorter: (a, b) => a.current_sub - b.current_sub,
       showSorterTooltip: false,
     },
     {
@@ -312,13 +319,13 @@ const OrderPage: React.FC = () => {
       render: (rate) => ` ${rate.toFixed(2)}%`,
       showSorterTooltip: false,
     },
-    {
-      title: t('common.tab_run'),
-      dataIndex: 'tab_run',
-      key: 'tab_run',
-      sorter: (a, b) => a.tab_run - b.tab_run,
-      showSorterTooltip: false,
-    },
+    // {
+    //   title: t('common.tab_run'),
+    //   dataIndex: 'tab_run',
+    //   key: 'tab_run',
+    //   sorter: (a, b) => a.tab_run - b.tab_run,
+    //   showSorterTooltip: false,
+    // },
 
     {
       title: t('common.priority'),
@@ -364,7 +371,7 @@ const OrderPage: React.FC = () => {
       channel_id: value.channel_id,
       priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
       note: value.note,
-      subscribe_need: value.subscribe_need,
+      sub_need: value.sub_need,
       state: 0,
     };
     formAdd.resetFields();
@@ -429,30 +436,59 @@ const OrderPage: React.FC = () => {
   };
 
   const onFinishUpdate = (value: any) => {
-    const updateList: any = [];
-    channelsDataSelected.forEach((item: any) => {
+    // channelsDataSelected.forEach((item: any) => {
+    //   const dataUpdate = {
+    //     channel_id: item.channel_id,
+    //     max_thread: value.max_thread,
+    //     priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+    //     note: value.note,
+    //     enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+    //   };
+    //   updateList.push(dataUpdate);
+    // });
+    if(channelsDataSelected.length > 0 && channelsDataSelected.length == 1){
+        const dataUpdate = {
+          sub_need: channelsDataSelected[0].sub_need,
+          max_thread: value.max_thread,
+          priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+          note: value.note,
+          enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+        };
+        OrderService.updateOrder(dataUpdate,channelsDataSelected[0].order_id).then((res: any) => {
+          if (res.status === 'success') {
+            notificationController.success({
+              message: 'Update Order Success',
+            });
+            getAllData();
+            setChannelsDataSelected([]);
+          } else {
+            notificationController.error({
+              message: res.message,
+            });
+          }
+        });
+    }
+    if(channelsDataSelected.length > 0 && channelsDataSelected.length > 1){
       const dataUpdate = {
-        channel_id: item.channel_id,
-        tab_run: value.tab_run,
+        max_thread: value.max_thread,
         priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
-        note: value.note,
+        orders:channelsDataSelected.select((x:any)=>x.order_id),
         enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
       };
-      updateList.push(dataUpdate);
-    });
-    OrderService.updateMultiOrder(updateList).then((res: any) => {
-      if (res.status === 'success') {
-        notificationController.success({
-          message: 'Update Order Success',
-        });
-        getAllData();
-        setChannelsDataSelected([]);
-      } else {
-        notificationController.error({
-          message: res.message,
-        });
-      }
-    });
+      OrderService.updateMultiOrder(dataUpdate).then((res: any) => {
+        if (res.status === 'success') {
+          notificationController.success({
+            message: 'Update Order Success',
+          });
+          getAllData();
+          setChannelsDataSelected([]);
+        } else {
+          notificationController.error({
+            message: res.message,
+          });
+        }
+      });
+    }
   };
 
   const onCloseModelUpdate = () => {
@@ -662,7 +698,7 @@ const OrderPage: React.FC = () => {
               <Select.Option value={1}>{t('common.High')}</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label={t('common.subscribe_need')} name="subscribe_need" required>
+          <Form.Item label={t('common.subscribe_need')} name="sub_need" required>
             <InputNumber style={{ width: '100%' }} min={0} required />
           </Form.Item>
           <Form.Item label={t('common.note')} name="note" required>
@@ -707,7 +743,12 @@ const OrderPage: React.FC = () => {
         ]}
       >
         <Form name="updateOrder" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} onFinish={onFinishUpdate} form={form}>
-          <Form.Item label={t('common.tab_run')} name="tab_run" required>
+          {channelsDataSelected.length > 0 && channelsDataSelected.length == 1 && (
+            <Form.Item label={t('common.sub_need')} name="sub_need" required>
+              <InputNumber style={{ width: '100%' }} min={0} required />
+            </Form.Item>
+          )}
+          <Form.Item label={t('common.max_thread')} name="max_thread" required>
             <InputNumber style={{ width: '100%' }} min={0} required />
           </Form.Item>
           <Form.Item label={t('common.priority')} name="priority">
@@ -716,9 +757,11 @@ const OrderPage: React.FC = () => {
               <Select.Option value={1}>{t('common.High')}</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label={t('common.note')} name="note" required>
-            <Input style={{ width: '100%' }} required />
-          </Form.Item>
+          {channelsDataSelected.length > 0 && channelsDataSelected.length == 1 && (
+            <Form.Item label={t('common.note')} name="note" required>
+              <Input style={{ width: '100%' }} required />
+            </Form.Item>
+          )}
           <Form.Item label={t('common.state')} name="enabled">
             <Select defaultValue={0}>
               <Select.Option value={0}>Stop</Select.Option>
