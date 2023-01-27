@@ -14,10 +14,10 @@ class ScenarioService extends BaseService<any> {
   protected baseUri = 'data/setting';
 
   public getComputerRunning() {
-    return this.fetch.get(`data/computer/running`);
+    return this.fetch.get(`/api/v2/computer/list`);
   }
   public getListHistory(startDay: any, endDay: any) {
-    return this.fetch.get(`/subscribe/listHistory?from=${startDay}&to=${endDay}`);
+    return this.fetch.get(`api/v2/order/history/list?fromDay=${startDay}&toDay=${endDay}`);
   }
   public getSubscribeByDays(startDay: any, endDay: any) {
     return this.fetch.get(`/data/report?from=${startDay}&to=${endDay}`);

@@ -488,7 +488,7 @@ const OrderPage: React.FC = () => {
 
   const onCancelOrder = () => {
     channelsDataSelected.forEach((item: any) => {
-      OrderService.CancelOrder(item.channel_id).then((res: any) => {
+      OrderService.CancelOrder(item.order_id).then((res: any) => {
         notificationController.success({
           message: 'Cancel Order Success',
         });
