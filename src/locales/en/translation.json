@@ -204,6 +204,7 @@
     "pwa": "Install PWA",
     "radio": "Radio",
     "rate": "Rate",
+    "orderLink": "Order Link",
     "reactSimpleMaps": "React Simple Maps",
     "requiredField": "This field is required!",
     "resetPassword": "Reset password",
@@ -261,6 +262,7 @@
     "inscrease_subscribe": "Inscrease Subscribe",
     "tab_run": "Tab Run",
     "max_thread": "Max Thread",
+    "total_order_number": "Total Order Number",
     "priority": "Priority",
     "last_get": "Last Get",
     "status": "Status",
@@ -287,6 +289,7 @@
     "Cancel": "Cancel",
     "All": "All",
     "Subscribebydate": "Subscribe by date",
+    "RunningMachineList": "Running Machine List",
     "ComputerName": "Computer Name",
     "Run": "Run",
     "Time": "Time",
@@ -305,8 +308,9 @@
     "balance": "Balance",
     "last_order": "Last Order",
     "processing": "Processing",
-    "pending": "Pending"
-    
+    "pending": "Pending",
+    "last_order_time": "Last Order Time",
+    "api_key": "Api Key"
   },
   "medical-dashboard": {
     "activity": {

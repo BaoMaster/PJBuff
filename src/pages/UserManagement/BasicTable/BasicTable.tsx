@@ -9,6 +9,7 @@ import { useMounted } from '@app/hooks/useMounted';
 import UserManagementService from '../UserManagementService';
 import { PointHistory } from '../PointModal/PointHistory';
 import { AddPointForm } from '../PointModal/AddPoint';
+import moment from 'moment';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -103,19 +104,25 @@ export const BasicTable: React.FC = () => {
     },
 
     {
-      title: t('common.balance'),
-      dataIndex: 'balance',
-      key: 'balance',
+      title: t('common.last_order_time'),
+      dataIndex: 'last_order_time',
+      key: 'last_order_time',
+      render: (last_order_time: any) => `${moment(last_order_time).format('DD-MM-YYYY, h:mm:ss a')}`,
     },
     {
-      title: t('common.last_order'),
-      dataIndex: 'last_order',
-      key: 'last_order',
+      title: t('common.point'),
+      dataIndex: 'point',
+      key: 'point',
     },
     {
-      ttle: t('common.processing'),
-      dataIndex: 'processing',
-      key: 'processing',
+      title: t('common.total_order_number'),
+      dataIndex: 'total_order_number',
+      key: 'total_order_number',
+    },
+    {
+      title: t('common.api_key'),
+      dataIndex: 'api_key',
+      key: 'api_key',
     },
     {
       title: t('common.max_thread'),

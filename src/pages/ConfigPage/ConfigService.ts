@@ -1,4 +1,4 @@
-import BaseService from "../../config/_BaseService";
+import BaseService from '../../config/_BaseService';
 
 export interface IScenario {
   id: number;
@@ -11,14 +11,14 @@ export interface ICreateScenario {
 }
 
 class ScenarioService extends BaseService<any> {
-  protected baseUri = "data/setting";
+  protected baseUri = 'api/v2/admin/setting';
 
   public getSetting() {
     return this.fetch.get(`${this.baseUri}`);
   }
 
-  public updateSetting(data:any) {
-    return this.fetch.post(`admin/setting/update`,data);
+  public updateSetting(data: any) {
+    return this.fetch.post(`api/v2/admin/setting`, data);
   }
 
   public createNotDuplicate(data: ICreateScenario) {

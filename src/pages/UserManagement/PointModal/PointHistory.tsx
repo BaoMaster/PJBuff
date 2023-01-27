@@ -11,7 +11,7 @@ export const PointHistory = (Prop: any) => {
   const columns: any = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'user_id',
       key: 'user_id',
     },
     {

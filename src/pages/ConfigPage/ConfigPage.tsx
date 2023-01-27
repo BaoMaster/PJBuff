@@ -28,9 +28,9 @@ const ConfigPage: React.FC = () => {
 
   const getSettingData = () => {
     ConfigSetting.getSetting().then((data: any) => {
-      if (data.status === 'success') {
-        setSettingDataUpdate(data.setting);
-        var convertData = Object.entries(data.setting).map((entry) => {
+      if (data.success) {
+        setSettingDataUpdate(data.data);
+        var convertData = Object.entries(data.data).map((entry) => {
           return { [entry[0]]: entry[1] };
         });
         const dataSetting: any = [];
@@ -53,7 +53,7 @@ const ConfigPage: React.FC = () => {
 
   const onFinishUpdate = (value: any) => {
     ConfigSetting.updateSetting(value).then((data: any) => {
-      if (data.status === 'success') {
+      if (data.success) {
         notificationController.success({
           message: 'Update Setting Success',
         });

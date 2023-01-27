@@ -20,10 +20,10 @@ const Dashboard: React.FC = () => {
     end_date: number;
     start_date: number;
     cancel: number;
-    note: string;
+    cancel_reason: string;
     num_bh: number;
     user_id: number;
-    rate: number;
+    order_link: string;
     sub_start: number;
     time_check: number;
     sub_end: number;
@@ -60,8 +60,8 @@ const Dashboard: React.FC = () => {
 
     ConfigSetting.getListHistory(start, end).then((data: any) => {
       setChartData(data.report);
-      setReportData(data.channels);
-      setReportDataOnLoad(data.channels);
+      setReportData(data.data);
+      setReportDataOnLoad(data.data);
     });
   };
 
@@ -74,8 +74,8 @@ const Dashboard: React.FC = () => {
     ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
       (data: any) => {
         setChartData(data.report);
-        setReportData(data.channels);
-        setReportDataOnLoad(data.channels);
+        setReportData(data.data);
+        setReportDataOnLoad(data.data);
       },
     );
   };
@@ -172,16 +172,16 @@ const Dashboard: React.FC = () => {
     },
     {
       title: t('common.note'),
-      dataIndex: 'note',
-      key: 'note',
-      sorter: (a, b) => a.note.localeCompare(b.note),
+      dataIndex: 'cancel_reason',
+      key: 'cancel_reason',
+      sorter: (a, b) => a.cancel_reason.localeCompare(b.cancel_reason),
       showSorterTooltip: false,
     },
     {
-      title: t('common.rate'),
-      dataIndex: 'rate',
-      key: 'rate',
-      sorter: (a, b) => a.rate - b.rate,
+      title: t('common.orderLink'),
+      dataIndex: 'order_link',
+      key: 'order_link',
+      sorter: (a, b) => a.order_link.localeCompare(b.order_link),
       showSorterTooltip: false,
     },
     {
@@ -227,7 +227,7 @@ const Dashboard: React.FC = () => {
     <>
       <PageTitle>{t('common.history_page')}</PageTitle>
 
-        {/* <S.Card title={t('common.history_order')}>
+      {/* <S.Card title={t('common.history_order')}>
           <Row style={{ width: '100%' }}>
             <Col>
               <Line {...config} />
@@ -235,7 +235,6 @@ const Dashboard: React.FC = () => {
           </Row>
         </S.Card> */}
       <s.TablesWrapper>
-
         <s.Card title={t('common.list_history')}>
           <Row style={{ width: '100%' }}>
             <Col md={6}>
@@ -258,14 +257,13 @@ const Dashboard: React.FC = () => {
               </div>
             </Col>
           </Row>
-          <Row style={{ width: '100%', marginTop:"10px" }}>
+          <Row style={{ width: '100%', marginTop: '10px' }}>
             <Col md={24}>
               <Table dataSource={reportData} columns={columns} />
             </Col>
           </Row>
         </s.Card>
       </s.TablesWrapper>
-
     </>
   );
 };

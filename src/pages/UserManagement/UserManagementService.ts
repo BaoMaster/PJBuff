@@ -23,7 +23,7 @@ class UserManagementService extends BaseService<any> {
     return this.fetch.get(`api/v2/point/list/${userId}`);
   }
   public addPoint(data: any) {
-    return this.fetch.post(`${this.baseUri}/add-point`, data);
+    return this.fetch.post(`api/v2/point/change/${data.user_id}`, data);
   }
 }
 

@@ -65,8 +65,8 @@ const Dashboard: React.FC = () => {
     const end = moment().format('DD-MM-YYYY');
 
     ConfigSetting.getListHistory(start, end).then((data: any) => {
-      setChartData(data.report);
-      setReportData(data.channels);
+      setChartData(data.data);
+      setReportData(data.data);
     });
   };
 
@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
       setComputerData(data.data);
     });
     ConfigSetting.getChannelRunning().then((data: any) => {
-      setRunningChannel(data?.data.length || 0);
+      setRunningChannel(data?.data.length || 0);setReportData
     });
     ConfigSetting.getChannelCompleted().then((data: any) => {
       setCompletedChannel(data?.data.length || 0);
@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
 
     ConfigSetting.getSubscribeByDays(moment(start).format('DD-MM-YYYY'), moment(end).format('DD-MM-YYYY')).then(
       (data: any) => {
-        setReportData(data.reports);
+        setReportData(data.data);
       },
     );
   };
@@ -248,7 +248,7 @@ const Dashboard: React.FC = () => {
             </Col>
           </Row>
         </s.Card>
-        <s.Card title={t('common.Subscribebydate')}>
+        <s.Card title={t('common.RunningMachineList')}>
           <Row style={{ width: '100%' }}>
             <Col md={24}>
               <Table dataSource={computerData} columns={computerColumns} />

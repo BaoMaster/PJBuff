@@ -12,10 +12,10 @@ export interface ICreateScenario {
 
 class ScenarioService extends BaseService<any> {
   public getListHistory(startDay: any, endDay: any) {
-    return this.fetch.get(`/subscribe/listHistory?from=${startDay}&to=${endDay}`);
+    return this.fetch.get(`/api/v2/order/history/list?fromDay=${startDay}&toDay=${endDay}`);
   }
   public restoreOrder(orderId: any) {
-    return this.fetch.get(`/subscribe/restoreChannel?order_id=${orderId}`);
+    return this.fetch.get(`/api/v2/order/restore?order_id=${orderId}`);
   }
 }
 

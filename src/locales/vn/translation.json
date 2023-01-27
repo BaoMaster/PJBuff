@@ -306,7 +306,14 @@
     "last_order": "Đơn cuối",
     "processing": "Tiến trình",
     "max_thread": "Luồng tối đa",
-    "pending": "Đang Chờ"
+    "pending": "Đang Chờ",
+    "orderLink": "Liên kêt đơn",
+    "last_order_time": "Lần đặt cuối",
+    "total_order_number": "Tổng số đơn",
+    "api_key": "Api Key"
+
+    
+
   },
   "medical-dashboard": {
     "activity": {

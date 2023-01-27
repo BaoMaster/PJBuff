@@ -10,7 +10,7 @@ export const AddPointForm = (Props: any) => {
     console.log(value);
     const data = { user_id: Props.userId, point: value.point };
     UserManagementService.addPoint(data).then((res: any) => {
-      if (res.status === 'success') {
+      if (res.success) {
         notificationController.success({
           message: 'Add Point Success',
         });
