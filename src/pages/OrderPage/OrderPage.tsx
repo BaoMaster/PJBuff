@@ -502,13 +502,16 @@ const OrderPage: React.FC = () => {
     formAdd.resetFields();
   };
   const onDeleteOrder = () => {
-    const deleteDataList: any = [];
-    channelsDataSelected.forEach((item: any) => {
-      const dataDelete = { channel_id: item.channel_id };
-      deleteDataList.push(dataDelete);
-    });
-    OrderService.deleteMultiOrder(deleteDataList).then((res: any) => {
-      if (res.status === 'success') {
+    // const deleteDataList: any = [];
+    // channelsDataSelected.forEach((item: any) => {
+    //   const dataDelete = { channel_id: item.channel_id };
+    //   deleteDataList.push(dataDelete);
+    // });
+    const dataUpdate:any={
+      orders:channelsDataSelected.select((x:any)=>x.order_id)
+    };
+    OrderService.deleteMultiOrder(dataUpdate).then((res: any) => {
+      if (res.success) {
         notificationController.success({
           message: 'Delete Order Success',
         });
