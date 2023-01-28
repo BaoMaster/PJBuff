@@ -247,14 +247,16 @@ const OrderPage: React.FC = () => {
   };
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    selectedRowKeys,
+    onChange: (selectedRowKeysNew: React.Key[], selectedRows: any[]) => {
+      console.log(`selectedRowKeys: ${selectedRowKeysNew}`, 'selectedRows: ', selectedRows);
       const selectedData: any = [];
       selectedRows.forEach((item: any) => {
         const temp = channelsData.find((x: any) => x.order_id === item.order_id);
         selectedData.push(temp);
       });
       setChannelsDataSelected(selectedData);
+      setSelectedRowKeys(selectedRowKeysNew);
     },
     getCheckboxProps: (record: any) => ({
       disabled: record.name === 'Disabled User', // Column configuration not to be checked
@@ -642,6 +644,7 @@ const OrderPage: React.FC = () => {
                 ) : (
                   <div />
                 )}
+                <Button onClick={() => setSelectedRowKeys([])}>ewe</Button>
                 {admin ? (
                   <Button
                     disabled={channelsDataSelected.length > 0 ? false : true}
