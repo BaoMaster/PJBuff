@@ -316,7 +316,13 @@ const OrderPage: React.FC = () => {
       sorter: (a, b) => a.insert_date - b.insert_date,
       showSorterTooltip: false,
     },
-
+    {
+      title: t('common.max_thread'),
+      dataIndex: 'max_thread',
+      key: 'max_thread',
+      sorter: (a, b) => a.max_thread - b.max_thread,
+      showSorterTooltip: false,
+    },
     {
       title: t('common.subscribe_need'),
       dataIndex: 'sub_need',
@@ -575,6 +581,20 @@ const OrderPage: React.FC = () => {
     });
   };
 
+  const onOpenModalEdit = () => {
+    if(channelsDataSelected.length > 0 && channelsDataSelected.length == 1) {
+      
+      form.setFieldsValue({
+        sub_need: channelsDataSelected[0].sub_need,
+        max_thread: channelsDataSelected[0].max_thread,
+        note:channelsDataSelected[0].note,
+        priority: channelsDataSelected[0].priority,
+        enabled: channelsDataSelected[0].enabled
+      })
+    }
+    setIsOpenEdit(true);
+  }
+
   const handleChangeSelectState = (value: string) => {
     setStatus(value);
     getAllData(value);
@@ -608,7 +628,7 @@ const OrderPage: React.FC = () => {
                     disabled={channelsDataSelected.length > 0 ? false : true}
                     severity="info"
                     style={{ marginLeft: '15px' }}
-                    onClick={() => setIsOpenEdit(true)}
+                    onClick={() => onOpenModalEdit()}
                   >
                     {t('common.edit')}
                   </Button>
