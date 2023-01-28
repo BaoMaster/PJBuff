@@ -861,6 +861,8 @@ const OrderPage: React.FC = () => {
               min={0}
               required={channelsDataSelected.length > 0 && channelsDataSelected.length == 1 ? true : false}
             />
+          {/* <Form.Item label={t('common.max_thread')} name="max_thread" required>
+            <InputNumber style={{ width: '100%' }}  /> */}
           </Form.Item>
           <Form.Item label={t('common.priority')} name="priority">
             <Select defaultValue={0}>
