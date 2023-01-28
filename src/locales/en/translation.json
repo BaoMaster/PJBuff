@@ -239,6 +239,7 @@
     "userID": "UID:",
     "orderId": "Order Id",
     "channel_id": "Channel Id",
+    "order_link": "Order Link",
     "user_id": "User Id",
     "sub_start": "Sub Start",
     "sub_end": "Sub End",
