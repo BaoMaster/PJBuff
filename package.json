@@ -11,6 +11,7 @@
     "url": "https://github.com/altence/lightence-admin/issues"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^4.6.2",
     "@craco/craco": "^6.1.2",
     "@reduxjs/toolkit": "^1.7.1",
@@ -26,6 +27,7 @@
     "google-map-react": "^2.1.10",
     "i18next": "^20.4.0",
     "leaflet": "^1.7.1",
+    "moment": "^2.29.4",
     "patch-package": "^6.4.7",
     "pigeon-maps": "^0.19.7",
     "postinstall-postinstall": "^2.1.0",

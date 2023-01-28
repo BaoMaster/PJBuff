@@ -9,15 +9,16 @@ import { ReactComponent as FacebookIcon } from '@app/assets/icons/facebook.svg';
 import { ReactComponent as GoogleIcon } from '@app/assets/icons/google.svg';
 import * as S from './LoginForm.styles';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
+import AuthService from '../AuthService';
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 export const initValues: LoginFormData = {
-  email: 'hello@altence.com',
-  password: 'some-test-pass',
+  username: 'admin',
+  password: 'admin',
 };
 
 export const LoginForm: React.FC = () => {
@@ -29,11 +30,26 @@ export const LoginForm: React.FC = () => {
 
   const handleSubmit = (values: LoginFormData) => {
     setLoading(true);
-    dispatch(doLogin(values))
-      .unwrap()
-      .then(() => navigate('/'))
-      .catch((err) => {
-        notificationController.error({ message: err.message });
+
+    AuthService.login(values)
+      .then(async (res: any) => {
+        if (res.success) {
+          localStorage.setItem('AccessToken', res.data.token);
+          await AuthService.verifyToken().then((resp: any) => {
+            localStorage.setItem('UserData', JSON.stringify(resp.data));
+            navigate('/');
+            notificationController.success({
+              message: 'Login Success',
+            });
+          });
+        } else {
+          notificationController.error({
+            message: res.message,
+          });
+          setLoading(false);
+        }
+      })
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -44,17 +60,11 @@ export const LoginForm: React.FC = () => {
         <Auth.FormTitle>{t('common.login')}</Auth.FormTitle>
         <S.LoginDescription>{t('login.loginInfo')}</S.LoginDescription>
         <Auth.FormItem
-          name="email"
-          label={t('common.email')}
-          rules={[
-            { required: true, message: t('common.requiredField') },
-            {
-              type: 'email',
-              message: t('common.notValidEmail'),
-            },
-          ]}
+          name="username"
+          label={t('common.userName')}
+          rules={[{ required: true, message: t('common.requiredField') }]}
         >
-          <Auth.FormInput placeholder={t('common.email')} />
+          <Auth.FormInput placeholder={t('common.userName')} />
         </Auth.FormItem>
         <Auth.FormItem
           label={t('common.password')}
@@ -77,22 +87,6 @@ export const LoginForm: React.FC = () => {
           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
             {t('common.login')}
           </Auth.SubmitButton>
-        </BaseForm.Item>
-        <BaseForm.Item noStyle>
-          <Auth.SocialButton type="default" htmlType="submit">
-            <Auth.SocialIconWrapper>
-              <GoogleIcon />
-            </Auth.SocialIconWrapper>
-            {t('login.googleLink')}
-          </Auth.SocialButton>
-        </BaseForm.Item>
-        <BaseForm.Item noStyle>
-          <Auth.SocialButton type="default" htmlType="submit">
-            <Auth.SocialIconWrapper>
-              <FacebookIcon />
-            </Auth.SocialIconWrapper>
-            {t('login.facebookLink')}
-          </Auth.SocialButton>
         </BaseForm.Item>
         <Auth.FooterWrapper>
           <Auth.Text>

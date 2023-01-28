@@ -7,7 +7,6 @@ import { Button } from 'components/common/buttons/Button/Button';
 import { useTranslation } from 'react-i18next';
 import { defineColorByPriority } from '@app/utils/utils';
 import { notificationController } from 'controllers/notificationController';
-import { Status } from '@app/components/profile/profileCard/profileFormNav/nav/payments/paymentHistory/Status/Status';
 import { useMounted } from '@app/hooks/useMounted';
 
 const initialPagination: Pagination = {
@@ -115,22 +114,6 @@ export const BasicTable: React.FC = () => {
     {
       title: t('common.address'),
       dataIndex: 'address',
-    },
-    {
-      title: t('common.tags'),
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (tags: Tag[]) => (
-        <Row gutter={[10, 10]}>
-          {tags.map((tag: Tag) => {
-            return (
-              <Col key={tag.value}>
-                <Status color={defineColorByPriority(tag.priority)} text={tag.value.toUpperCase()} />
-              </Col>
-            );
-          })}
-        </Row>
-      ),
     },
     {
       title: t('tables.actions'),

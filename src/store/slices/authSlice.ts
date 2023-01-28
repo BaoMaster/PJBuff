@@ -12,7 +12,7 @@ import {
   setNewPassword,
 } from '@app/api/auth.api';
 import { setUser } from '@app/store/slices/userSlice';
-import { deleteToken, deleteUser, persistToken, readToken } from '@app/services/localStorage.service';
+import { deleteToken, deleteUser, deleteUserData, persistToken, readToken } from '@app/services/localStorage.service';
 
 export interface AuthSlice {
   token: string | null;
@@ -52,6 +52,7 @@ export const doSetNewPassword = createAsyncThunk('auth/doSetNewPassword', async 
 export const doLogout = createAsyncThunk('auth/doLogout', (payload, { dispatch }) => {
   deleteToken();
   deleteUser();
+  deleteUserData();
   dispatch(setUser(null));
 });
 

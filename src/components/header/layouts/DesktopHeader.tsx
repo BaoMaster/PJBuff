@@ -15,22 +15,20 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout
   const leftSide = isTwoColumnsLayout ? (
     <S.SearchColumn xl={16} xxl={17}>
       <Row justify="space-between">
-        <Col xl={15} xxl={12}>
-          <HeaderSearch />
-        </Col>
-        <Col>
+        <Col xl={15} xxl={12} />
+
+        {/* <Col>
           <S.GHButton />
-        </Col>
+        </Col> */}
       </Row>
     </S.SearchColumn>
   ) : (
     <>
-      <Col lg={10} xxl={8}>
-        <HeaderSearch />
-      </Col>
-      <Col>
+      <Col lg={10} xxl={8} />
+
+      {/* <Col>
         <S.GHButton />
-      </Col>
+      </Col> */}
     </>
   );
 
@@ -45,11 +43,6 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout
               <Col>
                 <HeaderFullscreen />
               </Col>
-
-              <Col>
-                <NotificationsDropdown />
-              </Col>
-
               <Col>
                 <SettingsDropdown />
               </Col>

@@ -1,5 +1,5 @@
 import { httpApi } from '@app/api/http.api';
-import './mocks/auth.api.mock';
+// import './mocks/auth.api.mock';
 import { UserModel } from '@app/domain/UserModel';
 
 export interface AuthData {

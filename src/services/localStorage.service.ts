@@ -31,11 +31,11 @@ const testUser = {
 };
 
 export const persistToken = (token: string): void => {
-  localStorage.setItem('accessToken', token);
+  localStorage.setItem('AccessToken', token);
 };
 
 export const readToken = (): string => {
-  return localStorage.getItem('accessToken') || 'bearerToken';
+  return localStorage.getItem('AccessToken') || 'bearerToken';
 };
 
 export const persistUser = (user: UserModel): void => {
@@ -48,5 +48,6 @@ export const readUser = (): UserModel | null => {
   return userStr ? JSON.parse(userStr) : testUser;
 };
 
-export const deleteToken = (): void => localStorage.removeItem('accessToken');
+export const deleteToken = (): void => localStorage.removeItem('AccessToken');
 export const deleteUser = (): void => localStorage.removeItem('user');
+export const deleteUserData = (): void => localStorage.removeItem('UserData');

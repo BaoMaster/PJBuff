@@ -1,9 +1,9 @@
-import fetch from "./FetchInterceptor";
-import { TablePaginationConfig } from "antd";
+import fetch from './FetchInterceptor';
+import { TablePaginationConfig } from 'antd';
 
 export default abstract class BaseService<T> {
   // - properties
-  protected baseUri = "";
+  protected baseUri = '';
   protected fetch = fetch;
 
   // - apis

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, InputNumber, Modal, Row } from 'antd';
+import { Col, Form, InputNumber, Modal, Row, Table } from 'antd';
 import { AutoComplete } from 'components/common/AutoComplete/AutoComplete';
 import { SearchInput as CommonSearchInput } from 'components/common/inputs/SearchInput/SearchInput';
 import { Option } from 'components/common/selects/Select/Select';
@@ -10,12 +10,16 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import ConfigSetting from './ConfigService';
 import { notificationController } from '@app/controllers/notificationController';
+import { ColumnsType } from 'antd/lib/table';
+import * as s from './Tables.styles';
+import { Button } from '@app/components/common/buttons/Button/Button';
 
 const ConfigPage: React.FC = () => {
   const { t } = useTranslation();
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const [result, setResult] = useState<string[]>([]);
   const [settingData, setSettingData] = useState<any>(null);
+  const [settingDataUpdate, setSettingDataUpdate] = useState<any>(null);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
 
   useEffect(() => {
@@ -24,21 +28,38 @@ const ConfigPage: React.FC = () => {
 
   const getSettingData = () => {
     ConfigSetting.getSetting().then((data: any) => {
-      if (data.status === 'success') {
-        setSettingData(data.setting);
+      if (data.success) {
+        setSettingDataUpdate(data.data);
+        const convertData = Object.entries(data.data).map((entry) => {
+          return { [entry[0]]: entry[1] };
+        });
+        const dataSetting: any = [];
+        convertData.forEach((item: any) => {
+          const settingNameLength = Object.keys(item).toString().split('_').length;
+          let name = Object.keys(item).toString();
+          for (let index = 0; index < settingNameLength; index++) {
+            name = name.replace('_', ' ');
+          }
+
+          const dataRes = { setting: name.toUpperCase(), value: Object.values(item).toString() };
+          dataSetting.push(dataRes);
+        });
+        console.log(dataSetting);
+
+        setSettingData(dataSetting);
       }
     });
   };
 
   const onFinishUpdate = (value: any) => {
     ConfigSetting.updateSetting(value).then((data: any) => {
-      if (data.status === 'success') {
+      if (data.success) {
         notificationController.success({
           message: 'Update Setting Success',
         });
         setIsOpenEdit(false);
         getSettingData();
-      }else{
+      } else {
         notificationController.error({
           message: data.message,
         });
@@ -46,116 +67,91 @@ const ConfigPage: React.FC = () => {
     });
   };
 
+  const columns: any = [
+    {
+      title: 'Setting',
+      dataIndex: 'setting',
+    },
+    {
+      title: 'Value',
+      dataIndex: 'value',
+      width: '200px',
+    },
+  ];
+
   return (
     <>
       <PageTitle>Page Configuration</PageTitle>
-      <Col>
-        <S.Card title="Page Configuration" extra={<Button onClick={() => setIsOpenEdit(true)}>Edit</Button>}>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Bonus like over 500: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.bonus_like_over_500}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Bonus like under 500: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.bonus_like_under_500}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Bonus over 500: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.bonus_over_500}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Bonus under 500: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.bonus_under_500}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Max Minute: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.max_minute}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Max Thread: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.max_thread}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>Price Rate: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.price_rate}</label>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <label>User Thread: </label>
-            </Col>
-            <Col>
-              <label>{settingData?.user_thread}</label>
-            </Col>
-          </Row>
-        </S.Card>
-      </Col>
+      <s.TablesWrapper>
+        <s.Card title={t('common.PageConfiguration')} padding="1.25rem 1.25rem 0">
+          <Button
+            severity="info"
+            style={{ float: 'right', marginBottom: '10px', width: '100px' }}
+            onClick={() => setIsOpenEdit(true)}
+          >
+            {t('common.edit')}
+          </Button>
+          <Table columns={columns} dataSource={settingData} pagination={false} bordered />
+        </s.Card>
+      </s.TablesWrapper>
+      {/* <Table columns={columns} dataSource={settingData} pagination={false} bordered /> */}
       <Modal
         title="Update Setting"
         visible={isOpenEdit}
         onCancel={() => setIsOpenEdit(false)}
         footer={[
           <>
-            <Button onClick={() => setIsOpenEdit(false)}>Close</Button>
-            <Button type="primary" className="btn btn-primary" form="updateSetting" key="submit" htmlType="submit">
-              Save changes
+            <Button style={{ display: 'inline' }} onClick={() => setIsOpenEdit(false)}>
+              {t('common.close')}
+            </Button>
+            <Button
+              style={{ display: 'inline' }}
+              type="primary"
+              className="btn btn-primary"
+              form="updateSetting"
+              key="submit"
+              htmlType="submit"
+            >
+              {t('common.edit')}
             </Button>
           </>,
         ]}
       >
         <Form
           name="updateSetting"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          initialValues={settingData}
+          labelCol={{ span: 12 }}
+          wrapperCol={{ span: 20 }}
+          initialValues={settingDataUpdate}
           onFinish={onFinishUpdate}
         >
-          <Form.Item label="Bonus Over 500" name="bonus_over_500">
+          <Form.Item label={t('common.subsbonus_over_500')} name="bonus_over_500">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Bonus Under 500" name="bonus_under_500">
+          <Form.Item label={t('common.bonus_under_500')} name="bonus_under_500">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="User Thread" name="user_thread">
+          <Form.Item label={t('common.subsuser_threads')} name="user_threads">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Max Thread" name="max_thread">
+          <Form.Item label={t('common.subuser_threads_4000')} name="user_threads_4000">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Max Minute" name="max_minute">
+          <Form.Item label={t('common.user_threads_5000')} name="user_threads_5000">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Channel Prior" name="channel_prior">
+          <Form.Item label={t('common.submax_orders')} name="max_orders">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Price Rate" name="price_rate">
+          <Form.Item label={t('common.max_minute')} name="max_minute">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label={t('common.sub_needs')} name="sub_needs">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label={t('common.time_wait')} name="time_wait">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label={t('common.price_every_10_subs')} name="price_every_10_subs">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
         </Form>
