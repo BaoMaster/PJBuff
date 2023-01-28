@@ -46,6 +46,8 @@ const Dashboard: React.FC = () => {
   const [dates, setDates] = useState<any>(null);
   const [value, setValue] = useState<any>(null);
   const [searchValue, setSearchValue] = useState<any>();
+  const [fillterValue, setFillterValue] = useState<any>();
+
   const { RangePicker } = DatePicker;
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const Dashboard: React.FC = () => {
     const end = moment().format('DD-MM-YYYY');
     // console.log(end);
 
-    ConfigSetting.getListHistory(start, end).then((data: any) => {
+    ConfigSetting.getListHistory(start, end, searchValue).then((data: any) => {
       setChartData(data.report);
       setReportData(data.data);
       setReportDataOnLoad(data.data);
@@ -71,13 +73,15 @@ const Dashboard: React.FC = () => {
     // const start = date.date[0][0]._d;
     // const end = date.date[0][1]._d;
 
-    ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
-      (data: any) => {
-        setChartData(data.report);
-        setReportData(data.data);
-        setReportDataOnLoad(data.data);
-      },
-    );
+    ConfigSetting.getListHistory(
+      moment(dates[0]).format('DD-MM-YYYY'),
+      moment(dates[1]).format('DD-MM-YYYY'),
+      searchValue,
+    ).then((data: any) => {
+      setChartData(data.report);
+      setReportData(data.data);
+      setReportDataOnLoad(data.data);
+    });
   };
   const RestoreOrder = (id: any) => {
     ConfigSetting.restoreOrder(id);
@@ -223,6 +227,11 @@ const Dashboard: React.FC = () => {
     filteredData;
     setReportData(filteredData);
   };
+  const onChangeInputFillter = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const currValue = e.target.value;
+    setSearchValue(currValue);
+  };
+
   return (
     <>
       <PageTitle>{t('common.history_page')}</PageTitle>
@@ -247,7 +256,13 @@ const Dashboard: React.FC = () => {
                 />
               </Space>
             </Col>
-            <Col md={12}>
+            <Col md={6}>
+              <div style={{ marginRight: '10px', display: 'flex' }}>
+                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>UID/OID</span>
+                <Input value={fillterValue} onChange={onChangeInputFillter} />
+              </div>
+            </Col>
+            <Col md={6}>
               <Button onClick={() => GetListHistory()}>Fillter</Button>
             </Col>
             <Col md={6}>
