@@ -461,10 +461,12 @@ const OrderPage: React.FC = () => {
         item.channel_id,
         value.refund === null || typeof value.refund === 'undefined' ? 1 : value.refund,
       ).then((res: any) => {
-        notificationController.success({
-          message: 'Update Order Success',
-        });
-        getAllData();
+        if (res.success) {
+          notificationController.success({
+            message: 'Update Order Success',
+          });
+          getAllData();
+        }
       });
     });
   };
@@ -562,11 +564,13 @@ const OrderPage: React.FC = () => {
   const onCancelOrder = () => {
     channelsDataSelected.forEach((item: any) => {
       OrderService.CancelOrder(item.order_id).then((res: any) => {
-        notificationController.success({
-          message: 'Cancel Order Success',
-        });
-        getAllData();
-        setChannelsDataSelected([]);
+        if (res.success) {
+          notificationController.success({
+            message: 'Cancel Order Success',
+          });
+          getAllData();
+          setChannelsDataSelected([]);
+        }
       });
     });
   };

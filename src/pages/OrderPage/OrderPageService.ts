@@ -14,7 +14,7 @@ class ScenarioService extends BaseService<any> {
   protected baseUri = 'data/setting';
 
   public getComputerRunning() {
-    return this.fetch.get(`data/computer/running`);
+    return this.fetch.get(`api/v2/computer/list`);
   }
 
   public getSubscribeByDays(startDay: any, endDay: any) {
@@ -56,7 +56,7 @@ class ScenarioService extends BaseService<any> {
   }
 
   public ConfirmCancelOrder(id: any, refund: number) {
-    return this.fetch.get(`/subscribe/confirmCancel?channel_id=${id}&refund${refund}`);
+    return this.fetch.get(`/api/v2/order/confirm/${id}?refund=${refund}`);
   }
 }
 
