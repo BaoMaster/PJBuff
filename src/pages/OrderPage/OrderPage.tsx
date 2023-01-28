@@ -644,7 +644,6 @@ const OrderPage: React.FC = () => {
                 ) : (
                   <div />
                 )}
-                <Button onClick={() => setSelectedRowKeys([])}>ewe</Button>
                 {admin ? (
                   <Button
                     disabled={channelsDataSelected.length > 0 ? false : true}
