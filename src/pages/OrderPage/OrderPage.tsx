@@ -90,7 +90,7 @@ const OrderPage: React.FC = () => {
 
   const getAllData = async (value?: string) => {
     setIsLoading(true);
-    var resData: any = [];
+    const resData: any = [];
     if (value === 'running') {
       setIsPending(false);
       OrderService.getChannelRunning().then((data: any) => {

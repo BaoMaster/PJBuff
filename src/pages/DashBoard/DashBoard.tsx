@@ -45,7 +45,7 @@ const Dashboard: React.FC = () => {
     value: DatePickerProps['value'] | RangePickerProps['value'],
     dateString: [string, string] | string,
   ) => {
-    let date = [];
+    const date = [];
     date.push(value);
     setDate({ date: date });
   };

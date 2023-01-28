@@ -8,12 +8,12 @@ const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-useEffect(()=>{
-  const findToken = localStorage.getItem("AccessToken");
-  if(findToken!=null){
-    navigate("/")
-  }
-})
+  useEffect(() => {
+    const findToken = localStorage.getItem('AccessToken');
+    if (findToken != null) {
+      navigate('/');
+    }
+  });
 
   return (
     <>

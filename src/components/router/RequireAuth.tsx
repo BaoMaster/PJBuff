@@ -5,9 +5,9 @@ import { WithChildrenProps } from '@app/types/generalTypes';
 
 const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
   // const token = useAppSelector((state) => state.auth.token);
-  const token = localStorage.getItem("AccessToken");
+  const token = localStorage.getItem('AccessToken');
   // console.log(222,token, localStorage.getItem("AccessToken"));
-  
+
   return token ? <>{children}</> : <Navigate to="/auth/login" replace />;
 };
 

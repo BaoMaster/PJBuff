@@ -15,7 +15,7 @@ const TOKEN_PAYLOAD_KEY = 'Authorization';
 const PUBLIC_REQUEST_KEY = 'public-request';
 const AUTH_TOKEN = 'AccessToken';
 
-let notificationParam: any = {
+const notificationParam: any = {
   message: 'Authentication Fail',
 };
 
@@ -28,7 +28,7 @@ service.interceptors.request.use(
     const jwtToken = localStorage.getItem(AUTH_TOKEN);
     if (jwtToken) {
       // config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
-      config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
+      config.headers[TOKEN_PAYLOAD_KEY] = 'Bearer ' + jwtToken;
       // config.headers[TOKEN_PAYLOAD_KEY] = "C0iDGQOe23HC1rg2ra4CCCC";
     }
 

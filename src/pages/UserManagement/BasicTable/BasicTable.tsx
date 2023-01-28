@@ -67,7 +67,7 @@ export const BasicTable: React.FC = () => {
 
   const handleEditUser = async (userId: number) => {
     setUserSelected(userId);
-    var findUser = await tableData.data.find((x: any) => x.id === userId);
+    const findUser = await tableData.data.find((x: any) => x.id === userId);
     form.setFieldsValue({
       username: findUser.username,
       discount: findUser.discount,

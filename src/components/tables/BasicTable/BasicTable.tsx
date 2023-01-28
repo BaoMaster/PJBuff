@@ -114,9 +114,7 @@ export const BasicTable: React.FC = () => {
     {
       title: t('common.address'),
       dataIndex: 'address',
-    }
-    ,
-
+    },
     {
       title: t('tables.actions'),
       dataIndex: 'actions',

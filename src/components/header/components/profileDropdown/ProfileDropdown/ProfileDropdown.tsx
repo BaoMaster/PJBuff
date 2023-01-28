@@ -12,9 +12,9 @@ export const ProfileDropdown: React.FC = () => {
   const { isTablet } = useResponsive();
 
   // const user = useAppSelector((state) => state.user.user);
-  const user:any = localStorage.getItem("UserData");
+  const user: any = localStorage.getItem('UserData');
   const userInfo = JSON.parse(user);
-  return user!=null&&user!='' ? (
+  return user != null && user != '' ? (
     <Dropdown overlay={<ProfileOverlay />} trigger={['click']}>
       <S.ProfileDropdownHeader as={Row} gutter={[10, 10]} align="middle">
         <Col>

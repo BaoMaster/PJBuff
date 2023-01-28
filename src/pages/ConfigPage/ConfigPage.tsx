@@ -30,7 +30,7 @@ const ConfigPage: React.FC = () => {
     ConfigSetting.getSetting().then((data: any) => {
       if (data.success) {
         setSettingDataUpdate(data.data);
-        var convertData = Object.entries(data.data).map((entry) => {
+        const convertData = Object.entries(data.data).map((entry) => {
           return { [entry[0]]: entry[1] };
         });
         const dataSetting: any = [];

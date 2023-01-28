@@ -65,7 +65,6 @@ export const AppRouter: React.FC = () => {
 
           <Route path="server-error" element={<ServerError />} />
           <Route path="404" element={<Error404 />} />
-       
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
@@ -83,7 +82,7 @@ export const AppRouter: React.FC = () => {
           <Route path="new-password" element={<NewPasswordPage />} />
         </Route>
         <Route path="/logout" element={<LogoutFallback />} />
-        <Route path="*" element={<Error404/>} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );
