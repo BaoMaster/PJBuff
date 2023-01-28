@@ -28,6 +28,8 @@ const OrderPage: React.FC = () => {
   const [channelsDataOnLoad, setChannelsDataOnLoad] = useState<any>([]);
   const [channelAddData, setChannelAddData] = useState<any>([]);
   const [channelsDataSelected, setChannelsDataSelected] = useState<any>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [batchRecord, setBatchRecord] = useState<any>([]);
   const [userList, setUserList] = useState<UserListSelectType[]>([]);
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
@@ -230,6 +232,7 @@ const OrderPage: React.FC = () => {
       setIsPending(false);
       setIsOpenConfirmCancel(false);
       setChannelsDataSelected([]);
+      setSelectedRowKeys([]);
     }
 
     // OrderService.getChannelRunning().then((data: any) => {
@@ -260,9 +263,9 @@ const OrderPage: React.FC = () => {
   };
   const channelAddDColumns: ColumnsType<ChannelAddDataType> = [
     {
-      title: t('common.channel_id'),
-      dataIndex: 'channel_id',
-      key: 'channel_id',
+      title: t('common.order_link'),
+      dataIndex: 'order_link',
+      key: 'order_link',
     },
     {
       title: 'Priority',
@@ -273,6 +276,11 @@ const OrderPage: React.FC = () => {
       title: 'Subscribe Need',
       dataIndex: 'sub_need',
       key: 'sub_need',
+    },
+    {
+      title: 'Max Thread',
+      dataIndex: 'max_thread',
+      key: 'max_thread',
     },
     {
       title: 'Note',
@@ -408,10 +416,11 @@ const OrderPage: React.FC = () => {
 
   const addToList = (value: any) => {
     const dataAdd = {
-      channel_id: value.channel_id,
+      order_link: value.order_link,
       priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
       note: value.note,
       sub_need: value.sub_need,
+      max_thread: value.max_thread,
       state: 0,
     };
     formAdd.resetFields();
@@ -423,17 +432,17 @@ const OrderPage: React.FC = () => {
       if (data.state !== 1) {
         delete data['state'];
         OrderService.insertOrder(data).then((res: any) => {
-          if (res.status === 'success') {
+          if (res.success) {
+            getAllData();
             notificationController.success({
               message: 'Add Order Success',
             });
             ListData.splice(index, 1);
             setChannelAddData((prevState: any) => {
               const newState = prevState.map((obj: any) => {
-                if (data.channel_id === obj.channel_id) {
+                if (data.order_link === obj.order_link) {
                   return { ...obj, state: 1 };
                 }
-
                 return obj;
               });
 
@@ -445,13 +454,11 @@ const OrderPage: React.FC = () => {
             });
             setChannelAddData((prevState: any) => {
               const newState = prevState.map((obj: any) => {
-                if (data.channel_id === obj.channel_id) {
+                if (data.order_link === obj.order_link) {
                   return { ...obj, state: 0 };
                 }
-
                 return obj;
               });
-
               return newState;
             });
           }
@@ -469,7 +476,7 @@ const OrderPage: React.FC = () => {
       ).then((res: any) => {
         if (res.success) {
           notificationController.success({
-            message: 'Update Order Success',
+            message: 'Confirm Cancel Order Success',
           });
           getAllData();
         }
@@ -494,15 +501,16 @@ const OrderPage: React.FC = () => {
         max_thread: value.max_thread,
         priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
         note: value.note,
-        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
       };
       OrderService.updateOrder(dataUpdate, channelsDataSelected[0].order_id).then((res: any) => {
-        if (res.status === 'success') {
+        if (res.success) {
           notificationController.success({
             message: 'Update Order Success',
           });
           getAllData();
           setChannelsDataSelected([]);
+          setSelectedRowKeys([])
         } else {
           notificationController.error({
             message: res.message,
@@ -510,20 +518,25 @@ const OrderPage: React.FC = () => {
         }
       });
     }
+    const orderIdArray:any = [];
+    channelsDataSelected.forEach((item:any) => {
+      orderIdArray.push(item.order_id)
+    });
     if (channelsDataSelected.length > 0 && channelsDataSelected.length > 1) {
       const dataUpdate = {
         max_thread: value.max_thread,
         priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
-        orders: channelsDataSelected.select((x: any) => x.order_id),
-        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+        orders: orderIdArray,
+        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
       };
       OrderService.updateMultiOrder(dataUpdate).then((res: any) => {
-        if (res.status === 'success') {
+        if (res.success) {
           notificationController.success({
             message: 'Update Order Success',
           });
           getAllData();
           setChannelsDataSelected([]);
+          setSelectedRowKeys([])
         } else {
           notificationController.error({
             message: res.message,
@@ -541,6 +554,7 @@ const OrderPage: React.FC = () => {
   const onCloseModelAdd = () => {
     setIsOpenAdd(false);
     setChannelAddData([]);
+    setSelectedRowKeys([])
     formAdd.resetFields();
   };
   const onDeleteOrder = () => {
@@ -549,8 +563,12 @@ const OrderPage: React.FC = () => {
     //   const dataDelete = { channel_id: item.channel_id };
     //   deleteDataList.push(dataDelete);
     // });
+    const orderIdArray:any = [];
+    channelsDataSelected.forEach((item:any) => {
+      orderIdArray.push(item.order_id)
+    });
     const dataUpdate: any = {
-      orders: channelsDataSelected.select((x: any) => x.order_id),
+      orders: orderIdArray,
     };
     OrderService.deleteMultiOrder(dataUpdate).then((res: any) => {
       if (res.success) {
@@ -559,6 +577,7 @@ const OrderPage: React.FC = () => {
         });
         getAllData();
         setChannelsDataSelected([]);
+        setSelectedRowKeys([]);
       } else {
         notificationController.error({
           message: res.message,
@@ -576,24 +595,24 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
+          setSelectedRowKeys([])
         }
       });
     });
   };
 
   const onOpenModalEdit = () => {
-    if(channelsDataSelected.length > 0 && channelsDataSelected.length == 1) {
-      
+    if (channelsDataSelected.length > 0 && channelsDataSelected.length == 1) {
       form.setFieldsValue({
         sub_need: channelsDataSelected[0].sub_need,
         max_thread: channelsDataSelected[0].max_thread,
-        note:channelsDataSelected[0].note,
+        note: channelsDataSelected[0].note,
         priority: channelsDataSelected[0].priority,
-        enabled: channelsDataSelected[0].enabled
-      })
+        enabled: channelsDataSelected[0].enabled,
+      });
     }
     setIsOpenEdit(true);
-  }
+  };
 
   const handleChangeSelectState = (value: string) => {
     setStatus(value);
@@ -726,6 +745,7 @@ const OrderPage: React.FC = () => {
                   scroll={{ x: 2000 }}
                   rowSelection={{ ...rowSelection }}
                   loading={isLoading}
+                  rowKey={"order_id"}
                 />
               </Col>
             </Row>
@@ -758,7 +778,7 @@ const OrderPage: React.FC = () => {
         ]}
       >
         <Form name="addOrder" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }} onFinish={addToList} form={formAdd}>
-          <Form.Item label={t('common.channel_id')} name="channel_id" required>
+          <Form.Item label={t('common.order_link')} name="order_link" required>
             <Input style={{ width: '100%' }} required />
           </Form.Item>
           <Form.Item label={t('common.priority')} name="priority">
@@ -768,6 +788,9 @@ const OrderPage: React.FC = () => {
             </Select>
           </Form.Item>
           <Form.Item label={t('common.subscribe_need')} name="sub_need" required>
+            <InputNumber style={{ width: '100%' }} min={0} required />
+          </Form.Item>
+          <Form.Item label={t('common.max_thread')} name="max_thread" required>
             <InputNumber style={{ width: '100%' }} min={0} required />
           </Form.Item>
           <Form.Item label={t('common.note')} name="note" required>
@@ -832,7 +855,7 @@ const OrderPage: React.FC = () => {
             </Form.Item>
           )}
           <Form.Item label={t('common.state')} name="enabled">
-            <Select defaultValue={0}>
+            <Select defaultValue={1}>
               <Select.Option value={0}>Stop</Select.Option>
               <Select.Option value={1}>Run</Select.Option>
             </Select>
