@@ -310,10 +310,17 @@
     "orderLink": "Liên kêt đơn",
     "last_order_time": "Lần đặt cuối",
     "total_order_number": "Tổng số đơn",
-    "api_key": "Api Key"
-
-    
-
+    "api_key": "Api Key",
+    "max_minute": "Thời gian video tối đa",
+    "price_every_10_subs": "Giá mỗi 10 subs",
+    "bonus_under_500": "Số sub bonus khi đơn < 500",
+    "subsbonus_over_500": "Số sub bonus khi đơn > 500",
+    "subsuser_threads": "Số luồng khi đơn < 4000",
+    "subuser_threads_4000": "Số luồng khi đơn > 4000 < 5000",
+    "user_threads_5000": "Số luồng khi đơn > 5000",
+    "submax_orders": "Max đơn hệ thống đáp ứng",
+    "time_wait": "Thời gian chờ verify kênh",
+    "sub_needs": "Số sub verify kênh"
   },
   "medical-dashboard": {
     "activity": {

@@ -310,7 +310,18 @@
     "processing": "Processing",
     "pending": "Pending",
     "last_order_time": "Last Order Time",
-    "api_key": "Api Key"
+    "api_key": "Api Key",
+
+    "max_minute": "Max Minute",
+    "price_every_10_subs": "Price Every 10 Subs",
+    "bonus_under_500": "Bonus Under 500",
+    "subsbonus_over_500": "Subs Bonus Over 500",
+    "subsuser_threads": "Subsuser Threads",
+    "subuser_threads_4000": "Subuser Threads 4000",
+    "user_threads_5000": "Subuser Threads 5000",
+    "submax_orders": "Submax Orders",
+    "time_wait": "Time Wait",
+    "sub_needs": "Sub Needs"
   },
   "medical-dashboard": {
     "activity": {

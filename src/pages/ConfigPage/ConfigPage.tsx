@@ -119,30 +119,39 @@ const ConfigPage: React.FC = () => {
       >
         <Form
           name="updateSetting"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          labelCol={{ span: 12 }}
+          wrapperCol={{ span: 20 }}
           initialValues={settingDataUpdate}
           onFinish={onFinishUpdate}
         >
-          <Form.Item label="Bonus Over 500" name="bonus_over_500">
+          <Form.Item label={t('common.subsbonus_over_500')} name="bonus_over_500">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Bonus Under 500" name="bonus_under_500">
+          <Form.Item label={t('common.bonus_under_500')} name="bonus_under_500">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="User Thread" name="user_thread">
+          <Form.Item label={t('common.subsuser_threads')} name="user_threads">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Max Thread" name="max_thread">
+          <Form.Item label={t('common.subuser_threads_4000')} name="user_threads_4000">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Max Minute" name="max_minute">
+          <Form.Item label={t('common.user_threads_5000')} name="user_threads_5000">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Channel Prior" name="channel_prior">
+          <Form.Item label={t('common.submax_orders')} name="max_orders">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
-          <Form.Item label="Price Rate" name="price_rate">
+          <Form.Item label={t('common.max_minute')} name="max_minute">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label={t('common.sub_needs')} name="sub_needs">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label={t('common.time_wait')} name="time_wait">
+            <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
+          </Form.Item>
+          <Form.Item label={t('common.price_every_10_subs')} name="price_every_10_subs">
             <InputNumber style={{ width: 200, marginLeft: '10px' }} min={0} />
           </Form.Item>
         </Form>
