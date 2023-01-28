@@ -510,7 +510,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
-          setSelectedRowKeys([])
+          setSelectedRowKeys([]);
         } else {
           notificationController.error({
             message: res.message,
@@ -518,9 +518,9 @@ const OrderPage: React.FC = () => {
         }
       });
     }
-    const orderIdArray:any = [];
-    channelsDataSelected.forEach((item:any) => {
-      orderIdArray.push(item.order_id)
+    const orderIdArray: any = [];
+    channelsDataSelected.forEach((item: any) => {
+      orderIdArray.push(item.order_id);
     });
     if (channelsDataSelected.length > 0 && channelsDataSelected.length > 1) {
       const dataUpdate = {
@@ -536,7 +536,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
-          setSelectedRowKeys([])
+          setSelectedRowKeys([]);
         } else {
           notificationController.error({
             message: res.message,
@@ -554,7 +554,7 @@ const OrderPage: React.FC = () => {
   const onCloseModelAdd = () => {
     setIsOpenAdd(false);
     setChannelAddData([]);
-    setSelectedRowKeys([])
+    setSelectedRowKeys([]);
     formAdd.resetFields();
   };
   const onDeleteOrder = () => {
@@ -563,9 +563,9 @@ const OrderPage: React.FC = () => {
     //   const dataDelete = { channel_id: item.channel_id };
     //   deleteDataList.push(dataDelete);
     // });
-    const orderIdArray:any = [];
-    channelsDataSelected.forEach((item:any) => {
-      orderIdArray.push(item.order_id)
+    const orderIdArray: any = [];
+    channelsDataSelected.forEach((item: any) => {
+      orderIdArray.push(item.order_id);
     });
     const dataUpdate: any = {
       orders: orderIdArray,
@@ -595,7 +595,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
-          setSelectedRowKeys([])
+          setSelectedRowKeys([]);
         }
       });
     });
@@ -745,7 +745,7 @@ const OrderPage: React.FC = () => {
                   scroll={{ x: 2000 }}
                   rowSelection={{ ...rowSelection }}
                   loading={isLoading}
-                  rowKey={"order_id"}
+                  rowKey={'order_id'}
                 />
               </Col>
             </Row>
@@ -841,7 +841,7 @@ const OrderPage: React.FC = () => {
             </Form.Item>
           )}
           <Form.Item label={t('common.max_thread')} name="max_thread" required>
-            <InputNumber style={{ width: '100%' }} min={0} required />
+            <InputNumber style={{ width: '100%' }}  />
           </Form.Item>
           <Form.Item label={t('common.priority')} name="priority">
             <Select defaultValue={0}>
