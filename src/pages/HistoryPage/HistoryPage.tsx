@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
     const end = moment().format('DD-MM-YYYY');
     // console.log(end);
 
-    ConfigSetting.getListHistory(start, end, searchValue).then((data: any) => {
+    ConfigSetting.getListHistory(start, end, fillterValue).then((data: any) => {
       setChartData(data.report);
       setReportData(data.data);
       setReportDataOnLoad(data.data);
@@ -76,7 +76,7 @@ const Dashboard: React.FC = () => {
     ConfigSetting.getListHistory(
       moment(dates[0]).format('DD-MM-YYYY'),
       moment(dates[1]).format('DD-MM-YYYY'),
-      searchValue,
+      fillterValue,
     ).then((data: any) => {
       setChartData(data.report);
       setReportData(data.data);
@@ -229,7 +229,7 @@ const Dashboard: React.FC = () => {
   };
   const onChangeInputFillter = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const currValue = e.target.value;
-    setSearchValue(currValue);
+    setFillterValue(currValue);
   };
 
   return (
