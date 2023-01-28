@@ -506,8 +506,6 @@ const OrderPage: React.FC = () => {
             message: 'Update Order Success',
           });
           getAllData();
-          console.log(2121212);
-          
           setChannelsDataSelected([]);
         } else {
           notificationController.error({
