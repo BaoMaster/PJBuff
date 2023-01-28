@@ -17,10 +17,10 @@ class ScenarioService extends BaseService<any> {
     return this.fetch.get(`/api/v2/computer/list`);
   }
   public getListHistory(startDay: any, endDay: any) {
-    return this.fetch.get(`/api/v2/order/history/list?fromDay=${startDay}&toDay=${endDay}`);
+    return this.fetch.get(`/api/v2/admin/report?fromDay=${startDay}&toDay=${endDay}`);
   }
   public getSubscribeByDays(startDay: any, endDay: any) {
-    return this.fetch.get(`/data/report?from=${startDay}&to=${endDay}`);
+    return this.fetch.get(`api/v2/admin/report?from=${startDay}&to=${endDay}`);
   }
 
   public getChannelRunning() {
@@ -32,9 +32,9 @@ class ScenarioService extends BaseService<any> {
   }
 
   public getChannelCancel() {
-    return this.fetch.get(`/api/v2/order/list?state=cancel`); 
+    return this.fetch.get(`/api/v2/order/list?state=cancel`);
   }
-  
+
   public getChannelPending() {
     return this.fetch.get(` /api/v2/order/list?state=pending`);
   }

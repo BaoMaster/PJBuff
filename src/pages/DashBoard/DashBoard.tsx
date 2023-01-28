@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
   interface SubscribeDataType {
     key: React.Key;
     date: string;
-    total: number;
+    total_run: number;
   }
   interface ChartData {
     date: string;
@@ -65,8 +65,8 @@ const Dashboard: React.FC = () => {
     const end = moment().format('DD-MM-YYYY');
 
     ConfigSetting.getListHistory(start, end).then((data: any) => {
-      setChartData(data.data);
-      setReportData(data.data);
+      setChartData(data.data.report);
+      setReportData(data.data.report);
     });
   };
 
@@ -75,8 +75,8 @@ const Dashboard: React.FC = () => {
 
     ConfigSetting.getListHistory(moment(dates[0]).format('DD-MM-YYYY'), moment(dates[1]).format('DD-MM-YYYY')).then(
       (data: any) => {
-        setChartData(data.report);
-        setReportData(data.data);
+        setChartData(data.data.report);
+        setReportData(data.data.report);
       },
     );
   };
@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
       setComputerData(data.data);
     });
     ConfigSetting.getChannelRunning().then((data: any) => {
-      setRunningChannel(data?.data.length || 0);setReportData
+      setRunningChannel(data?.data.length || 0);
     });
     ConfigSetting.getChannelCompleted().then((data: any) => {
       setCompletedChannel(data?.data.length || 0);
@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
 
     ConfigSetting.getSubscribeByDays(moment(start).format('DD-MM-YYYY'), moment(end).format('DD-MM-YYYY')).then(
       (data: any) => {
-        setReportData(data.data);
+        setReportData(data.data.report);
       },
     );
   };
@@ -118,9 +118,9 @@ const Dashboard: React.FC = () => {
     },
     {
       title: t('common.Total'),
-      dataIndex: 'total',
-      key: 'total',
-      sorter: (a, b) => a.total - b.total,
+      dataIndex: 'total_run',
+      key: 'total_run',
+      sorter: (a, b) => a.total_run - b.total_run,
       showSorterTooltip: false,
     },
   ];
