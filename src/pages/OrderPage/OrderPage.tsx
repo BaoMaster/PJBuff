@@ -512,7 +512,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
-          setSelectedRowKeys([])
+          setSelectedRowKeys([]);
         } else {
           notificationController.error({
             message: res.message,
@@ -520,17 +520,26 @@ const OrderPage: React.FC = () => {
         }
       });
     }
-    const orderIdArray:any = [];
-    channelsDataSelected.forEach((item:any) => {
-      orderIdArray.push(item.order_id)
+    const orderIdArray: any = [];
+    channelsDataSelected.forEach((item: any) => {
+      orderIdArray.push(item.order_id);
     });
     if (channelsDataSelected.length > 0 && channelsDataSelected.length > 1) {
-      const dataUpdate = {
-        max_thread: value.max_thread,
-        priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
-        orders: orderIdArray,
-        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
-      };
+      let dataUpdate = null;
+      if (typeof value.max_thread === 'undefined' || value.max_thread === null) {
+        dataUpdate = {
+          priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+          orders: orderIdArray,
+          enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
+        };
+      } else {
+        dataUpdate = {
+          max_thread: value.max_thread,
+          priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
+          orders: orderIdArray,
+          enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
+        };
+      }
       OrderService.updateMultiOrder(dataUpdate).then((res: any) => {
         if (res.success) {
           notificationController.success({
@@ -538,7 +547,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
-          setSelectedRowKeys([])
+          setSelectedRowKeys([]);
         } else {
           notificationController.error({
             message: res.message,
@@ -556,7 +565,7 @@ const OrderPage: React.FC = () => {
   const onCloseModelAdd = () => {
     setIsOpenAdd(false);
     setChannelAddData([]);
-    setSelectedRowKeys([])
+    setSelectedRowKeys([]);
     formAdd.resetFields();
   };
   const onDeleteOrder = () => {
@@ -565,9 +574,9 @@ const OrderPage: React.FC = () => {
     //   const dataDelete = { channel_id: item.channel_id };
     //   deleteDataList.push(dataDelete);
     // });
-    const orderIdArray:any = [];
-    channelsDataSelected.forEach((item:any) => {
-      orderIdArray.push(item.order_id)
+    const orderIdArray: any = [];
+    channelsDataSelected.forEach((item: any) => {
+      orderIdArray.push(item.order_id);
     });
     const dataUpdate: any = {
       orders: orderIdArray,
@@ -597,7 +606,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
-          setSelectedRowKeys([])
+          setSelectedRowKeys([]);
         }
       });
     });
@@ -747,7 +756,7 @@ const OrderPage: React.FC = () => {
                   scroll={{ x: 2000 }}
                   rowSelection={{ ...rowSelection }}
                   loading={isLoading}
-                  rowKey={"order_id"}
+                  rowKey={'order_id'}
                 />
               </Col>
             </Row>
@@ -842,8 +851,16 @@ const OrderPage: React.FC = () => {
               <InputNumber style={{ width: '100%' }} min={0} required />
             </Form.Item>
           )}
-          <Form.Item label={t('common.max_thread')} name="max_thread" required>
-            <InputNumber style={{ width: '100%' }} min={0} required />
+          <Form.Item
+            label={t('common.max_thread')}
+            name="max_thread"
+            required={channelsDataSelected.length > 0 && channelsDataSelected.length == 1 ? true : false}
+          >
+            <InputNumber
+              style={{ width: '100%' }}
+              min={0}
+              required={channelsDataSelected.length > 0 && channelsDataSelected.length == 1 ? true : false}
+            />
           </Form.Item>
           <Form.Item label={t('common.priority')} name="priority">
             <Select defaultValue={0}>
