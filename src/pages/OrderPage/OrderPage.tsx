@@ -28,6 +28,8 @@ const OrderPage: React.FC = () => {
   const [channelsDataOnLoad, setChannelsDataOnLoad] = useState<any>([]);
   const [channelAddData, setChannelAddData] = useState<any>([]);
   const [channelsDataSelected, setChannelsDataSelected] = useState<any>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [batchRecord, setBatchRecord] = useState<any>([]);
   const [userList, setUserList] = useState<UserListSelectType[]>([]);
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
@@ -230,6 +232,7 @@ const OrderPage: React.FC = () => {
       setIsPending(false);
       setIsOpenConfirmCancel(false);
       setChannelsDataSelected([]);
+      setSelectedRowKeys([]);
     }
 
     // OrderService.getChannelRunning().then((data: any) => {
@@ -498,7 +501,7 @@ const OrderPage: React.FC = () => {
         max_thread: value.max_thread,
         priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
         note: value.note,
-        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
       };
       OrderService.updateOrder(dataUpdate, channelsDataSelected[0].order_id).then((res: any) => {
         if (res.success) {
@@ -507,6 +510,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
+          setSelectedRowKeys([])
         } else {
           notificationController.error({
             message: res.message,
@@ -523,7 +527,7 @@ const OrderPage: React.FC = () => {
         max_thread: value.max_thread,
         priority: value.priority === null || typeof value.priority === 'undefined' ? 0 : value.priority,
         orders: orderIdArray,
-        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 0 : value.enabled,
+        enabled: value.enabled === null || typeof value.enabled === 'undefined' ? 1 : value.enabled,
       };
       OrderService.updateMultiOrder(dataUpdate).then((res: any) => {
         if (res.success) {
@@ -532,6 +536,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
+          setSelectedRowKeys([])
         } else {
           notificationController.error({
             message: res.message,
@@ -549,6 +554,7 @@ const OrderPage: React.FC = () => {
   const onCloseModelAdd = () => {
     setIsOpenAdd(false);
     setChannelAddData([]);
+    setSelectedRowKeys([])
     formAdd.resetFields();
   };
   const onDeleteOrder = () => {
@@ -571,6 +577,7 @@ const OrderPage: React.FC = () => {
         });
         getAllData();
         setChannelsDataSelected([]);
+        setSelectedRowKeys([]);
       } else {
         notificationController.error({
           message: res.message,
@@ -588,6 +595,7 @@ const OrderPage: React.FC = () => {
           });
           getAllData();
           setChannelsDataSelected([]);
+          setSelectedRowKeys([])
         }
       });
     });
@@ -737,6 +745,7 @@ const OrderPage: React.FC = () => {
                   scroll={{ x: 2000 }}
                   rowSelection={{ ...rowSelection }}
                   loading={isLoading}
+                  rowKey={"order_id"}
                 />
               </Col>
             </Row>
