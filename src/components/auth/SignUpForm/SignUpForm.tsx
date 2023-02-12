@@ -13,7 +13,8 @@ import * as S from './SignUpForm.styles';
 import AuthService from '../AuthService';
 
 interface SignUpFormData {
-  username: string;
+  email: string;
+  name: string;
   password: string;
 }
 
@@ -29,8 +30,8 @@ export const SignUpForm: React.FC = () => {
 
     AuthService.register(values)
       .then((res: any) => {
-        if (res.status === 'success') {
-          localStorage.setItem('AccessToken', res.token);
+        if (res.status === 1) {
+          // localStorage.setItem('AccessToken', res.token);
           AuthService.verifyToken().then((resp: any) => {
             localStorage.setItem('UserData', JSON.stringify(resp.user));
             navigate('/');
@@ -49,11 +50,14 @@ export const SignUpForm: React.FC = () => {
       <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional">
         <S.Title>{t('common.signUp')}</S.Title>
         <Auth.FormItem
-          name="username"
+          name="name"
           label={t('common.userName')}
           rules={[{ required: true, message: t('common.requiredField') }]}
         >
           <Auth.FormInput placeholder={t('common.userName')} />
+        </Auth.FormItem>
+        <Auth.FormItem name="email" label={'email'} rules={[{ required: true, message: t('common.requiredField') }]}>
+          <Auth.FormInput placeholder={'email'} />
         </Auth.FormItem>
         <Auth.FormItem
           label={t('common.password')}
@@ -62,9 +66,8 @@ export const SignUpForm: React.FC = () => {
         >
           <Auth.FormInputPassword placeholder={t('common.password')} />
         </Auth.FormItem>
-        <Auth.FormItem
+        {/* <Auth.FormItem
           label={t('common.confirmPassword')}
-          name="confirmPassword"
           dependencies={['password']}
           rules={[
             { required: true, message: t('common.requiredField') },
@@ -79,7 +82,7 @@ export const SignUpForm: React.FC = () => {
           ]}
         >
           <Auth.FormInputPassword placeholder={t('common.confirmPassword')} />
-        </Auth.FormItem>
+        </Auth.FormItem> */}
 
         <BaseForm.Item noStyle>
           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>

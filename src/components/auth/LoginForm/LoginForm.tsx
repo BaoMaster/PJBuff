@@ -12,12 +12,12 @@ import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import AuthService from '../AuthService';
 
 interface LoginFormData {
-  username: string;
+  email: string;
   password: string;
 }
 
 export const initValues: LoginFormData = {
-  username: 'admin',
+  email: 'admin',
   password: 'admin',
 };
 
@@ -60,7 +60,7 @@ export const LoginForm: React.FC = () => {
         <Auth.FormTitle>{t('common.login')}</Auth.FormTitle>
         <S.LoginDescription>{t('login.loginInfo')}</S.LoginDescription>
         <Auth.FormItem
-          name="username"
+          name="email"
           label={t('common.userName')}
           rules={[{ required: true, message: t('common.requiredField') }]}
         >

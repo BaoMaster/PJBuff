@@ -5,7 +5,7 @@ import { notificationController } from '@app/controllers/notificationController'
 
 const service = axios.create({
   // baseURL: process.env.REACT_APP_BASE_URL,
-  baseURL: 'https://leakaffer.xyz',
+  baseURL: 'http://localhost:8080',
   timeout: 60000,
 });
 
@@ -37,7 +37,7 @@ service.interceptors.request.use(
       if (!jwtToken && !config.headers[PUBLIC_REQUEST_KEY]) {
         console.log('vao');
         history.push(ENTRY_ROUTE);
-        window.location.reload();
+        //window.location.reload();
       }
     }
 
