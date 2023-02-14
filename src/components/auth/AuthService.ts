@@ -10,7 +10,7 @@ class AuthService extends BaseService<any> {
     return this.fetch.post(`${this.baseUri}/signup`, data);
   }
   public verifyToken() {
-    return this.fetch.get(`${this.baseUri}/userinfo`);
+    return this.fetch.post(`${this.baseUri}/getUserInfoByToken`);
   }
 }
 

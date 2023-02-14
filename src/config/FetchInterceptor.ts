@@ -28,7 +28,7 @@ service.interceptors.request.use(
     const jwtToken = localStorage.getItem(AUTH_TOKEN);
     if (jwtToken) {
       // config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
-      config.headers[TOKEN_PAYLOAD_KEY] = 'Bearer ' + jwtToken;
+      config.headers[TOKEN_PAYLOAD_KEY] = jwtToken;
       // config.headers[TOKEN_PAYLOAD_KEY] = "C0iDGQOe23HC1rg2ra4CCCC";
     }
 

@@ -16,6 +16,7 @@ interface SignUpFormData {
   email: string;
   name: string;
   password: string;
+  confirmPassword: string;
 }
 
 export const SignUpForm: React.FC = () => {
@@ -32,10 +33,8 @@ export const SignUpForm: React.FC = () => {
       .then((res: any) => {
         if (res.status === 1) {
           // localStorage.setItem('AccessToken', res.token);
-          AuthService.verifyToken().then((resp: any) => {
-            localStorage.setItem('UserData', JSON.stringify(resp.user));
-            navigate('/');
-          });
+
+          navigate('/');
         } else {
           setLoading(false);
         }
@@ -66,8 +65,9 @@ export const SignUpForm: React.FC = () => {
         >
           <Auth.FormInputPassword placeholder={t('common.password')} />
         </Auth.FormItem>
-        {/* <Auth.FormItem
+        <Auth.FormItem
           label={t('common.confirmPassword')}
+          name="confirmPassword"
           dependencies={['password']}
           rules={[
             { required: true, message: t('common.requiredField') },
@@ -82,7 +82,7 @@ export const SignUpForm: React.FC = () => {
           ]}
         >
           <Auth.FormInputPassword placeholder={t('common.confirmPassword')} />
-        </Auth.FormItem> */}
+        </Auth.FormItem>
 
         <BaseForm.Item noStyle>
           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
