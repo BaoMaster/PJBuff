@@ -16,7 +16,6 @@ interface SignUpFormData {
   email: string;
   name: string;
   password: string;
-  confirmPassword: string;
 }
 
 export const SignUpForm: React.FC = () => {
@@ -31,7 +30,7 @@ export const SignUpForm: React.FC = () => {
 
     AuthService.register(values)
       .then((res: any) => {
-        if (res.status === 1) {
+        if (res.status === 200) {
           // localStorage.setItem('AccessToken', res.token);
 
           navigate('/');

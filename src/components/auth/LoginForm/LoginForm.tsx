@@ -33,8 +33,8 @@ export const LoginForm: React.FC = () => {
 
     AuthService.login(values)
       .then(async (res: any) => {
-        if (res.status === 1) {
-          localStorage.setItem('AccessToken', res.data.accessToken);
+        if (res.status === 200) {
+          localStorage.setItem('AccessToken', res.body.token);
           await AuthService.verifyToken().then((resp: any) => {
             localStorage.setItem('UserData', JSON.stringify(resp.data));
             navigate('/');
