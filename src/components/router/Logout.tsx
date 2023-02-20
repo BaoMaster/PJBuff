@@ -9,7 +9,6 @@ const Logout: React.FC = () => {
   useEffect(() => {
     dispatch(doLogout());
   }, [dispatch]);
-  console.log(22211);
 
   return <Navigate to="/auth/login" replace />;
 };
