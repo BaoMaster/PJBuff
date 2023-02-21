@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row, DatePicker, Space } from 'antd';
+import { Button, Col, Row, DatePicker, Space, Empty } from 'antd';
 import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
-import { Line } from '@ant-design/plots';
+
 import ConfigSetting from './DashBoardService';
 
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
@@ -12,6 +12,9 @@ import { Card } from 'components/common/Card/Card';
 import * as s from './Tables.styles';
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
+import { ArticleCard } from '@app/components/common/ArticleCard/ArticleCard';
+import { NewsFilter } from '@app/components/apps/newsFeed/NewsFilter/NewsFilter';
+import { Feed } from '@app/components/common/Feed/Feed';
 
 const Dashboard: React.FC = () => {
   interface ComputerDataType {
@@ -29,7 +32,9 @@ const Dashboard: React.FC = () => {
     date: string;
     total: number;
   }
-
+  const [news, setNews] = useState<any[]>([]);
+  const [hasMore] = useState<boolean>(true);
+  const [loaded, setLoaded] = useState<boolean>(false);
   const { t } = useTranslation();
   const [computerData, setComputerData] = useState<any>(null);
   const [runningChannel, setRunningChannel] = useState(0);
@@ -167,113 +172,37 @@ const Dashboard: React.FC = () => {
     return !!tooEarly || !!tooLate;
   }
 
+  useEffect(() => {
+    getNews().then((res) => setNews(res));
+  }, []);
+
+  const next = () => {
+    getNews().then((newNews) => setNews(news.concat(newNews)));
+  };
+
   return (
-    <>
-      <PageTitle>Trang thống kê</PageTitle>
-
-      <Col>
-        <s.Card title={t('common.history_order')}>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <Space direction="vertical" size={12}>
-                <RangePicker
-                  format="DD-MM-YYYY"
-                  disabledDate={disabledDate}
-                  onCalendarChange={(val) => setDates(val)}
-                  value={dates}
-                />
-              </Space>
-            </Col>
-            <Col md={1}>
-              <Button onClick={() => GetListHistory()}>{t('common.fillter')}</Button>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }} />
-          <Row style={{ width: '100%', marginTop: '20px' }}>
-            <Col>
-              <Line {...config} />
-            </Col>
-          </Row>
-        </s.Card>
-
-        <s.Card title={t('common.Orderstatitic')}>
-          <Row style={{ width: '100%' }}>
-            <Col xs={24} md={8}>
-              <Card
-                title={t('common.Running')}
-                bordered={false}
-                headStyle={{ color: 'black' }}
-                bodyStyle={{
-                  color: 'black',
-                  fontSize: '500%',
-                  padding: '30px 30px',
-                  justifyContent: 'center',
-                }}
-                style={{ background: 'rgb(255, 246, 189)', width: '50%', transform: 'translateX(50%)' }}
-              >
-                {runningChannel}
-              </Card>
-            </Col>
-            <Col xs={24} md={8}>
-              <Card
-                title={t('common.Completed')}
-                bordered={false}
-                headStyle={{ color: 'black' }}
-                bodyStyle={{
-                  color: 'black',
-                  fontSize: '500%',
-                  padding: '30px 30px',
-                  justifyContent: 'center',
-                }}
-                style={{ background: 'rgb(206, 237, 199)', width: '50%', transform: 'translateX(50%)' }}
-              >
-                {completedChannel}
-              </Card>
-            </Col>
-            <Col xs={24} md={8}>
-              <Card
-                title={t('common.Cancel')}
-                bordered={false}
-                headStyle={{ color: 'black' }}
-                bodyStyle={{
-                  color: 'black',
-                  fontSize: '500%',
-                  padding: '30px 30px',
-                  justifyContent: 'center',
-                }}
-                style={{ background: 'rgb(220, 0, 0)', width: '50%', transform: 'translateX(50%)' }}
-              >
-                {cancelChannel}
-              </Card>
-            </Col>
-          </Row>
-        </s.Card>
-        <s.Card title={t('common.RunningMachineList')}>
-          <Row style={{ width: '100%' }}>
-            <Col md={24}>
-              <Table dataSource={computerData} columns={computerColumns} />
-            </Col>
-          </Row>
-        </s.Card>
-        <s.Card title={t('common.Subscribebydate')}>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <Space direction="vertical" size={12}>
-                <RangePicker format="YYYY-MM-DD" onChange={onChange} onOk={onOk} />
-              </Space>
-            </Col>
-            <Col md={1}>
-              <Button onClick={() => GetSubscribe()}>{t('common.fillter')}</Button>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%' }}>
-            <Col md={24}>
-              <Table dataSource={reportData} columns={columns} />
-            </Col>
-          </Row>
-        </s.Card>
-      </Col>
-    </>
+    <NewsFilter news={news}>
+      {({ filteredNews }) =>
+        filteredNews?.length || !loaded ? (
+          <Feed next={next} hasMore={hasMore}>
+            {filteredNews.map((post, index) => (
+              <ArticleCard
+                key={index}
+                title={post.title}
+                description={post.text}
+                date={post.date}
+                imgUrl={post.img}
+                author={post.author}
+                avatar={post.avatarUrl}
+                tags={post.tags}
+              />
+            ))}
+          </Feed>
+        ) : (
+          <Empty />
+        )
+      }
+    </NewsFilter>
   );
 };
 
