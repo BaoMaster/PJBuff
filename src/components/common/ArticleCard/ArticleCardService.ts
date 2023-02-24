@@ -1,4 +1,4 @@
-import BaseService from '../../config/_BaseService';
+import BaseService from '../../../config/_BaseService';
 
 export interface IScenario {
   id: number;
@@ -13,8 +13,9 @@ export interface ICreateScenario {
 class ScenarioService extends BaseService<any> {
   protected baseUri = 'data/setting';
 
-  public getNewFeed() {
-    return this.fetch.get(`v1/get_new_feed?last_pid=0`);
+  public getNewImg(img: string) {
+    
+    return this.fetch.get(`/v1/get_img?name=${img}`);
   }
 }
 

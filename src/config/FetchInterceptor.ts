@@ -23,12 +23,12 @@ const notificationParam: any = {
 service.interceptors.request.use(
   (config) => {
     config.headers = config.headers || {};
-    config.headers['Content-Type'] = config.headers['Content-Type'] || 'application/json';
+    config.headers['Content-Type'] = config.headers['Content-Type'] || 'application/x-www-form-urlencoded';
 
     const jwtToken = localStorage.getItem(AUTH_TOKEN);
     if (jwtToken) {
-      // config.headers[TOKEN_PAYLOAD_KEY] = "Bearer " + jwtToken;
-      config.headers[TOKEN_PAYLOAD_KEY] = jwtToken;
+      config.headers[TOKEN_PAYLOAD_KEY] = 'Bearer ' + jwtToken;
+      // config.headers[TOKEN_PAYLOAD_KEY] = jwtToken;
       // config.headers[TOKEN_PAYLOAD_KEY] = "C0iDGQOe23HC1rg2ra4CCCC";
     }
 
