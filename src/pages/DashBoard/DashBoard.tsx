@@ -15,19 +15,20 @@ import { ColumnsType } from 'antd/es/table';
 import { ArticleCard } from '@app/components/common/ArticleCard/ArticleCard';
 import { NewsFilter } from '@app/components/apps/newsFeed/NewsFilter/NewsFilter';
 import { Feed } from '@app/components/common/Feed/Feed';
+import { ValidationForm } from '@app/components/forms/ValidationForm/ValidationForm';
 
 const Dashboard: React.FC = () => {
   const [news, setNews] = useState<any[]>([]);
   const [hasMore] = useState<boolean>(true);
   const [loaded, setLoaded] = useState<boolean>(false);
-
+  const { t } = useTranslation();
   useEffect(() => {
     getAllData();
   }, []);
 
   const getAllData = () => {
     setLoaded(true);
-    ConfigSetting.getNewFeed().then((data: any) => {
+    ConfigSetting.getNewFeed(news[news.length - 1]?.pid || 0).then((data: any) => {
       setNews(data.body.posts);
       setLoaded(false);
     });
@@ -38,27 +39,40 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <NewsFilter news={news}>
-      {({ filteredNews }) =>
-        filteredNews?.length || !loaded ? (
-          <Feed next={next} hasMore={hasMore}>
-            {filteredNews.map((post, index) => (
-              <ArticleCard
-                key={index}
-                title={post.pid}
-                description={post.content}
-                date={post.date}
-                imgUrl={post.listImgPath}
-                author={post.sid}
-                avatar={post.avatarUrl}
-              />
-            ))}
-          </Feed>
-        ) : (
-          <Empty />
-        )
-      }
-    </NewsFilter>
+    <>
+      <s.TablesWrapper>
+        <s.Card title="Upload Post">
+          <Row style={{ width: '100%', margin: '-30px 0px' }}>
+            <ValidationForm />
+          </Row>
+        </s.Card>
+        <s.Card title="Please adopt a cat ❤️">
+          <Row style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <NewsFilter news={news}>
+              {({ filteredNews }) =>
+                filteredNews?.length || !loaded ? (
+                  <Feed next={next} hasMore={hasMore}>
+                    {filteredNews.map((post, index) => (
+                      <ArticleCard
+                        key={index}
+                        title={post.pid}
+                        description={post.content}
+                        date={post.date}
+                        imgUrl={post.listImgPath}
+                        author={post.sid}
+                        avatar={post.avatarUrl}
+                      />
+                    ))}
+                  </Feed>
+                ) : (
+                  <Empty />
+                )
+              }
+            </NewsFilter>
+          </Row>
+        </s.Card>
+      </s.TablesWrapper>
+    </>
   );
 };
 

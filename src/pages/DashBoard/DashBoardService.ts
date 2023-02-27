@@ -13,8 +13,8 @@ export interface ICreateScenario {
 class ScenarioService extends BaseService<any> {
   protected baseUri = 'data/setting';
 
-  public getNewFeed() {
-    return this.fetch.get(`v1/get_new_feed?last_pid=0`);
+  public getNewFeed(id:number) {
+    return this.fetch.get(`v1/get_new_feed?last_pid=${id}`);
   }
 }
 

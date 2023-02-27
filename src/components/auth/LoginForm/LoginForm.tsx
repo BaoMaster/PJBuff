@@ -12,12 +12,12 @@ import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import AuthService from '../AuthService';
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 export const initValues: LoginFormData = {
-  email: 'admin',
+  username: 'admin@gmail.com',
   password: 'admin',
 };
 
@@ -42,7 +42,7 @@ export const LoginForm: React.FC = () => {
             });
             console.log(resp);
 
-            localStorage.setItem('UserData', JSON.stringify(resp.data));
+            localStorage.setItem('UserData', JSON.stringify(resp.body.user));
             navigate('/');
           });
         } else {
@@ -63,7 +63,7 @@ export const LoginForm: React.FC = () => {
         <Auth.FormTitle>{t('common.login')}</Auth.FormTitle>
         <S.LoginDescription>{t('login.loginInfo')}</S.LoginDescription>
         <Auth.FormItem
-          name="email"
+          name="username"
           label={t('common.userName')}
           rules={[{ required: true, message: t('common.requiredField') }]}
         >

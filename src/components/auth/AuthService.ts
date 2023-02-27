@@ -5,7 +5,7 @@ class AuthService extends BaseService<any> {
 
   public login(data: any) {
     let body = new URLSearchParams();
-    body.set('email', data.email);
+    body.set('username', data.username);
     body.set('password', data.password);
 
     return this.fetch.post(`${this.baseUri}/login`, body);

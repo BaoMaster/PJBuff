@@ -129,14 +129,14 @@ export const Btn = styled(Button)`
 `;
 
 export const NewsWrapper = styled.div`
-  max-width: 35rem;
+  max-width: 100%;
 
   @media only screen and ${media.xs} {
     width: 100%;
   }
 
   @media only screen and ${media.md} {
-    width: calc(100% - 21.25rem);
+    width: calc(100% - 4.25rem);
   }
 `;
 

@@ -30,7 +30,6 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     key: 'dashboard',
     url: '/',
     icon: <LineChartOutlined />,
-    adminCheck: true,
   },
   {
     title: 'Configuration',

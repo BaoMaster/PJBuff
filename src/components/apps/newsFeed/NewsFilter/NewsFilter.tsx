@@ -232,51 +232,8 @@ export const NewsFilter: React.FC<NewsFilterProps> = ({ news, newsTags, children
   };
 
   return (
-    <>
-      <S.TitleWrapper>
-        {mobileOnly && (
-          <S.FilterPopover
-            trigger="click"
-            open={overlayOpen}
-            onOpenChange={(open) => setOverlayOpen(open)}
-            content={
-              <Filter
-                author={author}
-                title={title}
-                newsTagData={newsTagData}
-                onTagClick={onTagClick}
-                selectedTagsIds={selectedTagsIds}
-                selectedTags={selectedTags}
-                dates={dates}
-                onApply={handleClickApply}
-                onReset={handleClickReset}
-                updateFilteredField={updateFilteredField}
-              />
-            }
-          >
-            <S.FilterButton>{t('newsFeed.filter')}</S.FilterButton>
-          </S.FilterPopover>
-        )}
-      </S.TitleWrapper>
-
-      <S.ContentWrapper>
-        <S.NewsWrapper>{children({ filteredNews: filteredNews || news })}</S.NewsWrapper>
-
-        {!mobileOnly && (
-          <Filter
-            author={author}
-            title={title}
-            newsTagData={newsTagData}
-            onTagClick={onTagClick}
-            selectedTagsIds={selectedTagsIds}
-            selectedTags={selectedTags}
-            dates={dates}
-            onApply={handleClickApply}
-            onReset={handleClickReset}
-            updateFilteredField={updateFilteredField}
-          />
-        )}
-      </S.ContentWrapper>
-    </>
+    <S.ContentWrapper>
+      <S.NewsWrapper>{children({ filteredNews: filteredNews || news })}</S.NewsWrapper>
+    </S.ContentWrapper>
   );
 };
