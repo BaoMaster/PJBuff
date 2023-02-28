@@ -56,10 +56,9 @@ export const ValidationForm: React.FC = () => {
     let idCardBase64 = '';
 
     await getBase64(fileList, (result: string) => {
-      idCardBase64 = result;
+      idCardBase64 = result.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+      ConfigSetting.upLoadPost(content, idCardBase64);
     });
-
-    ConfigSetting.upLoadPost(content, idCardBase64);
   };
 
   const getBase64 = async (file: any, cb: any) => {
