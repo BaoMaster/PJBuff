@@ -21,7 +21,6 @@ export interface SidebarNavigationItem {
   url?: string;
   children?: SidebarNavigationItem[];
   icon?: React.ReactNode;
-  adminCheck: boolean;
 }
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
@@ -37,14 +36,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     // TODO use path variable
     url: '/configuration',
     icon: <SettingFilled />,
-    adminCheck: true,
   },
   {
     title: 'User Management',
     key: 'userManagement',
     url: '/user-management',
     icon: <UserOutlined />,
-    adminCheck: false,
   },
 
   {
@@ -52,7 +49,6 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     key: 'orderpage',
     url: '/order-page',
     icon: <CarryOutOutlined />,
-    adminCheck: false,
   },
   {
     title: 'History Page',
@@ -60,7 +56,6 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
 
     url: '/history-page',
     icon: <FundOutlined />,
-    adminCheck: true,
   },
 
   // {

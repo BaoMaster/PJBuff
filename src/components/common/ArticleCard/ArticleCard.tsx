@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dates } from '@app/constants/Dates';
 import { Avatar, Image } from 'antd';
 import { Tag, ITag } from '../Tag/Tag';
@@ -26,6 +26,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   tags,
   className = 'article-card',
 }) => {
+  const [name, setName] = useState<string>('');
+
+  useEffect(() => {
+    ConfigSetting.getTitle(title).then((data: any) => {
+      setName(data.body.user.name);
+    });
+  }, [title]);
+
   return (
     <S.Wrapper className={className}>
       <S.Header>{!!avatar && <Avatar src={avatar} alt="author" size={43} />}</S.Header>
@@ -35,7 +43,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 
       <S.InfoWrapper>
         <S.InfoHeader>
-          <S.Title>{title}</S.Title>
+          <S.Title>{name}</S.Title>
         </S.InfoHeader>
         <S.Description>{description}</S.Description>
       </S.InfoWrapper>

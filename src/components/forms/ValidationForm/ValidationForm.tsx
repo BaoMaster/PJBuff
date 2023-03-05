@@ -29,8 +29,11 @@ const normFile = (e = { fileList: [] }) => {
   }
   return e && e.fileList;
 };
+interface DBProps {
+  getnew: any;
+}
 
-export const ValidationForm: React.FC = () => {
+export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -46,18 +49,30 @@ export const ValidationForm: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       setFieldsChanged(false);
-      notificationController.success({ message: t('common.success') });
+      notificationController.success({ message: 'Upload success' });
       console.log(values);
     }, 1000);
   };
 
   const handleUpload = async () => {
     const formData = new FormData();
+    setLoading(true);
+
     let idCardBase64 = '';
 
     await getBase64(fileList, (result: string) => {
       idCardBase64 = result.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
-      ConfigSetting.upLoadPost(content, idCardBase64);
+
+      ConfigSetting.upLoadPost(content, idCardBase64).then((data: any) => {
+        if (data.status === 200) {
+          setTimeout(() => {
+            setLoading(false);
+            setFieldsChanged(false);
+            getnew();
+            notificationController.success({ message: 'Upload success' });
+          }, 1000);
+        }
+      });
     });
   };
 
@@ -92,19 +107,17 @@ export const ValidationForm: React.FC = () => {
         <Input onChange={(event) => setContent(event.target.value)} />
       </BaseForm.Item>
       <BaseForm.Item name="image" label="Attach Image" rules={[{ required: true, message: t('common.requiredField') }]}>
-        <Upload name="logo" {...props}>
+        <Upload name="logo" {...props} listType="picture-card">
           <Button type="default" disabled={fileList.length > 1}>
-            {t('forms.validationFormLabels.clickToUpload')}
+            <UploadOutlined />
           </Button>
         </Upload>
-      </BaseForm.Item>
-      <BaseForm.Item name="Post" rules={[{ required: true, message: t('common.requiredField') }]}>
         <Button
           type="default"
           onClick={handleUpload}
-          disabled={fileList.length === 0}
+          disabled={fileList.length === 0 || isLoading}
           loading={uploading}
-          style={{ marginTop: 16 }}
+          style={{ marginTop: 16, width: '100%' }}
         >
           Upload Post
         </Button>

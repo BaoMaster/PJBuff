@@ -13,9 +13,9 @@ export interface ICreateScenario {
 class ScenarioService extends BaseService<any> {
   protected baseUri = 'data/setting';
 
-  public getNewImg(img: string) {
+  public getTitle(title: string) {
     
-    return this.fetch.get(`/v1/get_img?name=${img}`);
+    return this.fetch.get(`/v1/get_user_info_by_sid?sid=${title}`);
   }
 }
 

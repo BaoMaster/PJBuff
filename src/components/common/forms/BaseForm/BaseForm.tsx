@@ -28,7 +28,14 @@ export const BaseForm: BaseFormInterface<BaseFormProps> = ({ onFinishFailed, lay
     });
   };
 
-  return <Form onFinishFailed={onFinishFailed || onFinishFailedDefault} layout={layout} {...props} />;
+  return (
+    <Form
+      style={{ width: '100%' }}
+      onFinishFailed={onFinishFailed || onFinishFailedDefault}
+      layout={layout}
+      {...props}
+    />
+  );
 };
 
 BaseForm.Title = BaseFormTitle;

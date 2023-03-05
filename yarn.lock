@@ -6376,6 +6376,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -8214,6 +8221,17 @@ __metadata:
   version: 0.7.2
   resolution: "emittery@npm:0.7.2"
   checksum: 908cd933d48a9bcb58ddf39e9a7d4ba1e049de392ccbef010102539a636e03cea2b28218331b7ede41de8165d9ed7f148851c5112ebd2e943117c0f61eff5f10
+  languageName: node
+  linkType: hard
+
+"emoji-picker-react@npm:^4.4.7":
+  version: 4.4.7
+  resolution: "emoji-picker-react@npm:4.4.7"
+  dependencies:
+    clsx: ^1.2.1
+  peerDependencies:
+    react: ">=16"
+  checksum: 76d3c56a1d4f3ae23e0544350b7eaee3a53cee660d78acbdff07330a8a659b99778ad04a9020ba586afe7b2d7294065540d9c3d4199d9ea93eeb8ff9091cc5d8
   languageName: node
   linkType: hard
 
@@ -12656,6 +12674,7 @@ __metadata:
     echarts: ^5.1.2
     echarts-for-react: ^3.0.1
     elt-react-credit-cards: ^0.0.1
+    emoji-picker-react: ^4.4.7
     eslint: ^7.28.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -12678,6 +12697,8 @@ __metadata:
     react-dom: ^17.0.2
     react-helmet: ^6.1.0
     react-i18next: ^11.11.4
+    react-icons: ^4.8.0
+    react-images-uploading: ^3.1.7
     react-infinite-scroll-component: ^6.1.0
     react-insta-stories: ^2.3.0
     react-leaflet: next
@@ -17030,6 +17051,25 @@ __metadata:
     react-native:
       optional: true
   checksum: 8bb926e40136f57c21771d41b92c445ce457b70243fef45642c98967d2c6bb2d8a0df3c0db16909c2c6a8b007b2f7a4355b949a80e07f7e1152ed1be4756400d
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:^4.8.0":
+  version: 4.8.0
+  resolution: "react-icons@npm:4.8.0"
+  peerDependencies:
+    react: "*"
+  checksum: 4dbba7ad989c295b410e19b2a702722dae44368cb04b6515f9471353552f31ac80bd350f121d5bff79f81504b84039ede44d09e9f035f48bb1032e6eace126c4
+  languageName: node
+  linkType: hard
+
+"react-images-uploading@npm:^3.1.7":
+  version: 3.1.7
+  resolution: "react-images-uploading@npm:3.1.7"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: c8d465dcb72072119e172497fa157a46b333e66052b0d3cf07f399651d67e3d1e058394938d896a9d82d6b4c47af393a3caab23007d38d37b77b733625ed9d24
   languageName: node
   linkType: hard
 

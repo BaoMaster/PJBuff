@@ -29,11 +29,19 @@ const Dashboard: React.FC = () => {
   const getAllData = () => {
     setLoaded(true);
     ConfigSetting.getNewFeed(news[news.length - 1]?.pid || 0).then((data: any) => {
-      setNews(data.body.posts);
+
+      setNews((oldNews) => [...oldNews, ...data.body.posts]);
       setLoaded(false);
     });
   };
 
+  const getnew = () => {
+    setLoaded(true);
+    ConfigSetting.getNewFeed(0).then((data: any) => {
+      setNews(data.body.posts);
+      setLoaded(false);
+    });
+  };
   const next = () => {
     getAllData();
   };
@@ -43,7 +51,7 @@ const Dashboard: React.FC = () => {
       <s.TablesWrapper>
         <s.Card title="Upload Post">
           <Row style={{ width: '100%', margin: '-30px 0px' }}>
-            <ValidationForm />
+            <ValidationForm getnew={getnew} />
           </Row>
         </s.Card>
         <s.Card title="Please adopt a cat ❤️">
@@ -55,7 +63,7 @@ const Dashboard: React.FC = () => {
                     {filteredNews.map((post, index) => (
                       <ArticleCard
                         key={index}
-                        title={post.pid}
+                        title={post.sid}
                         description={post.content}
                         date={post.date}
                         imgUrl={post.listImgPath}

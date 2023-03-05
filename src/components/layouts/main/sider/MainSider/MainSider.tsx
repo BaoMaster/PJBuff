@@ -28,22 +28,18 @@ const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...pro
     <>
       <S.Sider
         trigger={null}
-        collapsed={isCollapsed}
-        collapsedWidth={tabletOnly ? 80 : 80}
+        collapsed={!isDesktop && isCollapsed}
+        collapsedWidth={tabletOnly ? 80 : 0}
         collapsible={isCollapsible}
         width={260}
         {...props}
       >
         <SiderLogo isSiderCollapsed={isCollapsed} toggleSider={toggleSider} />
         <S.SiderContent>
-          <SiderMenu setCollapsed={setCollapsed} admin={admin} />
+          <SiderMenu setCollapsed={setCollapsed} admin={admin}/>
         </S.SiderContent>
       </S.Sider>
-      {/* <Overlay onClick={toggleSider} show={!isCollapsed}
-       /> */}
-      <Button type="text" onClick={toggleSider}>
-        <MenuUnfoldOutlined />
-      </Button>
+      {mobileOnly && <Overlay onClick={toggleSider} show={!isCollapsed} />}
     </>
   );
 };
