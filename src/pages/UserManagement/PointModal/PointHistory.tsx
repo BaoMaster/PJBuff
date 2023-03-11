@@ -55,7 +55,7 @@ export const PointHistory = (Prop: any) => {
     </>
   );
 };
-export const PointHistoryTable = (Prop: any) => {
+export const PointHistoryTable = () => {
   const [pointHistoryData, setPointHistoryData] = useState<any>([]);
   const columns: any = [
     {

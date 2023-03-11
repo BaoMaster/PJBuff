@@ -29,7 +29,6 @@ const Dashboard: React.FC = () => {
   const getAllData = () => {
     setLoaded(true);
     ConfigSetting.getNewFeed(news[news.length - 1]?.pid || 0).then((data: any) => {
-
       setNews((oldNews) => [...oldNews, ...data.body.posts]);
       setLoaded(false);
     });

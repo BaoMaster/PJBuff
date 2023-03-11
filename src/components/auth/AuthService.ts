@@ -4,7 +4,7 @@ class AuthService extends BaseService<any> {
   protected baseUri = '/v1';
 
   public login(data: any) {
-    let body = new URLSearchParams();
+    const body = new URLSearchParams();
     body.set('username', data.username);
     body.set('password', data.password);
 

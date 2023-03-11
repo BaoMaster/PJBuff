@@ -78,7 +78,7 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
 
   const getBase64 = async (file: any, cb: any) => {
     console.log('file: ', file);
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file[0]);
     reader.onload = function () {
       cb(reader.result);

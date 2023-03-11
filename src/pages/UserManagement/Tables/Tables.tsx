@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { BasicTable } from '../BasicTable/BasicTable';
-import { useTranslation } from 'react-i18next';
 import * as S from './Tables.styles';
 import { PointHistoryTable } from '../PointModal/PointHistory';
 
 export const UserManagement: React.FC = () => {
-  const { t } = useTranslation();
   const [admin, setAdmin] = useState<boolean>(false);
 
   useEffect(() => {

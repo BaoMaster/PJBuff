@@ -16,7 +16,7 @@ class ScenarioService extends BaseService<any> {
   public upLoadPost(content: any, idCardBase64: string) {
     console.log(idCardBase64);
 
-    let body = new URLSearchParams();
+    const body = new URLSearchParams();
     body.set('content', content);
     body.set('picture1', idCardBase64);
     return this.fetch.post(`${this.baseUri}/up_post`, body);

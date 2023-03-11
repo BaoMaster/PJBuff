@@ -32,14 +32,8 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed, admin }) => {
       }
       const navTemp: any = [];
       sidebarNavigation.forEach((nav) => {
-        console.log(123, admin, nav.adminCheck);
-        if (nav.adminCheck) {
-          if (objDate.role === 'admin' ? true : false) {
-            navTemp.push(nav);
-          }
-        } else navTemp.push(nav);
+        navTemp.push(nav);
       });
-      console.log(navTemp);
 
       setNewNav(navTemp);
     }
@@ -54,29 +48,29 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed, admin }) => {
 
   return (
     <S.Menu
-    mode="inline"
-    defaultSelectedKeys={defaultSelectedKeys}
-    defaultOpenKeys={defaultOpenKeys}
-    onClick={() => setCollapsed(true)}
-    items={sidebarNavigation.map((nav) => {
-      const isSubMenu = nav.children?.length;
+      mode="inline"
+      defaultSelectedKeys={defaultSelectedKeys}
+      defaultOpenKeys={defaultOpenKeys}
+      onClick={() => setCollapsed(true)}
+      items={sidebarNavigation.map((nav) => {
+        const isSubMenu = nav.children?.length;
 
-      return {
-        key: nav.key,
-        title: t(nav.title),
-        label: isSubMenu ? t(nav.title) : <Link to={nav.url || ''}>{t(nav.title)}</Link>,
-        icon: nav.icon,
-        children:
-          isSubMenu &&
-          nav.children &&
-          nav.children.map((childNav) => ({
-            key: childNav.key,
-            label: <Link to={childNav.url || ''}>{t(childNav.title)}</Link>,
-            title: t(childNav.title),
-          })),
-      };
-    })}
-  />
+        return {
+          key: nav.key,
+          title: t(nav.title),
+          label: isSubMenu ? t(nav.title) : <Link to={nav.url || ''}>{t(nav.title)}</Link>,
+          icon: nav.icon,
+          children:
+            isSubMenu &&
+            nav.children &&
+            nav.children.map((childNav) => ({
+              key: childNav.key,
+              label: <Link to={childNav.url || ''}>{t(childNav.title)}</Link>,
+              title: t(childNav.title),
+            })),
+        };
+      })}
+    />
   );
 };
 

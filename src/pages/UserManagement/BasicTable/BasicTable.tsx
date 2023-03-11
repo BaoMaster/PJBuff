@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Col, Divider, Form, Input, InputNumber, Modal, Row, Space, TablePaginationConfig } from 'antd';
-import { BasicTableRow, getBasicTableData, Pagination, Tag } from 'api/table.api';
+import React, { useEffect, useState } from 'react';
+import { Divider, Form, Input, InputNumber, Modal, Space } from 'antd';
+import { Pagination } from 'api/table.api';
 import { Table } from 'components/common/Table/Table';
 import { Button } from 'components/common/buttons/Button/Button';
 import { useTranslation } from 'react-i18next';
@@ -25,11 +25,9 @@ export const BasicTable: React.FC = () => {
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenPointHistory, setIsOpenPointHistory] = useState<boolean>(false);
   const [isOpenPointAddForm, setIsOpenPointAddForm] = useState<boolean>(false);
-  const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
   const [userSelected, setUserSelected] = useState<number>(0);
   const [pointHistory, setPointHistory] = useState<any>();
   const { t } = useTranslation();
-  const { isMounted } = useMounted();
   const [form] = Form.useForm();
 
   useEffect(() => {

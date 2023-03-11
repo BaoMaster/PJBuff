@@ -6,14 +6,13 @@ import { AuthorValidator, TitleValidator, DatesValidator, TagsValidator } from '
 import { useResponsive } from '@app/hooks/useResponsive';
 import { newsTags as defaultTags } from '@app/constants/newsTags';
 import { AppDate, Dates } from '@app/constants/Dates';
-import { Post } from '@app/api/news.api';
+
 import * as S from './NewsFilter.styles';
-import { Dropdown } from '@app/components/common/Dropdown/Dropdown';
 
 interface NewsFilterProps {
-  news: Post[];
+  news: any[];
   newsTags?: ITag[];
-  children: ({ filteredNews }: { filteredNews: Post[] }) => ReactNode;
+  children: ({ filteredNews }: { filteredNews: any[] }) => ReactNode;
 }
 
 interface Filter {
@@ -76,31 +75,6 @@ const Filter: React.FC<Filter> = ({
     <S.FilterWrapper>
       {!mobileOnly && <S.FilterTitle>{t('newsFeed.filter')}</S.FilterTitle>}
 
-      <S.InputWrapper>
-        <S.SearchIcon />
-        <S.Input
-          placeholder={t('newsFeed.authorSearch')}
-          value={author}
-          onChange={(event) => updateFilteredField('author', event.target.value)}
-        />
-      </S.InputWrapper>
-
-      <S.InputWrapper>
-        <S.SearchIcon />
-        <S.Input
-          placeholder={t('newsFeed.titleSearch')}
-          value={title}
-          onChange={(event) => updateFilteredField('title', event.target.value)}
-        />
-      </S.InputWrapper>
-
-      <Dropdown placement="bottom" trigger={['click']} menu={{ items }}>
-        <S.AddTagWrapper>
-          <S.PlusIcon />
-          <S.AddTagText>{t('newsFeed.tag')}</S.AddTagText>
-        </S.AddTagWrapper>
-      </Dropdown>
-
       {!!selectedTags.length && (
         <S.TagsWrapper>
           {selectedTags.map((tag) => (
@@ -108,19 +82,6 @@ const Filter: React.FC<Filter> = ({
           ))}
         </S.TagsWrapper>
       )}
-
-      <S.DateLabels>
-        <S.DateLabel>{t('newsFeed.from')}</S.DateLabel>
-        <S.DateLabel>{t('newsFeed.to')}</S.DateLabel>
-      </S.DateLabels>
-
-      <S.RangePicker
-        popupClassName="range-picker"
-        value={dates}
-        onChange={(dates: RangeValue<AppDate>) =>
-          updateFilteredField('dates', [dates?.length ? dates[0] : null, dates?.length ? dates[1] : null])
-        }
-      />
 
       <S.BtnWrapper>
         <S.Btn onClick={() => resetFilter()}>{t('newsFeed.reset')}</S.Btn>
@@ -145,7 +106,7 @@ export const NewsFilter: React.FC<NewsFilterProps> = ({ news, newsTags, children
     dates: [null, null],
   });
   const { author, title, selectedTags, dates } = filterFields;
-  const [filteredNews, setFilteredNews] = useState<Post[]>(news);
+  const [filteredNews, setFilteredNews] = useState<any[]>(news);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const { mobileOnly } = useResponsive();
   const { t } = useTranslation();

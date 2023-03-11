@@ -38,7 +38,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     <S.Wrapper className={className}>
       <S.Header>{!!avatar && <Avatar src={avatar} alt="author" size={43} />}</S.Header>
       {imgUrl.map((img: string) => (
-        <Image src={`http://149.51.37.29:8099/v1/get_img?name=${img}`} alt="article" preview={false} />
+        <Image
+          src={`http://149.51.37.29:8099/v1/get_img?name=${img}`}
+          key={`${img}123`}
+          alt="article"
+          preview={false}
+        />
       ))}
 
       <S.InfoWrapper>

@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, DatePicker, Space, Modal, Form, InputNumber, Select, notification, Input, Radio } from 'antd';
+import { Col, Row, Modal, Form, InputNumber, Select, Input, Radio } from 'antd';
 import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
 import OrderService from './OrderPageService';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import * as s from './Tables.styles';
 
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  ExclamationOutlined,
-  FireOutlined,
-  LoadingOutlined,
-} from '@ant-design/icons';
+import { CheckCircleOutlined, ExclamationOutlined } from '@ant-design/icons';
 import { notificationController } from '@app/controllers/notificationController';
-import { AnyIfEmpty } from 'react-redux';
-import { getData } from 'country-list';
-import { number } from 'echarts';
 
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
@@ -28,7 +18,6 @@ const OrderPage: React.FC = () => {
   const [channelsDataOnLoad, setChannelsDataOnLoad] = useState<any>([]);
   const [channelAddData, setChannelAddData] = useState<any>([]);
   const [channelsDataSelected, setChannelsDataSelected] = useState<any>([]);
-  const [userList, setUserList] = useState<UserListSelectType[]>([]);
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
@@ -43,10 +32,6 @@ const OrderPage: React.FC = () => {
   const [admin, setAdmin] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  interface UserListSelectType {
-    lable: string;
-    value: string;
-  }
   interface ChannelDataType {
     key: React.Key;
     order_id: number;

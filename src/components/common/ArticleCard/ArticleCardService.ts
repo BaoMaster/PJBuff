@@ -14,7 +14,6 @@ class ScenarioService extends BaseService<any> {
   protected baseUri = 'data/setting';
 
   public getTitle(title: string) {
-    
     return this.fetch.get(`/v1/get_user_info_by_sid?sid=${title}`);
   }
 }
