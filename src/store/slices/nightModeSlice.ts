@@ -18,7 +18,7 @@ localStorage.setItem('nightTime', JSON.stringify(currentNightTime));
 localStorage.setItem('nightMode', JSON.stringify(isNightMode));
 
 const initialState: NightModeState = {
-  isNightMode,
+  isNightMode: false,
   nightTime: currentNightTime,
 };
 

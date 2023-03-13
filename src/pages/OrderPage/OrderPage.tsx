@@ -15,18 +15,12 @@ import Chat from '../Chat/Chat';
 
 const OrderPage: React.FC = () => {
   const { t } = useTranslation();
- 
-  
+
   return (
     <>
-      <PageTitle>Trang thống kê</PageTitle>
-      <s.TablesWrapper>
-        <s.Card title={t('common.list_history')}>
-          <Row style={{ width: '100%' }}>
-            <Chat />
-          </Row>
-        </s.Card>
-      </s.TablesWrapper>
+      <PageTitle>Chat Center</PageTitle>
+
+      <Chat />
     </>
   );
 };

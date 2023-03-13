@@ -24,11 +24,11 @@ function Chat() {
 
   useEffect(() => {
     const setUser = async () => {
-      if (!localStorage.getItem('chat-app-user')) {
-        navigate('/login');
-      } else {
-        setCurrentUser(await JSON.parse(localStorage.getItem('chat-app-user')!));
-      }
+      // if (!localStorage.getItem('chat-app-user')) {
+      //   navigate('/login');
+      // } else {
+      //   setCurrentUser(await JSON.parse(localStorage.getItem('chat-app-user')!));
+      // }
     };
     setUser();
   }, [navigate]);
@@ -60,7 +60,7 @@ function Chat() {
         <div className="container">
           <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
           {/* {currentChat === undefined ? ( */}
-            <Welcome currentUsername={currentUser?.username || ''} />
+          <Welcome currentUsername={currentUser?.username || ''} />
           {/*  ) : (
              <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={'a'} />
            )} */}
@@ -78,11 +78,11 @@ const Container = styled.div`
   justify-content: center;
   gap: 1rem;
   align-items: center;
-  background-color: #0e0e11;
+  background-color: var(--layout-sider-bg-color);
   .container {
-    height: 100vh;
+    height: 86vh;
     width: 100vw;
-    background-color: #00000076;
+    background-color: var(--layout-header-bg-color);
     display: grid;
     grid-template-columns: 20% 80%;
 
@@ -90,7 +90,7 @@ const Container = styled.div`
       grid-template-columns: 35% 65%;
       grid-template-rows: none;
       width: 85vw;
-      height: 100vh;
+      height: 86vh;
     }
     @media screen and (min-width: 1100px) {
       grid-template-columns: 28% 72%;

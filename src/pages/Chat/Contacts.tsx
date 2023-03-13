@@ -99,7 +99,7 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 80% 10%;
   overflow: hidden;
-  background-color: #18191a;
+  background-color: var(--layout-sider-bg-color);
   .brand {
     display: flex;
     align-items: center;
@@ -180,7 +180,7 @@ const Container = styled.div`
     }
   }
   .current-user {
-    background-color: #18191a;
+    background-color: var(--layout-sider-bg-color);
     display: flex;
     justify-content: center;
     align-items: center;

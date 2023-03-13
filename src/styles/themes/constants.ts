@@ -17,14 +17,14 @@ export const BASE_COLORS = {
 
 export const LAYOUT = {
   mobile: {
-    paddingVertical: '0.75rem',
-    paddingHorizontal: '1rem',
+    paddingVertical: '0rem',
+    paddingHorizontal: '0rem',
     headerHeight: '4.25rem',
     headerPadding: '1rem',
   },
   desktop: {
-    paddingVertical: '1.25rem',
-    paddingHorizontal: '2.25rem',
+    paddingVertical: '0.5rem',
+    paddingHorizontal: '0.5rem',
     headerHeight: '5.625rem',
   },
 };
