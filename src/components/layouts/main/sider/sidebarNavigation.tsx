@@ -53,7 +53,6 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
   {
     title: 'History Page',
     key: 'historypage',
-
     url: '/history-page',
     icon: <FundOutlined />,
   },

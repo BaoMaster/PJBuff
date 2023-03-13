@@ -41,8 +41,8 @@ function Chat() {
   useEffect(() => {
     const getContats = async () => {
       if (currentUser) {
-        const { data } = await ConfigSetting.getAllUsers(currentUser._id);
-        setContacts(data);
+        // const { data } = await ConfigSetting.getAllUsers(currentUser._id);
+        setContacts([]);
       } else {
         // navigate("/setAvatar");
       }
@@ -59,11 +59,11 @@ function Chat() {
       <Container>
         <div className="container">
           <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
-          {currentChat === undefined ? (
+          {/* {currentChat === undefined ? ( */}
             <Welcome currentUsername={currentUser?.username || ''} />
-          ) : (
-            <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={'a'} />
-          )}
+          {/*  ) : (
+             <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={'a'} />
+           )} */}
         </div>
       </Container>
     </>
