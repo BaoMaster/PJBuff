@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import ConfigSetting from './ChatService';
+import ConfigSetting, { run, run2 } from './ChatService';
 import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
@@ -48,6 +48,8 @@ function Chat() {
       }
     };
     getContats();
+    run();
+    run2();
   }, [currentUser, navigate]);
 
   const handleChatChange = (chat: any) => {
