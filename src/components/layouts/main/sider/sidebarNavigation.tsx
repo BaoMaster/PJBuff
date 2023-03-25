@@ -25,37 +25,37 @@ export interface SidebarNavigationItem {
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
   {
-    title: 'Dash Board',
+    title: 'New Feed',
     key: 'dashboard',
     url: '/',
     icon: <LineChartOutlined />,
   },
-  {
-    title: 'Configuration',
-    key: 'configuration',
-    // TODO use path variable
-    url: '/configuration',
-    icon: <SettingFilled />,
-  },
-  {
-    title: 'User Management',
-    key: 'userManagement',
-    url: '/user-management',
-    icon: <UserOutlined />,
-  },
+  // {
+  //   title: 'Configuration',
+  //   key: 'configuration',
+  //   // TODO use path variable
+  //   url: '/configuration',
+  //   icon: <SettingFilled />,
+  // },
+  // {
+  //   title: 'User Management',
+  //   key: 'userManagement',
+  //   url: '/user-management',
+  //   icon: <UserOutlined />,
+  // },
 
   {
-    title: 'Order Page',
+    title: 'Chat Center',
     key: 'orderpage',
     url: '/order-page',
     icon: <CarryOutOutlined />,
   },
-  {
-    title: 'History Page',
-    key: 'historypage',
-    url: '/history-page',
-    icon: <FundOutlined />,
-  },
+  // {
+  //   title: 'History Page',
+  //   key: 'historypage',
+  //   url: '/history-page',
+  //   icon: <FundOutlined />,
+  // },
 
   // {
   //   title: 'common.medical-dashboard',
