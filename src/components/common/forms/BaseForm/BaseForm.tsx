@@ -27,7 +27,10 @@ export const BaseForm: BaseFormInterface<BaseFormProps> = ({ onFinishFailed, lay
       description: error.errorFields[0].errors,
     });
   };
-
+  const [form] = BaseForm.useForm();
+  const submitForm = () => {
+    form.resetFields();
+  };
   return (
     <Form
       style={{ width: '100%' }}

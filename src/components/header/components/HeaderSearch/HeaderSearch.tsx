@@ -42,30 +42,6 @@ export const HeaderSearch: React.FC = () => {
 
   return (
     <>
-      {mobileOnly && (
-        <>
-          <Button
-            type={isModalVisible ? 'ghost' : 'text'}
-            icon={<S.SearchIcon onClick={() => setModalVisible(true)} />}
-          />
-          <S.SearchModal
-            visible={isModalVisible}
-            closable={false}
-            footer={null}
-            onCancel={() => setModalVisible(false)}
-            destroyOnClose
-          >
-            <SearchDropdown
-              query={query}
-              setQuery={setQuery}
-              data={sortedResults}
-              isOverlayVisible={isOverlayVisible}
-              setOverlayVisible={setOverlayVisible}
-            />
-          </S.SearchModal>
-        </>
-      )}
-
       {isTablet && (
         <SearchDropdown
           query={query}

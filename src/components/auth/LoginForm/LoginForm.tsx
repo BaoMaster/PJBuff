@@ -47,7 +47,7 @@ export const LoginForm: React.FC = () => {
           });
         } else {
           notificationController.error({
-            message: res.message,
+            message: res.body.descriptions,
           });
           setLoading(false);
         }
@@ -62,12 +62,8 @@ export const LoginForm: React.FC = () => {
       <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional" initialValues={initValues}>
         <Auth.FormTitle>{t('common.login')}</Auth.FormTitle>
         <S.LoginDescription>{t('login.loginInfo')}</S.LoginDescription>
-        <Auth.FormItem
-          name="username"
-          label={t('common.userName')}
-          rules={[{ required: true, message: t('common.requiredField') }]}
-        >
-          <Auth.FormInput placeholder={t('common.userName')} />
+        <Auth.FormItem name="username" label="Email" rules={[{ required: true, message: t('common.requiredField') }]}>
+          <Auth.FormInput placeholder={'Email'} />
         </Auth.FormItem>
         <Auth.FormItem
           label={t('common.password')}

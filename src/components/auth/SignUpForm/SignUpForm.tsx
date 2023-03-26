@@ -32,9 +32,14 @@ export const SignUpForm: React.FC = () => {
       .then((res: any) => {
         if (res.status === 200) {
           // localStorage.setItem('AccessToken', res.token);
-
+          notificationController.success({
+            message: 'Register Success',
+          });
           navigate('/');
         } else {
+          notificationController.error({
+            message: res.body.descriptions,
+          });
           setLoading(false);
         }
       })
@@ -49,13 +54,13 @@ export const SignUpForm: React.FC = () => {
         <S.Title>{t('common.signUp')}</S.Title>
         <Auth.FormItem
           name="name"
-          label={t('common.userName')}
+          label="Display Name"
           rules={[{ required: true, message: t('common.requiredField') }]}
         >
-          <Auth.FormInput placeholder={t('common.userName')} />
+          <Auth.FormInput placeholder={'Display Name'} />
         </Auth.FormItem>
-        <Auth.FormItem name="email" label={'email'} rules={[{ required: true, message: t('common.requiredField') }]}>
-          <Auth.FormInput placeholder={'email'} />
+        <Auth.FormItem name="email" label={'Email'} rules={[{ required: true, message: t('common.requiredField') }]}>
+          <Auth.FormInput placeholder={'Email'} />
         </Auth.FormItem>
         <Auth.FormItem
           label={t('common.password')}

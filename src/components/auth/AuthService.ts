@@ -11,7 +11,11 @@ class AuthService extends BaseService<any> {
     return this.fetch.post(`${this.baseUri}/login`, body);
   }
   public register(data: any) {
-    return this.fetch.post(`${this.baseUri}/register`, data);
+    const body = new URLSearchParams();
+    body.set('name', data.name);
+    body.set('email', data.email);
+    body.set('password', data.password);
+    return this.fetch.post(`${this.baseUri}/register`, body);
   }
   public verifyToken() {
     return this.fetch.post(`${this.baseUri}/get_user_info_by_token`);

@@ -311,9 +311,6 @@
     "last_order_time": "Lần đặt cuối",
     "total_order_number": "Tổng số đơn",
     "api_key": "Api Key"
-
-    
-
   },
   "medical-dashboard": {
     "activity": {
@@ -608,7 +605,7 @@
   "login": {
     "facebookLink": "Continue with Facebook",
     "googleLink": "Continue with Google",
-    "loginInfo": "Enter your user name and password to access admin panel",
+    "loginInfo": "Enter your Email and password to access Mew - Pet Center",
     "noAccount": "Don’t have an account? Create one",
     "rememberMe": "Remember me",
     "signupLink": "here"

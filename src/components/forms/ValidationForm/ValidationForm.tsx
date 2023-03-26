@@ -38,7 +38,7 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
   const [isLoading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
-  const [content, setContent] = useState('false');
+  const [content, setContent] = useState('');
 
   const [form] = BaseForm.useForm();
 
@@ -68,6 +68,8 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
           setTimeout(() => {
             setLoading(false);
             setFieldsChanged(false);
+            setContent('');
+            setFileList([]);
             getnew();
             notificationController.success({ message: 'Upload success' });
           }, 1000);
@@ -104,7 +106,7 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
   return (
     <BaseForm form={form} layout="vertical" name="contentForm">
       <BaseForm.Item name="Content" label="Content" rules={[{ required: true, message: t('common.requiredField') }]}>
-        <Input onChange={(event) => setContent(event.target.value)} />
+        <Input value={content} onChange={(event) => setContent(event.target.value)} />
       </BaseForm.Item>
       <BaseForm.Item name="image" label="Attach Image" rules={[{ required: true, message: t('common.requiredField') }]}>
         <Upload name="logo" {...props} listType="picture-card">

@@ -43,23 +43,6 @@ export const SearchDropdown: React.FC<SearchOverlayProps> = ({
         getPopupContainer={() => ref.current}
       >
         <HeaderActionWrapper>
-          <InputSearch
-            width="100%"
-            value={query}
-            placeholder={t('header.search')}
-            filter={
-              <Btn
-                size="small"
-                type={isFilterVisible ? 'ghost' : 'text'}
-                aria-label="Filter"
-                icon={<FilterIcon />}
-                onClick={() => setFilterActive(!isFilterVisible)}
-              />
-            }
-            onChange={(event) => setQuery(event.target.value)}
-            enterButton={null}
-            addonAfter={null}
-          />
           <div ref={ref} />
         </HeaderActionWrapper>
       </Dropdown>
