@@ -30,13 +30,13 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     url: '/',
     icon: <LineChartOutlined />,
   },
-  // {
-  //   title: 'Configuration',
-  //   key: 'configuration',
-  //   // TODO use path variable
-  //   url: '/configuration',
-  //   icon: <SettingFilled />,
-  // },
+  {
+    title: 'Maps',
+    key: 'maps',
+    url: '/maps',
+    icon: <CompassOutlined />,
+  },
+
   // {
   //   title: 'User Management',
   //   key: 'userManagement',
@@ -46,8 +46,8 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
 
   {
     title: 'Chat Center',
-    key: 'orderpage',
-    url: '/order-page',
+    key: 'chat-center',
+    url: '/chat-center',
     icon: <CarryOutOutlined />,
   },
   // {

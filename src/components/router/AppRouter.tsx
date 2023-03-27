@@ -18,6 +18,7 @@ import { UserManagement } from '@app/pages/UserManagement/Tables/Tables';
 import Dashboard from '@app/pages/DashBoard/DashBoard';
 import OrderPage from '@app/pages/OrderPage/OrderPage';
 import HistoryPage from '@app/pages/HistoryPage/HistoryPage';
+import GoogleMaps from '@app/pages/GoogleMapsPage/GoogleMapsPage';
 
 const DataTablesPage = React.lazy(() => import('@app/pages/DataTablesPage'));
 const ChartsPage = React.lazy(() => import('@app/pages/ChartsPage'));
@@ -53,8 +54,8 @@ export const AppRouter: React.FC = () => {
 
           <Route path="data-tables" element={<DataTables />} />
           <Route path="user-management" element={<UserManagement />} />
-          <Route path="configuration" element={<ConfigPage />} />
-          <Route path="order-page" element={<OrderPage />} />
+          <Route path="maps" element={<GoogleMaps />} />
+          <Route path="chat-center" element={<OrderPage />} />
           <Route path="history-page" element={<HistoryPage />} />
           <Route path="charts" element={<Charts />} />
 
