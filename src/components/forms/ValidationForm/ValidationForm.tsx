@@ -70,6 +70,7 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
             setFieldsChanged(false);
             setContent('');
             setFileList([]);
+            form.resetFields();
             getnew();
             notificationController.success({ message: 'Upload success' });
           }, 1000);

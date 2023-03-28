@@ -19,7 +19,7 @@ import { ValidationForm } from '@app/components/forms/ValidationForm/ValidationF
 
 const Dashboard: React.FC = () => {
   const [news, setNews] = useState<any[]>([]);
-  const [hasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [loaded, setLoaded] = useState<boolean>(false);
   const { t } = useTranslation();
   useEffect(() => {
@@ -30,6 +30,9 @@ const Dashboard: React.FC = () => {
     setLoaded(true);
     ConfigSetting.getNewFeed(news[news.length - 1]?.pid || 0).then((data: any) => {
       setNews((oldNews) => [...oldNews, ...data.body.posts]);
+      if (data.body.posts?.length === 0) {
+        setHasMore(false);
+      }
       setLoaded(false);
     });
   };
