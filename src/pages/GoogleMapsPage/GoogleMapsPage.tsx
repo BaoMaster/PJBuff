@@ -8,7 +8,28 @@ import * as S from './maps.styles';
 
 const GoogleMaps: React.FC = () => {
   const { t } = useTranslation();
-
+  const renderMarkers = (map: any, maps: any) => {
+    let marker = new maps.Marker({
+      position: { lat: 10.822177061143336, lng: 106.68683554031087 },
+      map,
+      title: 'IUH',
+    });
+    let marker2 = new maps.Marker({
+      position: { lat: 10.819549976998982, lng: 106.68300492634789 },
+      map,
+      title: 'Tiem thuc an gan nha ly',
+    });
+    let marker3 = new maps.Marker({
+      position: { lat: 10.82281746092701, lng: 106.68575211854676 },
+      map,
+      title: 'Thu y gan truong',
+    });
+    let marker4 = new maps.Marker({
+      position: { lat: 10.822177061143336, lng: 106.68683554031087 },
+      map,
+      title: 'IUH',
+    });
+  };
   return (
     <>
       <PageTitle>"Pet Shop and Veterinary Station"</PageTitle>
@@ -19,9 +40,8 @@ const GoogleMaps: React.FC = () => {
             lng: 106.68683554031087,
           }}
           defaultZoom={17}
-        >
-      
-        </GoogleMapReact>
+          onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
+        ></GoogleMapReact>
       </S.MapsCard>
     </>
   );
