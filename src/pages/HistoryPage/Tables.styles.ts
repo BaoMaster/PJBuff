@@ -8,3 +8,8 @@ export const TablesWrapper = styled.div`
 export const Card = styled(CommonCard)`
   margin-bottom: 2rem;
 `;
+export const Card2 = styled(CommonCard)`
+  background-color: rgba(235, 239, 244, 255);
+  display: flex;
+  justify-content: center;
+`;

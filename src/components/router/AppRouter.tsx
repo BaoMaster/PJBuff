@@ -56,7 +56,7 @@ export const AppRouter: React.FC = () => {
           <Route path="user-management" element={<UserManagement />} />
           <Route path="maps" element={<GoogleMaps />} />
           <Route path="chat-center" element={<OrderPage />} />
-          <Route path="history-page" element={<HistoryPage />} />
+          <Route path="about-us" element={<HistoryPage />} />
           <Route path="charts" element={<Charts />} />
 
           <Route path="server-error" element={<ServerError />} />

@@ -50,12 +50,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     url: '/chat-center',
     icon: <CarryOutOutlined />,
   },
-  // {
-  //   title: 'History Page',
-  //   key: 'historypage',
-  //   url: '/history-page',
-  //   icon: <FundOutlined />,
-  // },
+  {
+    title: 'About Us',
+    key: 'about-us',
+    url: '/about-us',
+    icon: <FundOutlined />,
+  },
 
   // {
   //   title: 'common.medical-dashboard',
