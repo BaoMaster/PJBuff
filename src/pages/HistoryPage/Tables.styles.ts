@@ -12,4 +12,5 @@ export const Card2 = styled(CommonCard)`
   background-color: rgba(235, 239, 244, 255);
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
