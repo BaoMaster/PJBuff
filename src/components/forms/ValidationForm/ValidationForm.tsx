@@ -13,6 +13,10 @@ import { Upload, UploadDragger } from '@app/components/common/Upload/Upload';
 import { Rate } from '@app/components/common/Rate/Rate';
 import { Checkbox, CheckboxGroup } from '@app/components/common/Checkbox/Checkbox';
 import { notificationController } from '@app/controllers/notificationController';
+import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
+import { Input } from '@app/components/common/inputs/Input/Input';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import ConfigSetting from './FormService';
 
 const formItemLayout = {
   labelCol: { span: 24 },
@@ -25,10 +29,19 @@ const normFile = (e = { fileList: [] }) => {
   }
   return e && e.fileList;
 };
+interface DBProps {
+  getnew: any;
+}
 
-export const ValidationForm: React.FC = () => {
+export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [content, setContent] = useState('false');
+
+  const [form] = BaseForm.useForm();
+
   const { t } = useTranslation();
 
   const onFinish = async (values = {}) => {
@@ -36,157 +49,79 @@ export const ValidationForm: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       setFieldsChanged(false);
-      notificationController.success({ message: t('common.success') });
+      notificationController.success({ message: 'Upload success' });
       console.log(values);
     }, 1000);
   };
 
+  const handleUpload = async () => {
+    const formData = new FormData();
+    setLoading(true);
+
+    let idCardBase64 = '';
+
+    await getBase64(fileList, (result: string) => {
+      idCardBase64 = result.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+
+      ConfigSetting.upLoadPost(content, idCardBase64).then((data: any) => {
+        if (data.status === 200) {
+          setTimeout(() => {
+            setLoading(false);
+            setFieldsChanged(false);
+            getnew();
+            notificationController.success({ message: 'Upload success' });
+          }, 1000);
+        }
+      });
+    });
+  };
+
+  const getBase64 = async (file: any, cb: any) => {
+    console.log('file: ', file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file[0]);
+    reader.onload = function () {
+      cb(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  };
+
+  const props: UploadProps = {
+    onRemove: (file) => {
+      const index = fileList.indexOf(file);
+      const newFileList = fileList.slice();
+      newFileList.splice(index, 1);
+      setFileList(newFileList);
+    },
+    beforeUpload: (file) => {
+      setFileList([...fileList, file]);
+      return false;
+    },
+    fileList,
+  };
   return (
-    <BaseButtonsForm
-      {...formItemLayout}
-      isFieldsChanged={isFieldsChanged}
-      onFieldsChange={() => setFieldsChanged(true)}
-      name="validateForm"
-      initialValues={{
-        'input-number': 3,
-        'checkbox-group': ['A', 'B'],
-        rate: 3.5,
-      }}
-      footer={
-        <BaseButtonsForm.Item>
-          <Button type="primary" htmlType="submit" loading={isLoading}>
-            {t('common.submit')}
-          </Button>
-        </BaseButtonsForm.Item>
-      }
-      onFinish={onFinish}
-    >
-      <BaseButtonsForm.Item
-        name="select"
-        label={t('forms.validationFormLabels.select')}
-        hasFeedback
-        rules={[{ required: true, message: t('forms.validationFormLabels.countryError') }]}
-      >
-        <Select placeholder={t('forms.validationFormLabels.selectCountry')}>
-          <Option value="china">{t('forms.validationFormLabels.china')}</Option>
-          <Option value="usa">{t('forms.validationFormLabels.usa')}</Option>
-        </Select>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="select-multiple"
-        label={t('forms.validationFormLabels.selectMultiple')}
-        rules={[{ required: true, message: t('forms.validationFormLabels.colorError'), type: 'array' }]}
-      >
-        <Select mode="multiple" placeholder={t('forms.validationFormLabels.selectColor')}>
-          <Option value="red">{t('forms.validationFormLabels.red')}</Option>
-          <Option value="green">{t('forms.validationFormLabels.green')}</Option>
-          <Option value="blue">{t('forms.validationFormLabels.blue')}</Option>
-        </Select>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item label={t('forms.validationFormLabels.inputNumber')}>
-        <label>
-          <BaseButtonsForm.Item name="input-number" noStyle>
-            <InputNumber min={1} max={10} />
-          </BaseButtonsForm.Item>
-        </label>
-        <span> {t('forms.validationFormLabels.machines')}</span>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item name="switch" label={t('forms.validationFormLabels.switch')} valuePropName="checked">
-        <Switch />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item name="slider" label={t('forms.validationFormLabels.slider')}>
-        <Slider
-          tooltipVisible={false}
-          marks={{
-            0: 'A',
-            20: 'B',
-            40: 'C',
-            60: 'D',
-            80: 'E',
-            100: 'F',
-          }}
-        />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item name="radio-group" label={t('forms.validationFormLabels.radioGroup')}>
-        <RadioGroup>
-          <Radio value="a">{t('forms.validationFormLabels.item')} 1</Radio>
-          <Radio value="b">{t('forms.validationFormLabels.item')} 2</Radio>
-          <Radio value="c">{t('forms.validationFormLabels.item')} 3</Radio>
-        </RadioGroup>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="radio-button"
-        label={t('forms.validationFormLabels.radioButton')}
-        rules={[{ required: true, message: t('forms.validationFormLabels.itemError') }]}
-      >
-        <RadioGroup>
-          <RadioButton value="a">{t('forms.validationFormLabels.item')} 1</RadioButton>
-          <RadioButton value="b">{t('forms.validationFormLabels.item')} 2</RadioButton>
-          <RadioButton value="c">{t('forms.validationFormLabels.item')} 3</RadioButton>
-        </RadioGroup>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item name="checkbox-group" label={t('forms.validationFormLabels.checkboxGroup')}>
-        <CheckboxGroup>
-          <Row>
-            <Col span={8}>
-              <Checkbox value="A">A</Checkbox>
-            </Col>
-            <Col span={8}>
-              <Checkbox value="B" disabled>
-                B
-              </Checkbox>
-            </Col>
-            <Col span={8}>
-              <Checkbox value="C">C</Checkbox>
-            </Col>
-            <Col span={8}>
-              <Checkbox value="D">D</Checkbox>
-            </Col>
-            <Col span={8}>
-              <Checkbox value="E">E</Checkbox>
-            </Col>
-            <Col span={8}>
-              <Checkbox value="F">F</Checkbox>
-            </Col>
-          </Row>
-        </CheckboxGroup>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item name="rate" label={t('forms.validationFormLabels.rate')}>
-        <Rate />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="upload"
-        label={t('forms.validationFormLabels.upload')}
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-      >
-        <Upload name="logo" action="/upload.do" listType="picture">
-          <Button type="default" icon={<UploadOutlined />}>
-            {t('forms.validationFormLabels.clickToUpload')}
+    <BaseForm form={form} layout="vertical" name="contentForm">
+      <BaseForm.Item name="Content" label="Content" rules={[{ required: true, message: t('common.requiredField') }]}>
+        <Input onChange={(event) => setContent(event.target.value)} />
+      </BaseForm.Item>
+      <BaseForm.Item name="image" label="Attach Image" rules={[{ required: true, message: t('common.requiredField') }]}>
+        <Upload name="logo" {...props} listType="picture-card">
+          <Button type="default" disabled={fileList.length > 1}>
+            <UploadOutlined />
           </Button>
         </Upload>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item label={t('forms.validationFormLabels.dragger')}>
-        <BaseButtonsForm.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-          <UploadDragger name="files" action="/upload.do">
-            <p>
-              <InboxOutlined />
-            </p>
-            <p>{t('forms.validationFormLabels.clickToDrag')}</p>
-            <p>{t('forms.validationFormLabels.supportSingle')}</p>
-          </UploadDragger>
-        </BaseButtonsForm.Item>
-      </BaseButtonsForm.Item>
-    </BaseButtonsForm>
+        <Button
+          type="default"
+          onClick={handleUpload}
+          disabled={fileList.length === 0 || isLoading}
+          loading={uploading}
+          style={{ marginTop: 16, width: '100%' }}
+        >
+          Upload Post
+        </Button>
+      </BaseForm.Item>
+    </BaseForm>
   );
 };
