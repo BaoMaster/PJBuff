@@ -13,6 +13,7 @@ import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
 import { Dayjs } from 'dayjs';
+import RecentActivityFeed from './RecentActivityFeed';
 
 const Dashboard: React.FC = () => {
   interface HistoryDataType {
@@ -243,42 +244,14 @@ const Dashboard: React.FC = () => {
             </Col>
           </Row>
         </S.Card> */}
-      <s.TablesWrapper>
-        <s.Card title={t('common.list_history')}>
-          <Row style={{ width: '100%' }}>
-            <Col md={6}>
-              <Space direction="vertical" size={12}>
-                <RangePicker
-                  format="DD-MM-YYYY"
-                  disabledDate={disabledDate}
-                  onCalendarChange={(val) => setDates(val)}
-                  value={dates}
-                />
-              </Space>
-            </Col>
-            <Col md={6}>
-              <div style={{ marginRight: '10px', display: 'flex' }}>
-                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>UID/OID</span>
-                <Input value={fillterValue} onChange={onChangeInputFillter} />
-              </div>
-            </Col>
-            <Col md={6}>
-              <Button onClick={() => GetListHistory()}>Fillter</Button>
-            </Col>
-            <Col md={6}>
-              <div style={{ marginRight: '10px', display: 'flex' }}>
-                <span style={{ marginTop: '8px', marginRight: '10px', fontSize: 'larger' }}>{t('common.search')}</span>
-                <Input value={searchValue} onChange={onChangeInputUser} />
-              </div>
-            </Col>
-          </Row>
-          <Row style={{ width: '100%', marginTop: '10px' }}>
-            <Col md={24}>
-              <Table dataSource={reportData} columns={columns} />
-            </Col>
-          </Row>
-        </s.Card>
-      </s.TablesWrapper>
+
+      <s.Card title={t('common.list_history')}>
+        <Row style={{ width: '100%' }}>
+          <RecentActivityFeed activity={[]} hasMore={false} next={function (): void {
+            throw new Error('Function not implemented.');
+          } } />
+        </Row>
+      </s.Card>
     </>
   );
 };
