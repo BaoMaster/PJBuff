@@ -170,7 +170,7 @@ const GoogleMaps: React.FC = () => {
             lat: 10.822177061143336,
             lng: 106.68683554031087,
           }}
-          bootstrapURLKeys={{ key: 'lmao' }}
+          bootstrapURLKeys={{ key: 'AIzaSyB_uTqKs1Al7bZitPdAcW8EiRAmmtUabhk' }}
           defaultZoom={17}
           onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
         ></GoogleMapReact>
