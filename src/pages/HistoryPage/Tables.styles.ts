@@ -13,4 +13,5 @@ export const Card2 = styled(CommonCard)`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
 `;
