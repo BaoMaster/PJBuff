@@ -5,7 +5,7 @@ import { notificationController } from '@app/controllers/notificationController'
 
 const service = axios.create({
   // baseURL: process.env.REACT_APP_BASE_URL,
-  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  baseURL: 'http://localhost:8080',
   timeout: 60000,
 });
 

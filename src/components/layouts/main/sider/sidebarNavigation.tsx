@@ -62,7 +62,13 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     icon: <FundOutlined />,
     adminCheck: false,
   },
-
+  {
+    title: 'Profile Page',
+    key: 'profilepage',
+    url: '/profile-page',
+    icon: <FundOutlined />,
+    adminCheck: false,
+  },
   // {
   //   title: 'common.medical-dashboard',
   //   key: 'medical-dashboard',

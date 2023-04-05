@@ -1,11 +1,12 @@
 import { ActivityStatusType } from '@app/interfaces/interfaces';
 
 export interface Activity {
-  image: string;
-  title: string;
+  imageUrl: string;
+  name: string;
+  email: string;
   status: ActivityStatusType;
   date: number;
-  owner: string;
+  topicContactId: string;
 }
 
 export interface UserActivity extends Omit<Activity, 'owner'> {

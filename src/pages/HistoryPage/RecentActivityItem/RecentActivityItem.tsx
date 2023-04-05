@@ -4,9 +4,10 @@ import { activityStatuses } from '@app/constants/config/activityStatuses';
 import { Dates } from '@app/constants/Dates';
 import * as S from './RecentActivityItem.styles';
 import { Activity } from '@app/api/activity.api';
-
-export const RecentActivityItem: React.FC<Activity> = ({ image, title, date, status, owner }) => {
+import dfavt from '@app/share/dfavt.png';
+export const RecentActivityItem: React.FC<Activity> = ({ imageUrl, name, status, email, topicContactId }) => {
   const { t } = useTranslation();
+  console.log(imageUrl, name, status, email, topicContactId);
 
   const currentActivity = useMemo(() => activityStatuses.find((dbStatus) => dbStatus.name === status), [status]);
 
@@ -14,25 +15,26 @@ export const RecentActivityItem: React.FC<Activity> = ({ image, title, date, sta
     <S.ActivityCard>
       <S.Wrapper>
         <S.ImgWrapper>
-          <img src={image} alt={title} width={84} height={84} />
+          <img
+            src={imageUrl ? imageUrl : dfavt}
+            alt={`title ${imageUrl ? imageUrl : 'dfavt'}`}
+            width={84}
+            height={84}
+          />
         </S.ImgWrapper>
 
         <S.InfoWrapper>
           <S.InfoHeaderWrapper>
             <S.TitleWrapper>
-              <S.Title level={5}>{title}</S.Title>
+              <S.Title level={5}>{name}</S.Title>
 
               <S.IconWrapper>{currentActivity?.icon}</S.IconWrapper>
             </S.TitleWrapper>
 
             <S.Text>
-              {t(currentActivity?.title || '')} {t('nft.by')} {owner}
+              {t(currentActivity?.title || '')} {t('nft.by')} {email}
             </S.Text>
           </S.InfoHeaderWrapper>
-
-          <S.InfoBottomWrapper>
-            <S.DateText>{Dates.getDate(date).format('lll')}</S.DateText>
-          </S.InfoBottomWrapper>
         </S.InfoWrapper>
       </S.Wrapper>
     </S.ActivityCard>

@@ -14,16 +14,20 @@ interface RecentActivityFeedProps {
 
 const RecentActivityFeed: React.FC<RecentActivityFeedProps> = ({ activity, hasMore, next }) => {
   const activityItems = useMemo(
-    () => activity.map((item, index) => <RecentActivityItem key={index} {...item} />),
+    () =>
+      activity.map((item, index) => (
+        <RecentActivityItem key={index} {...item.userFriend} topicContactId={item.topicContactId} />
+      )),
     [activity],
   );
 
   const feedRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (activity.length < 4) {
-      feedRef.current?.dispatchEvent(new CustomEvent('scroll'));
-    }
+    // if (activity.length < 4) {
+    //   feedRef.current?.dispatchEvent(new CustomEvent('scroll'));
+    // }
+    console.log(activity);
   }, [activity]);
 
   return activityItems.length > 0 ? (

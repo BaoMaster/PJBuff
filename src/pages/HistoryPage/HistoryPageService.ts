@@ -11,8 +11,8 @@ export interface ICreateScenario {
 }
 
 class ScenarioService extends BaseService<any> {
-  public getListHistory(startDay: any, endDay: any, searchValue: any) {
-    return this.fetch.get(`/api/v2/order/history/list?fromDay=${startDay}&toDay=${endDay}&channel_id=${searchValue}`);
+  public getListFriends() {
+    return this.fetch.post(`/contact/external/getListFriend`);
   }
   public restoreOrder(orderId: any) {
     return this.fetch.get(`/api/v2/order/restore?order_id=${orderId}`);
