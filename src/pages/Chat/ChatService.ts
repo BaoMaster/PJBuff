@@ -1,41 +1,12 @@
-import { Kafka } from 'kafkajs';
+import { log } from 'console';
 import BaseService from '../../config/_BaseService';
 
-const kafka = new Kafka({
-  clientId: 'my-app',
-  brokers: ['149.51.37.29:9092'],
-});
-
-const consumer = kafka.consumer({ groupId: '1111' });
-
 export async function run() {
-  await consumer.connect();
-  await consumer.subscribe({ topic: '1eb3abce-ce10-49c6-8ab5-ed69e9f06459_NOTICE', fromBeginning: true });
-
-  await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
-      console.log({
-        value: message?.value?.toString(),
-        timestamp: message.timestamp,
-        headers: message.headers,
-      });
-    },
-  });
+  console.log('Chat Test');
 }
 
 export async function run2() {
-  await consumer.connect();
-  await consumer.subscribe({ topic: '1eb3abce-ce10-49c6-8ab5-ed69e9f06459_SINGLE_INBOX', fromBeginning: true });
-
-  await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
-      console.log({
-        value: message?.value?.toString(),
-        timestamp: message.timestamp,
-        headers: message.headers,
-      });
-    },
-  });
+  console.log('Chat Test');
 }
 
 run().catch(console.error);
