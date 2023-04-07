@@ -2,7 +2,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBar = require('webpackbar');
 const CracoAlias = require('craco-alias');
 
-process.env.BROWSER = 'none';
+process.env.BROWSER = '80';
 
 module.exports = {
   webpack: {
