@@ -8,7 +8,6 @@ import { notificationController } from '@app/controllers/notificationController'
 import * as S from './LoginForm.styles';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import AuthService from '../AuthService';
-import socket from '@app/socketConfig'
 interface LoginFormData {
   email: string;
   password: string;
@@ -35,7 +34,6 @@ export const LoginForm: React.FC = () => {
           localStorage.setItem('AccessToken', res.data.accessToken);
           await AuthService.verifyToken().then((resp: any) => {
             localStorage.setItem('UserData', JSON.stringify(resp.data));
-            socket.
             navigate('/');
             notificationController.success({
               message: 'Login Success',
