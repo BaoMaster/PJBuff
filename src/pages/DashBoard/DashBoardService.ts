@@ -1,20 +1,9 @@
 import BaseService from '../../config/_BaseService';
-
-export interface IScenario {
-  id: number;
-  name: string;
+class DBService extends BaseService<any> {
+  public get10Post() {
+    return this.fetch.post(`/post/external/getAllPost?offset=0`);
+  }
 }
 
-export interface ICreateScenario {
-  workFlowId?: number;
-  name: string;
-}
-
-class ScenarioService extends BaseService<any> {
-  protected baseUri = 'data/setting';
-
-
-}
-
-const scenarioService = new ScenarioService();
-export default scenarioService;
+const dbService = new DBService();
+export default dbService;

@@ -4,9 +4,6 @@ import { Table } from 'components/common/Table/Table';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
-
-import ConfigSetting from './DashBoardService';
-
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 import { Card } from 'components/common/Card/Card';
 import * as s from './Tables.styles';
@@ -16,30 +13,35 @@ import { ArticleCard } from '@app/components/common/ArticleCard/ArticleCard';
 import { NewsFilter } from '@app/components/apps/newsFeed/NewsFilter/NewsFilter';
 import { Feed } from '@app/components/common/Feed/Feed';
 import { ValidationForm } from '@app/components/forms/ValidationForm/ValidationForm';
+import dbService from './DashBoardService';
 
 const Dashboard: React.FC = () => {
   const [news, setNews] = useState<any[]>([]);
+
   const [hasMore] = useState<boolean>(true);
   const [loaded, setLoaded] = useState<boolean>(false);
   const { t } = useTranslation();
-  useEffect(() => {
-    getAllData();
-  }, []);
 
   const getAllData = () => {
     setLoaded(true);
-    // ConfigSetting.getNewFeed(news[news.length - 1]?.pid || 0).then((data: any) => {
-    //   setNews((oldNews) => [...oldNews, ...data.body.posts]);
-    //   setLoaded(false);
-    // });
+    dbService.get10Post().then((data: any) => {
+      setNews((oldNews) => [...oldNews, ...data.data]);
+      setLoaded(false);
+    });
   };
-
+  useEffect(() => {
+    setLoaded(true);
+    dbService.get10Post().then((data: any) => {
+      setNews((oldNews) => [...oldNews, ...data.data]);
+      setLoaded(false);
+    });
+  }, []);
   const getnew = () => {
     setLoaded(true);
-    // ConfigSetting.getNewFeed(0).then((data: any) => {
-    //   setNews(data.body.posts);
-    //   setLoaded(false);
-    // });
+    dbService.get10Post().then((data: any) => {
+      setNews((oldNews) => [...oldNews, ...data.data]);
+      setLoaded(false);
+    });
   };
   const next = () => {
     getAllData();
@@ -59,15 +61,16 @@ const Dashboard: React.FC = () => {
               {({ filteredNews }) =>
                 filteredNews?.length || !loaded ? (
                   <Feed next={next} hasMore={hasMore}>
-                    {filteredNews.map((post, index) => (
+                    {filteredNews?.map((post) => (
                       <ArticleCard
-                        key={index}
-                        title={post.sid}
-                        description={post.content}
-                        date={post.date}
-                        imgUrl={post.listImgPath}
-                        author={post.sid}
-                        avatar={post.avatarUrl}
+                        key={post.id}
+                        title={post.title}
+                        description={post.context}
+                        date={post.createAt}
+                        imgUrl={post.imageList}
+                        author={post.user.name}
+                        avatar={post.user.imageUrl}
+                        tags={post.topicTag}
                       />
                     ))}
                   </Feed>

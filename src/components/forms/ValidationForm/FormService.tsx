@@ -1,27 +1,15 @@
 import BaseService from '../../../config/_BaseService';
 
-export interface IScenario {
-  id: number;
-  name: string;
-}
-
-export interface ICreateScenario {
-  workFlowId?: number;
-  name: string;
-}
-
-class ScenarioService extends BaseService<any> {
+class FromService extends BaseService<any> {
   protected baseUri = '/v1';
 
-  public upLoadPost(content: any, idCardBase64: string) {
-    console.log(idCardBase64);
-
-    const body = new URLSearchParams();
-    body.set('content', content);
-    body.set('picture1', idCardBase64);
-    return this.fetch.post(`${this.baseUri}/up_post`, body);
+  public upLoadPost(data: any) {
+    return this.fetch.post(`/post/external/create`, data);
+  }
+  public getAllTopicTag() {
+    return this.fetch.post(`/topic-tag/external/getAllTopicTag?tag-name=`);
   }
 }
 
-const scenarioService = new ScenarioService();
-export default scenarioService;
+const fromService = new FromService();
+export default fromService;

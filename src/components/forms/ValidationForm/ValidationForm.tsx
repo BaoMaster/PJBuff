@@ -1,7 +1,7 @@
 import { Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { InputNumber } from '@app/components/common/inputs/InputNumber/InputNumber';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
@@ -16,7 +16,7 @@ import { notificationController } from '@app/controllers/notificationController'
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import ConfigSetting from './FormService';
+import fromService from './FormService';
 
 const formItemLayout = {
   labelCol: { span: 24 },
@@ -37,8 +37,12 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [topicList, setTopicList] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
-  const [content, setContent] = useState('false');
+  const [context, setContext] = useState('');
+  const [title, setTitle] = useState('');
+  const [hashTag, setHashTag] = useState('');
+  const [topic, setTopic] = useState('');
 
   const [form] = BaseForm.useForm();
 
@@ -53,6 +57,15 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
       console.log(values);
     }, 1000);
   };
+  useEffect(() => {
+    fromService.getAllTopicTag().then((res: any) => {
+      let topic: any[] = [];
+      res?.data.forEach((i: any) => {
+        topic.push({ value: i.id, label: i.tagName });
+      });
+      setTopicList(topic);
+    });
+  }, []);
 
   const handleUpload = async () => {
     const formData = new FormData();
@@ -61,10 +74,15 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
     let idCardBase64 = '';
 
     await getBase64(fileList, (result: string) => {
-      idCardBase64 = result.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
-
-      ConfigSetting.upLoadPost(content, idCardBase64).then((data: any) => {
-        if (data.status === 200) {
+      const formData = {
+        title: title,
+        context: context,
+        hashTag: hashTag,
+        topicTagId: topic,
+        imageList: [result],
+      };
+      fromService.upLoadPost(formData).then((data: any) => {
+        if (data.status === 1) {
           setTimeout(() => {
             setLoading(false);
             setFieldsChanged(false);
@@ -103,8 +121,17 @@ export const ValidationForm: React.FC<DBProps> = ({ getnew }) => {
   };
   return (
     <BaseForm form={form} layout="vertical" name="contentForm">
-      <BaseForm.Item name="Content" label="Content" rules={[{ required: true, message: t('common.requiredField') }]}>
-        <Input onChange={(event) => setContent(event.target.value)} />
+      <BaseForm.Item name="Title" label="Title" rules={[{ required: true, message: t('common.requiredField') }]}>
+        <Input onChange={(event) => setTitle(event.target.value)} />
+      </BaseForm.Item>
+      <BaseForm.Item name="Context" label="Context" rules={[{ required: true, message: t('common.requiredField') }]}>
+        <Input onChange={(event) => setContext(event.target.value)} />
+      </BaseForm.Item>
+      <BaseForm.Item name="HashTag" label="HashTag" rules={[{ required: true, message: t('common.requiredField') }]}>
+        <Input onChange={(event) => setHashTag(event.target.value)} />
+      </BaseForm.Item>
+      <BaseForm.Item name="Topic" label="Topic" rules={[{ required: true, message: t('common.requiredField') }]}>
+        <Select style={{ width: 120 }} onChange={(value) => setTopic(value)} options={topicList} />
       </BaseForm.Item>
       <BaseForm.Item name="image" label="Attach Image" rules={[{ required: true, message: t('common.requiredField') }]}>
         <Upload name="logo" {...props} listType="picture-card">

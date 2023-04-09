@@ -12,7 +12,11 @@ interface ArticleCardProps {
   date: number;
   description: string;
   avatar?: string;
-  tags?: ITag[];
+  tags?: {
+    color: '#000000';
+    id: 0;
+    tagName: '';
+  };
   className?: string;
 }
 
@@ -26,38 +30,25 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   tags,
   className = 'article-card',
 }) => {
-  const [name, setName] = useState<string>('');
-
-  useEffect(() => {
-    ConfigSetting.getTitle(title).then((data: any) => {
-      setName(data.body.user.name);
-    });
-  }, [title]);
-
   return (
     <S.Wrapper className={className}>
       <S.Header>{!!avatar && <Avatar src={avatar} alt="author" size={43} />}</S.Header>
       {imgUrl.map((img: string) => (
-        <Image
-          src={`http://149.51.37.29:8099/v1/get_img?name=${img}`}
-          key={`${img}123`}
-          alt="article"
-          preview={false}
-        />
+        <Image src={`http://localhost:8081/local-store/${img}`} key={`${img}123`} alt="article" preview={false} />
       ))}
 
       <S.InfoWrapper>
         <S.InfoHeader>
-          <S.Title>{name}</S.Title>
+          <S.Title>{author}</S.Title>
         </S.InfoHeader>
+        <S.Title>{title}</S.Title>
         <S.Description>{description}</S.Description>
+        <S.Description>{date}</S.Description>
       </S.InfoWrapper>
 
-      {!!tags?.length && (
+      {!!tags && (
         <S.TagsWrapper>
-          {tags.map((tag) => (
-            <Tag key={tag.bgColor} title={tag.title} bgColor={tag.bgColor} />
-          ))}
+          <Tag key={tags.id} title={tags.tagName} />
         </S.TagsWrapper>
       )}
     </S.Wrapper>
