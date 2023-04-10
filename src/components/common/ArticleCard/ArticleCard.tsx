@@ -31,7 +31,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   className = 'article-card',
 }) => {
   return (
-    <S.Wrapper className={className}>
+    <S.Wrapper className={className} style={{ width: '85vw' }}>
       <S.Header>{!!avatar && <Avatar src={avatar} alt="author" size={43} />}</S.Header>
       {imgUrl.map((img: string) => (
         <Image src={`http://localhost:8081/local-store/${img}`} key={`${img}123`} alt="article" preview={false} />

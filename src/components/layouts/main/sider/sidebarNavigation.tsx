@@ -26,37 +26,37 @@ export interface SidebarNavigationItem {
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
   {
-    title: 'Dash Board',
+    title: 'Trang tin',
     key: 'dashboard',
     url: '/',
     icon: <LineChartOutlined />,
     adminCheck: true,
   },
-  {
-    title: 'Configuration',
-    key: 'configuration',
-    // TODO use path variable
-    url: '/configuration',
-    icon: <SettingFilled />,
-    adminCheck: true,
-  },
-  {
-    title: 'User Management',
-    key: 'userManagement',
-    url: '/user-management',
-    icon: <UserOutlined />,
-    adminCheck: false,
-  },
+  // {
+  //   title: 'Configuration',
+  //   key: 'configuration',
+  //   // TODO use path variable
+  //   url: '/configuration',
+  //   icon: <SettingFilled />,
+  //   adminCheck: true,
+  // },
+  // {
+  //   title: 'User Management',
+  //   key: 'userManagement',
+  //   url: '/user-management',
+  //   icon: <UserOutlined />,
+  //   adminCheck: false,
+  // },
 
+  // {
+  //   title: 'Order Page',
+  //   key: 'orderpage',
+  //   url: '/order-page',
+  //   icon: <CarryOutOutlined />,
+  //   adminCheck: false,
+  // },
   {
-    title: 'Order Page',
-    key: 'orderpage',
-    url: '/order-page',
-    icon: <CarryOutOutlined />,
-    adminCheck: false,
-  },
-  {
-    title: 'History Page',
+    title: 'List Friend',
     key: 'historypage',
     url: '/history-page',
     icon: <FundOutlined />,

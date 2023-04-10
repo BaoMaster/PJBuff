@@ -39,7 +39,7 @@ const Dashboard: React.FC = () => {
   const getnew = () => {
     setLoaded(true);
     dbService.get10Post().then((data: any) => {
-      setNews((oldNews) => [...oldNews, ...data.data]);
+      setNews(data.data);
       setLoaded(false);
     });
   };
@@ -55,7 +55,7 @@ const Dashboard: React.FC = () => {
             <ValidationForm getnew={getnew} />
           </Row>
         </s.Card>
-        <s.Card title="Please adopt a cat ❤️">
+        <s.Card title="Trang tin tức">
           <Row style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <NewsFilter news={news}>
               {({ filteredNews }) =>
