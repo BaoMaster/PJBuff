@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
           </Row>
         </s.Card>
         <s.Card title="Trang tin tức">
-          <Row style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <Row style={{ display: 'flex', justifyContent: 'center' }}>
             <NewsFilter news={news}>
               {({ filteredNews }) =>
                 filteredNews?.length || !loaded ? (

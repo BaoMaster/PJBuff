@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Stomp  from 'stompjs';
+import Stomp from 'stompjs';
 
 // no lazy loading for auth pages to avoid flickering
 const AuthLayout = React.lazy(() => import('@app/components/layouts/AuthLayout/AuthLayout'));
@@ -14,12 +14,9 @@ import LockPage from '@app/pages/LockPage';
 import MainLayout from '@app/components/layouts/main/MainLayout/MainLayout';
 import RequireAuth from '@app/components/router/RequireAuth';
 import { withLoading } from '@app/hocs/withLoading.hoc';
-import ConfigPage from '@app/pages/ConfigPage/ConfigPage';
-import { UserManagement } from '@app/pages/UserManagement/Tables/Tables';
 import Dashboard from '@app/pages/DashBoard/DashBoard';
-import OrderPage from '@app/pages/OrderPage/OrderPage';
-import HistoryPage from '@app/pages/HistoryPage/HistoryPage';
 import Profile from '@app/pages/ProfilePage/ProfilePage';
+import ListFriendPage from '@app/pages/HistoryPage/ListFriendPage';
 const DataTablesPage = React.lazy(() => import('@app/pages/DataTablesPage'));
 const ChartsPage = React.lazy(() => import('@app/pages/ChartsPage'));
 const ServerErrorPage = React.lazy(() => import('@app/pages/ServerErrorPage'));
@@ -58,12 +55,8 @@ export const AppRouter: React.FC = () => {
             <Route path="advanced-forms" element={<AdvancedForm />} />
           </Route>
           <Route path="data-tables" element={<DataTables />} />
-          <Route path="user-management" element={<UserManagement />} />
-          <Route path="configuration" element={<ConfigPage />} />
-          <Route path="order-page" element={<OrderPage />} />
-          <Route path="history-page" element={<HistoryPage />} />
+          <Route path="list-friend" element={<ListFriendPage />} />
           <Route path="profile-page" element={<Profile />} />
-          <Route path="charts" element={<Charts />} />
 
           <Route path="server-error" element={<ServerError />} />
           <Route path="404" element={<Error404 />} />

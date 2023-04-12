@@ -33,19 +33,18 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   return (
     <S.Wrapper className={className} style={{ width: '85vw' }}>
       <S.Header>{!!avatar && <Avatar src={avatar} alt="author" size={43} />}</S.Header>
-      {imgUrl.map((img: string) => (
-        <Image src={`http://localhost:8081/local-store/${img}`} key={`${img}123`} alt="article" preview={false} />
-      ))}
 
       <S.InfoWrapper>
         <S.InfoHeader>
-          <S.Title>{author}</S.Title>
+          <S.UserName>{author}</S.UserName> <S.Description>{date}</S.Description>
         </S.InfoHeader>
         <S.Title>{title}</S.Title>
         <S.Description>{description}</S.Description>
-        <S.Description>{date}</S.Description>
       </S.InfoWrapper>
 
+      {imgUrl.map((img: string) => (
+        <Image src={`http://localhost:8081/local-store/${img}`} key={`${img}123`} alt="article" preview={false} />
+      ))}
       {!!tags && (
         <S.TagsWrapper>
           <Tag key={tags.id} title={tags.tagName} />

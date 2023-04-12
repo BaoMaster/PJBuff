@@ -23,6 +23,7 @@ export const Wrapper = styled.div`
   max-width: 42.5rem;
   box-shadow: var(--box-shadow);
   border-radius: ${BORDER_RADIUS};
+  border: 1px black solid;
   transition: 0.3s;
 
   [data-theme='dark'] & {
@@ -55,6 +56,7 @@ export const InfoWrapper = styled.div`
 
 export const InfoHeader = styled.div`
   display: flex;
+  flex-direction: column;
   margin-bottom: 1rem;
 
   @media only screen and ${media.md} {
@@ -67,10 +69,10 @@ export const InfoHeader = styled.div`
 `;
 
 export const Title = styled.div`
-  font-size: ${FONT_SIZE.xl};
-  font-weight: ${FONT_WEIGHT.semibold};
+  font-size: ${FONT_SIZE.md};
+  font-weight: ${FONT_WEIGHT.medium};
   width: 80%;
-  line-height: 1.375rem;
+  line-height: 1.3rem;
 
   color: var(--text-main-color);
 
@@ -84,7 +86,14 @@ export const DateTime = styled(Typography.Text)`
   color: var(--text-main-color);
   line-height: 1.25rem;
 `;
-
+export const UserName = styled.div`
+  font-size: ${FONT_SIZE.md};
+  color: var(--text-main-color);
+  font-weight: ${FONT_WEIGHT.semibold};
+  @media only screen and ${media.xxl} {
+    font-size: 1rem;
+  }
+`;
 export const Description = styled.div`
   font-size: ${FONT_SIZE.xs};
   color: var(--text-main-color);

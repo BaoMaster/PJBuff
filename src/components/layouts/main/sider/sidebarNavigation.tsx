@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  CompassOutlined,
-  DashboardOutlined,
-  FormOutlined,
   HomeOutlined,
-  LayoutOutlined,
-  LineChartOutlined,
-  TableOutlined,
-  UserOutlined,
-  BlockOutlined,
-  SettingFilled,
-  CarryOutOutlined,
-  FundOutlined,
+  IdcardOutlined,
+  ContactsOutlined,
+  MessageOutlined,
 } from '@ant-design/icons';
-import { ReactComponent as NftIcon } from '@app/assets/icons/nft-icon.svg';
+
 
 export interface SidebarNavigationItem {
   title: string;
@@ -26,47 +18,31 @@ export interface SidebarNavigationItem {
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
   {
-    title: 'Trang tin',
+    title: 'Dashboard',
     key: 'dashboard',
     url: '/',
-    icon: <LineChartOutlined />,
+    icon: <HomeOutlined />,
     adminCheck: true,
   },
-  // {
-  //   title: 'Configuration',
-  //   key: 'configuration',
-  //   // TODO use path variable
-  //   url: '/configuration',
-  //   icon: <SettingFilled />,
-  //   adminCheck: true,
-  // },
-  // {
-  //   title: 'User Management',
-  //   key: 'userManagement',
-  //   url: '/user-management',
-  //   icon: <UserOutlined />,
-  //   adminCheck: false,
-  // },
-
-  // {
-  //   title: 'Order Page',
-  //   key: 'orderpage',
-  //   url: '/order-page',
-  //   icon: <CarryOutOutlined />,
-  //   adminCheck: false,
-  // },
   {
     title: 'List Friend',
-    key: 'historypage',
-    url: '/history-page',
-    icon: <FundOutlined />,
+    key: 'listfriend',
+    url: '/list-friend',
+    icon: <ContactsOutlined />,
+    adminCheck: false,
+  },
+  {
+    title: 'Chat Center',
+    key: 'chat-center',
+    url: '/chat-center',
+    icon: <MessageOutlined />,
     adminCheck: false,
   },
   {
     title: 'Profile Page',
     key: 'profilepage',
     url: '/profile-page',
-    icon: <FundOutlined />,
+    icon: <IdcardOutlined />,
     adminCheck: false,
   },
   // {

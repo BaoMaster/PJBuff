@@ -105,7 +105,7 @@ export const Input = styled(AntInput)`
   border: none;
   background: var(--secondary-background-color);
   border-radius: 3.125rem;
-  padding-left: 3rem;
+  padding-left: rem;
   color: var(--text-main-color);
   font-size: ${FONT_SIZE.md};
   font-weight: ${FONT_WEIGHT.semibold};

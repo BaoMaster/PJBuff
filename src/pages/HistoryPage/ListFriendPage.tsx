@@ -5,7 +5,7 @@ import { Line } from '@ant-design/plots';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as S from '@app/pages/uiComponentsPages//UIComponentsPage.styles';
-import ConfigSetting from './HistoryPageService';
+import ConfigSetting from './ListFriendPageService';
 import * as s from './Tables.styles';
 
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
@@ -15,7 +15,7 @@ import { ColumnsType } from 'antd/es/table';
 import { Dayjs } from 'dayjs';
 import RecentActivityFeed from './RecentActivityFeed';
 
-const Dashboard: React.FC = () => {
+const ListFriendPage: React.FC = () => {
   const [activity, setActivity] = useState<any[]>([]);
   const [filteredActivity, setFilteredActivity] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -65,4 +65,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default ListFriendPage;
